@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\crow_project\GCIMS\main.cpp">
+    <ClCompile Include="D:\gcims-backend\GCIMS\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\crow_project\GCIMS\CMakeLists.txt" />
+    <CustomBuild Include="D:\gcims-backend\GCIMS\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{86E8B136-9F17-3CA6-93A8-A85EF7E33062}</UniqueIdentifier>
+      <UniqueIdentifier>{A2F07BBD-ED3B-3897-92B8-B54CDCF46C92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

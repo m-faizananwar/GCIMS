@@ -117,8 +117,8 @@ D:/appprograms/vcpkg/vcpkg/installed/x64-windows/share/crow/CrowConfig.cmake
 D:/appprograms/vcpkg/vcpkg/installed/x64-windows/share/crow/CrowTargets.cmake
 D:/appprograms/vcpkg/vcpkg/installed/x64-windows/share/crow/Findasio.cmake
 D:/appprograms/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake
-D:/crow_project/GCIMS/CMakeLists.txt
-D:/crow_project/GCIMS/build/CMakeFiles/3.31.2/CMakeCCompiler.cmake
-D:/crow_project/GCIMS/build/CMakeFiles/3.31.2/CMakeCXXCompiler.cmake
-D:/crow_project/GCIMS/build/CMakeFiles/3.31.2/CMakeRCCompiler.cmake
-D:/crow_project/GCIMS/build/CMakeFiles/3.31.2/CMakeSystem.cmake
+D:/gcims-backend/GCIMS/CMakeLists.txt
+D:/gcims-backend/GCIMS/build/CMakeFiles/3.31.2/CMakeCCompiler.cmake
+D:/gcims-backend/GCIMS/build/CMakeFiles/3.31.2/CMakeCXXCompiler.cmake
+D:/gcims-backend/GCIMS/build/CMakeFiles/3.31.2/CMakeRCCompiler.cmake
+D:/gcims-backend/GCIMS/build/CMakeFiles/3.31.2/CMakeSystem.cmake

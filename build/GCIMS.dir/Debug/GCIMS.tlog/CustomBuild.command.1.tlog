@@ -1,6 +1,6 @@
-^D:\CROW_PROJECT\GCIMS\CMAKELISTS.TXT
+^D:\GCIMS-BACKEND\GCIMS\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SD:/crow_project/GCIMS -BD:/crow_project/GCIMS/build --check-stamp-file D:/crow_project/GCIMS/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/gcims-backend/GCIMS -BD:/gcims-backend/GCIMS/build --check-stamp-file D:/gcims-backend/GCIMS/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
