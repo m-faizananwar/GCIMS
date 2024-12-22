@@ -23,14 +23,26 @@ class Date //definitino of class Dictionary
       year = y;
     }
 
-    Date (string date) //constructor with parameters
+    Date (string dateStr) //constructor with parameters
     {
-      int d = stoi(date.substr(0, 2));
-      int m = stoi(date.substr(3, 2));
-      int y = stoi(date.substr(6, 4));
-      day = d;
-      month = m;
-      year = y;
+      if (dateStr.size() < 8) {
+        // Invalid date string, default to something safe
+        day = month = year = 0;
+        return;
+      }
+      // Optionally, check characters like '/' in correct places
+      // Use try/catch or careful parsing to avoid out-of-range
+      try {
+        // Example format dd/mm/yyyy
+        int d = stoi(dateStr.substr(0, 2));
+        int m = stoi(dateStr.substr(3, 2));
+        int y = stoi(dateStr.substr(6, 4));
+        day = d;
+        month = m;
+        year = y;
+      } catch (...) {
+        day = month = year = 0;
+      }
     }
 
     //overloading of boolean comparison operators for sotring data in list

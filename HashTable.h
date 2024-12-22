@@ -56,14 +56,14 @@ public:
   }
 
   void insert(K key, Car* car) {
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* newNode = new Node<K>(key, car, table[index]);
     table[index] = newNode;
     ++size;
   }
 
   Car* search(K key) {
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];
     while (current && current->key != key) {
       current = current->next;
@@ -71,7 +71,7 @@ public:
     return current ? current->car : Car();
   }
   void remove(K key) {
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];
     if (current && current->key == key) {
       table[index] = current->next;
@@ -91,7 +91,7 @@ public:
     }
   }
   void remove(K key, Car* car) {
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];
     if (current && current->key == key && current->car == car) {
       table[index] = current->next;
@@ -138,7 +138,7 @@ public:
     }
   }
   void printValues(K key, int &count){
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];
     while (current!=NULL) {
       std::cout << *current->car << std::endl;
@@ -165,7 +165,7 @@ public:
 
   void searchPrice(K key) {
     int count = 0;
-    std::size_t index = hash(key, type);
+    std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];
     while (current) {
       if (current->key == key) {

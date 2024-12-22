@@ -47,6 +47,10 @@ public:
         int longitude = car->dealer_longitude;
         int latitude = car->dealer_latitude;
         hash(longitude, latitude);
+        if (latitude < 0 || latitude >= LATITUDE_MAX || longitude < 0 || longitude >= LONGITUDE_MAX) {
+            // Skip or handle invalid range
+            return;
+        }
         Node* newNode = new Node;
         newNode->longitude = longitude;
         newNode->latitude = latitude;
@@ -69,6 +73,10 @@ public:
 
     void printByCoordinates(int longitude, int latitude) {
         hash(longitude, latitude);
+        if (latitude < 0 || latitude >= LATITUDE_MAX || longitude < 0 || longitude >= LONGITUDE_MAX) {
+            // Skip or handle invalid range
+            return;
+        }
         Node* head = &globe->at(latitude).at(longitude);
         cout<<*head->car<<endl;
         while (head != nullptr) {
