@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "parser.h"
 #include "Functions.h"
@@ -31,7 +30,11 @@ int main() {
     CROW_ROUTE(app, "/")([]() {
         return "Hello, Bro Crow!";
     });
-
+    CROW_ROUTE(app, "/cars")([]() {
+        ifstream ifs("D:/gcims-backend/GCIMS/final_data.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        return crow::response(json);
+    });
     // Start the server
     app.port(8080).multithreaded().run();
 }
