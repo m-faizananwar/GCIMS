@@ -8,14 +8,19 @@
 #include "HashMatrix.h"
 
 using namespace std;
-CarAVL<Car>* carsByMakeAndModel = new CarAVL<Car>();
-CarAVL<Date>* carsByDate = new CarAVL<Date>();
-CarAVL<string>* carsByMake = new CarAVL<string>();
-CarTAVL<string>* carsByCountry = new CarTAVL<string>();
-HashTable<int>* carsByAge = new HashTable<int>(75, "age");
-HashTable<float>* carsByPrice = new HashTable<float>(150, "price");
-Globe* globe = new Globe();
 
+// AVL trees for each of the three attributes
+CarAVL <Car> * carsByMakeAndModel = new CarAVL<Car>();
+CarAVL <Date> * carsByDate = new CarAVL<Date>();
+CarAVL <string> * carsByMake = new CarAVL<string>();
+CarTAVL <string> * carsByCountry = new CarTAVL<string>();
+
+// Hash table for the country attribute
+HashTable <int>* carsByAge = new HashTable<int>(75, "age");
+HashTable <float>* carsByPrice = new HashTable<float>(150, "price");
+
+// Hash matrix for the location attribute
+Globe * globe = new Globe();
 
 void parsingData()
 {
