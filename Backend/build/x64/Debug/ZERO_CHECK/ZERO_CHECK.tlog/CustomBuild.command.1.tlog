@@ -1,0 +1,10 @@
+^D:\GCIMS-BACKEND\GCIMS\BACKEND\BUILD\CMAKEFILES\3D5CD82159E250F3EA16F06A337AD4DB\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/gcims-backend/GCIMS/Backend -BD:/gcims-backend/GCIMS/Backend/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/gcims-backend/GCIMS/Backend/build/GCIMS.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
