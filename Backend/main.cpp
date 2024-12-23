@@ -36,8 +36,8 @@ int main() {
         return crow::response(json);
     });
     CROW_ROUTE(app, "/cars/sorted/make/<string>")([](const std::string& order) {
-        bool ascending = (order == "ascending");
-        rewriteJsonSortedByKey("make", ascending);
+        bool descending = (order != "descending");
+        rewriteJsonSortedByKey("make", descending);
         ifstream ifs("D:/gcims-backend/GCIMS/Backend/final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         return crow::response(json);
@@ -46,36 +46,36 @@ int main() {
     
 
     CROW_ROUTE(app, "/cars/sorted/make_and_model/<string>")([](const std::string& order) {
-        bool ascending = (order == "ascending");
-        rewriteJsonSortedByKey("make_and_model", ascending);
+        bool descending = (order != "descending");
+        rewriteJsonSortedByKey("make_and_model", descending);
         ifstream ifs("D:/gcims-backend/GCIMS/Backend/final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         return crow::response(json);
     });
 
     CROW_ROUTE(app, "/cars/sorted/age/<string>")([](const std::string& order) {
-        bool ascending = (order == "ascending");
-        rewriteJsonSortedByKey("age", ascending);
+        bool descending = (order != "descending");
+        rewriteJsonSortedByKey("age", descending);
         ifstream ifs("D:/gcims-backend/GCIMS/Backend/final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         return crow::response(json);
     });
 
     CROW_ROUTE(app, "/cars/sorted/date/<string>")([](const std::string& order) {
-        bool ascending = (order == "ascending");
-        rewriteJsonSortedByKey("date", ascending);
+        bool descending = (order != "descending");
+        rewriteJsonSortedByKey("date", descending);
         ifstream ifs("D:/gcims-backend/GCIMS/Backend/final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         return crow::response(json);
     });
 
     CROW_ROUTE(app, "/cars/sorted/price/<string>")([](const std::string& order) {
-        bool ascending = (order == "ascending");
-        rewriteJsonSortedByKey("price", ascending);
+        bool descending = (order != "descending");
+        rewriteJsonSortedByKey("price", descending);
         ifstream ifs("D:/gcims-backend/GCIMS/Backend/final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         return crow::response(json);
-    });
+    });       
     // Start the server
     app.port(8080).multithreaded().run();
 }
