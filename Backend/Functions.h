@@ -145,3 +145,72 @@ void rewriteJsonSortedByMake(bool ascending)
     jsonFile << "\n]\n";
     jsonFile.close();
 }
+
+void rewriteJsonSortedByKey(const std::string& key, bool ascending)
+{
+    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data2.json");
+    jsonFile << "[\n";
+    bool firstEntry = true;
+
+    auto writeCarToJson = [&](Car* car) {
+        if (!firstEntry) {
+            jsonFile << ",\n";
+        } else {
+            firstEntry = false;
+        }
+        jsonFile << "  {\n"
+                 << "    \"make\": \"" << car->make << "\",\n"
+                 << "    \"model\": \"" << car->model << "\",\n"
+                 << "    \"buyer_gender\": \"" << car->buyer_gender << "\",\n"
+                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
+                 << "    \"country\": \"" << car->country << "\",\n"
+                 << "    \"city\": \"" << car->city << "\",\n"
+                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+                 << "    \"color\": \"" << car->color << "\",\n"
+                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    \"purchase_date\": \"" << car->purchase_date << "\",\n"
+                 << "    \"sale_price\": " << car->sale_price << ",\n"
+                 << "    \"top_speed\": " << car->top_speed << "\n"
+                 << "  }";
+    };
+
+    if (key == "make") {
+        if (ascending) {
+            carsByMake->printInOrder(writeCarToJson);
+        } else {
+            carsByMake->printInReverseOrder(writeCarToJson);
+        }
+    }
+    else if (key == "make_and_model") {
+        if (ascending) {
+            carsByMakeAndModel->printInOrder(writeCarToJson);
+        } else {
+            carsByMakeAndModel->printInReverseOrder(writeCarToJson);
+        }
+    }
+    else if (key == "age") {
+        if (ascending) {
+            carsByAge->sortedPrint(writeCarToJson);
+        } else {
+            carsByAge->reversePrint(writeCarToJson);
+        }
+    }
+    else if (key == "date") {
+        if (ascending) {
+            carsByDate->printInOrder(writeCarToJson);
+        } else {
+            carsByDate->printInReverseOrder(writeCarToJson);
+        }
+    }
+    else if (key == "price") {
+        if (ascending) {
+            carsByPrice->sortedPrint(writeCarToJson);
+        } else {
+            carsByPrice->reversePrint(writeCarToJson);
+        }
+    }
+
+    jsonFile << "\n]\n";
+    jsonFile.close();
+}

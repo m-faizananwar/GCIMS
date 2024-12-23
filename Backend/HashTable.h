@@ -137,6 +137,27 @@ public:
       }
     }
   }
+
+  void sortedPrint(const std::function<void(Car*)>& func) {
+    for (auto i : table) {
+      Node<K>* current = i;
+      while (current) {
+        func(current->car);
+        current = current->next;
+      }
+    }
+  }
+
+  void reversePrint(const std::function<void(Car*)>& func) {
+    for (auto i = table.rbegin(); i != table.rend(); ++i) {
+      Node<K>* current = *i;
+      while (current) {
+        func(current->car);
+        current = current->next;
+      }
+    }
+  }
+
   void printValues(K key, int &count){
     std::size_t index = hash(key, type) % capacity;
     Node<K>* current = table[index];

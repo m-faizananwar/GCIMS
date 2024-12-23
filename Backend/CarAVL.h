@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Cars.h"
+#include <functional>
 
 using namespace std;
 
@@ -182,10 +183,22 @@ public:
             if (node) {
                 printInOrder(node->left);
                 cout << *node->car;
+                
                 printInOrder(node->right);
             }
         }
 
+    void printInOrder(Node* node, const std::function<void(Car*)>& func) {
+        if (node) {
+            printInOrder(node->left, func);
+            func(node->car);
+            printInOrder(node->right, func);
+        }
+    }
+
+    void printInOrder(const std::function<void(Car*)>& func) {
+        printInOrder(root, func);
+    }
 
     // Print the tree in order
     void printInOrder() {
@@ -200,6 +213,18 @@ public:
             cout << *node->car;
             printInReverseOrder(node->left);
         }
+    }
+
+    void printInReverseOrder(Node* node, const std::function<void(Car*)>& func) {
+        if (node) {
+            printInReverseOrder(node->right, func);
+            func(node->car);
+            printInReverseOrder(node->left, func);
+        }
+    }
+
+    void printInReverseOrder(const std::function<void(Car*)>& func) {
+        printInReverseOrder(root, func);
     }
 
     // Print the tree in reverse order
