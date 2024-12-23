@@ -127,3 +127,21 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
     cout << "Cars sold in: (" << latitude1 << " , " << longitude1 << ") to (" << latitude2 << " , " << longitude2 << ")" << endl;
     globe->printRectangularRegion(longitude1, latitude1, longitude2, latitude2);
 }
+
+void rewriteJsonSortedByMake(bool ascending)
+{
+    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data.json");
+    jsonFile << "[\n";
+    bool firstEntry = true;
+    if (ascending) {
+        // carsByMake->printInOrder(); // we'll iterate in ascending order
+        // During the traversal, write each car as JSON:
+        // if (!firstEntry) { jsonFile << ",\n"; } else { firstEntry = false; }
+        // jsonFile << "{ \"make\": \"" << car->make << "\", ... }";
+    } else {
+        // carsByMake->printInReverseOrder(); // descending order
+        // Similar JSON writing
+    }
+    jsonFile << "\n]\n";
+    jsonFile.close();
+}
