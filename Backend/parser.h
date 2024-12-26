@@ -83,20 +83,19 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         } else {
             first = false;
         }
-        jsonFile << "  {\n"
-                 << "    \"make\": \"" << car->make << "\",\n"
-                 << "    \"model\": \"" << car->model << "\",\n"
-                 << "    \"buyer_gender\": \"" << car->buyer_gender << "\",\n"
-                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
-                 << "    \"country\": \"" << car->country << "\",\n"
-                 << "    \"city\": \"" << car->city << "\",\n"
-                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-                 << "    \"color\": \"" << car->color << "\",\n"
-                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-                 << "    \"purchase_date\": \"" << fields[10] << "\",\n"
-                 << "    \"sale_price\": " << car->sale_price << ",\n"
-                 << "    \"top_speed\": " << car->top_speed << "\n"
+       jsonFile << "  {\n"
+                 << "    carName: \"" << car->make << " " << car->model << "\",\n"
+                 << "    model: \"" << car->model << "\",\n"
+                 << "    price: " << car->sale_price << ",\n"
+                 << "    speed: " << car->top_speed << "\n"
+                 << "    location: \"" << car->country << "\",\n"
+                 << "    gender: \"" << car->buyer_gender << "\",\n"
+                 << "    new_car: " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    buyer_age: " << car->buyer_age << ",\n"
+                 << "    city: \"" << car->city << "\",\n"
+                 << "    dealer_latitude: " << car->dealer_latitude << ",\n"
+                 << "    dealer_longitude: " << car->dealer_longitude << ",\n"
+                 << "    color: \"" << car->color << "\",\n"
                  << "  }";
         
         // Increment the count
