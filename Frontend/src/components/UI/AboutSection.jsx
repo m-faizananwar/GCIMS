@@ -1,4 +1,4 @@
-import React from "react";
+ 
 import { Container, Row, Col } from "reactstrap";
 import "../../styles/about-section.css";
 import aboutImg from "../../assets/all-images/cars-img/bmw-offer.png";
@@ -27,21 +27,21 @@ Start your journey with us and drive home with confidence!
 
               <div className="about__section-item d-flex align-items-center">
                 <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Expert Assistance
+                  <i className="ri-checkbox-circle-line"></i> Expert Assistance
                 </p>
 
                 <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> User-Friendly Experience
+                  <i className="ri-checkbox-circle-line"></i> User-Friendly Experience
                 </p>
               </div>
 
               <div className="about__section-item d-flex align-items-center">
                 <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Trusted Platform
+                  <i className="ri-checkbox-circle-line"></i> Trusted Platform
                 </p>
 
                 <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Affordable Options
+                  <i className="ri-checkbox-circle-line"></i> Affordable Options
                 </p>
               </div>
             </div>

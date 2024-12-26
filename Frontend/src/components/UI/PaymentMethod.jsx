@@ -1,4 +1,4 @@
-import React from "react";
+ 
 
 
 import "../../styles/payment-method.css";

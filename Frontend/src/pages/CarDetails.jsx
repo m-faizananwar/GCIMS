@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 
 
@@ -49,7 +49,7 @@ const CarDetails = () => {
                 >
                   <span className=" d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-roadster-line"
+                      className="ri-roadster-line"
                       style={{ color: "#f9a826" }}
                     ></i>{" "}
                     {singleCarItem.model}
@@ -58,7 +58,7 @@ const CarDetails = () => {
 
                   <span className=" d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-timer-flash-line"
+                      className="ri-timer-flash-line"
                       style={{ color: "#f9a826" }}
                     ></i>{" "}
                     {singleCarItem.speed}
@@ -70,7 +70,7 @@ const CarDetails = () => {
                   style={{ columnGap: "2.8rem" }}
                 >
                   <span className=" d-flex align-items-center gap-1 section__description">
-                    <i class="ri-map-pin-line" style={{ color: "#f9a826" }}></i>{" "}
+                    <i className="ri-map-pin-line" style={{ color: "#f9a826" }}></i>{" "}
                     {singleCarItem.location}
                   </span>
 
@@ -78,7 +78,7 @@ const CarDetails = () => {
 
                   <span className=" d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-building-2-line"
+                      className="ri-building-2-line"
                       style={{ color: "#f9a826" }}
                     ></i>{" "}
                     {singleCarItem.brand}

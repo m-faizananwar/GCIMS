@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../../styles/find-car-form.css";
 import { Form, FormGroup } from "reactstrap";
 

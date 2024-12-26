@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import img01 from "../assets/all-images/cars-img/nissan-offer.png";
 import img02 from "../assets/all-images/cars-img/offer-toyota.png";

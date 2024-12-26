@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
 import { Link } from "react-router-dom";
@@ -95,7 +95,7 @@ const Contact = () => {
                 <div className="d-flex align-items-center gap-4 mt-3">
                   {socialLinks.map((item, index) => (
                     <Link to={item.url} key={index} className="social__link-icon">
-                      <i class={item.icon}></i>
+                      <i className={item.icon}></i>
                     </Link>
                   ))}
                 </div>
