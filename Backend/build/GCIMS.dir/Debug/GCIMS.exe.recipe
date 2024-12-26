@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\gcims-backend\GCIMS\Backend\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>C:\gcims\GCIMS\Backend\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>D:\gcims-backend\GCIMS\Backend\build\Debug\GCIMS.exe</FullPath>
+      <FullPath>C:\gcims\GCIMS\Backend\build\Debug\GCIMS.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

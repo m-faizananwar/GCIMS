@@ -130,7 +130,7 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
 
 void rewriteJsonSortedByMake(bool ascending)
 {
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data.json");
+    ofstream jsonFile("C:/gcims/GCIMS/Backend/final_data.json");
     jsonFile << "[\n";
     bool firstEntry = true;
     if (ascending) {
@@ -148,7 +148,7 @@ void rewriteJsonSortedByMake(bool ascending)
 
 void rewriteJsonSortedByKey(const std::string& key, bool ascending)
 {
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data2.json");
+    ofstream jsonFile("C:/gcims/GCIMS/Backend/final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 

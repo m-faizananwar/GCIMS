@@ -18,13 +18,13 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
   
     int count=0;
     // Open the CSV file for reading
-    ifstream csvFile("D:/gcims-backend/GCIMS/Backend/final_data.csv");
+    ifstream csvFile("C:/gcims/GCIMS/Backend/final_data.csv");
     if (!csvFile.is_open()) {
         cout << "Error opening file" << endl;
         return;
     }
     // Open the JSON file for writing
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data.json");
+    ofstream jsonFile("C:/gcims/GCIMS/Backend/final_data.json");
     jsonFile << "[\n";
     bool first = true;
 
