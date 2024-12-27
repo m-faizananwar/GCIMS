@@ -120,6 +120,7 @@ void rewriteJsonSortedByKey(const std::string& key, bool ascending)
         }
         jsonFile << "  {\n"
          << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+         << "    \"brand\": \""  << car->model << "\",\n"
          << "    \"model\": \"" << car->model << "\",\n"
          << "    \"price\": " << car->sale_price << ",\n"
          << "    \"speed\": " << car->top_speed << ",\n"
