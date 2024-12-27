@@ -77,32 +77,10 @@ void searchByAge(int age)
     cout << "Total cars sold to age " << age << ": " << count << endl;
 }
 
-
-void searchByPriceRange(float start, float end)
-{
-    cout << "Cars sold between " << start << " and " << end << endl;
-    carsByPrice->printRange(start, end);
-}
-
 void searchByPrice(float price)
 {
     cout << "Cars sold at price: " << price << endl;
     carsByPrice->searchPrice(price);
-}
-
-
-void searchByDateRange(Date start, Date end)
-{
-    cout << "Cars sold between " << start << " and " << end << endl;
-
-    carsByDate->printInRange(start, end);
-}
-
-void searchByCountry(string country)
-{
-    cout << "Cars sold in " << country << endl;
-
-    carsByCountry->printNodeList(country);
 }
 
 void searchByLocation(float latitude, float longitude, int radius)
@@ -126,24 +104,6 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
 {
     cout << "Cars sold in: (" << latitude1 << " , " << longitude1 << ") to (" << latitude2 << " , " << longitude2 << ")" << endl;
     globe->printRectangularRegion(longitude1, latitude1, longitude2, latitude2);
-}
-
-void rewriteJsonSortedByMake(bool ascending)
-{
-    ofstream jsonFile("../../final_data.json");
-    jsonFile << "[\n";
-    bool firstEntry = true;
-    if (ascending) {
-        // carsByMake->printInOrder(); // we'll iterate in ascending order
-        // During the traversal, write each car as JSON:
-        // if (!firstEntry) { jsonFile << ",\n"; } else { firstEntry = false; }
-        // jsonFile << "{ \"make\": \"" << car->make << "\", ... }";
-    } else {
-        // carsByMake->printInReverseOrder(); // descending order
-        // Similar JSON writing
-    }
-    jsonFile << "\n]\n";
-    jsonFile.close();
 }
 
 void rewriteJsonSortedByKey(const std::string& key, bool ascending)
@@ -213,4 +173,85 @@ void rewriteJsonSortedByKey(const std::string& key, bool ascending)
 
     jsonFile << "\n]\n";
     jsonFile.close();
+}
+
+void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
+    ofstream jsonFile("../../final_data2.json");
+    jsonFile << "[\n";
+    bool firstEntry = true;
+
+    for (const auto& car : cars) {
+        if (!firstEntry) {
+            jsonFile << ",\n";
+        } else {
+            firstEntry = false;
+        }
+        jsonFile << "  {\n"
+                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+                 << "    \"model\": \"" << car->model << "\",\n"
+                 << "    \"price\": " << car->sale_price << ",\n"
+                 << "    \"speed\": " << car->top_speed << ",\n"
+                 << "    \"location\": \"" << car->country << "\",\n"
+                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
+                 << "    \"city\": \"" << car->city << "\",\n"
+                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+                 << "    \"color\": \"" << car->color << "\"\n"
+                 << "  }";
+    }
+
+    jsonFile << "\n]\n";
+    jsonFile.close();
+}
+
+std::vector<Car*> findCarsByName(const std::string& name) {
+    std::vector<Car*> results;
+    if (carsByMake->search(name)) {
+        auto node = carsByMake->search(name);
+        results.push_back(node->car);
+    }
+    return results;
+}
+
+std::vector<Car*> findCarsByDateRange(const Date& start, const Date& end) {
+    std::vector<Car*> results;
+    carsByDate->collectInRange(carsByDate->root, start, end, results);
+    return results;
+}
+
+std::vector<Car*> findCarsByPriceRange(float minPrice, float maxPrice) {
+    std::vector<Car*> results;
+    carsByPrice->collectInRange(minPrice, maxPrice, results);
+    return results;
+}
+
+std::vector<Car*> findCarsByCountry(const std::string& country) {
+    std::vector<Car*> results;
+    if (auto node = carsByCountry->search(country)) {
+        while (node) {
+            results.push_back(node->car);
+            node = node->next;
+        }
+    }
+    return results;
+}
+
+std::vector<Car*> searchCars(const std::string& name, const std::string& model, const std::string& country, float minPrice, float maxPrice) {
+    std::vector<Car*> results;
+    for (auto head : carsByPrice->getTable()) {
+        auto current = head;
+        while (current) {
+            Car* car = current->car;
+            if ((name.empty() || car->make == name) &&
+                (model.empty() || car->model == model) &&
+                (country.empty() || car->country == country) &&
+                (car->sale_price >= minPrice && car->sale_price <= maxPrice)) {
+                results.push_back(car);
+            }
+            current = current->next;
+        }
+    }
+    return results;
 }

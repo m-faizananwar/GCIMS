@@ -95,6 +95,65 @@ int main() {
         res.end();
     });
 
+    CROW_ROUTE(app, "/cars/search/name/<string>")([addCORS](const crow::request& req, crow::response& res, const std::string& name) {
+        addCORS(res);
+        auto results = findCarsByName(name);  // Updated function name
+        rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    CROW_ROUTE(app, "/cars/search/date_range/<string>/<string>")([addCORS](const crow::request& req, crow::response& res, const std::string& startDate, const std::string& endDate) {
+        addCORS(res);
+        Date start(startDate);
+        Date end(endDate);
+        auto results = findCarsByDateRange(start, end);  // Updated function name
+        rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    CROW_ROUTE(app, "/cars/search/price_range/<float>/<float>")([addCORS](const crow::request& req, crow::response& res, float minPrice, float maxPrice) {
+        addCORS(res);
+        auto results = findCarsByPriceRange(minPrice, maxPrice);  // Updated function name
+        rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    CROW_ROUTE(app, "/cars/search/country/<string>")([addCORS](const crow::request& req, crow::response& res, const std::string& country) {
+        addCORS(res);
+        auto results = findCarsByCountry(country);  // Updated function name
+        rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    CROW_ROUTE(app, "/cars/search")([addCORS](const crow::request& req, crow::response& res) {
+        addCORS(res);
+        auto query_params = req.url_params;
+        std::string name = query_params.get("name") ? query_params.get("name") : "";
+        std::string model = query_params.get("model") ? query_params.get("model") : "";
+        std::string country = query_params.get("country") ? query_params.get("country") : "";
+        float minPrice = query_params.get("minprice") ? std::stof(query_params.get("minprice")) : 0.0f;
+        float maxPrice = query_params.get("maxprice") ? std::stof(query_params.get("maxprice")) : FLT_MAX;
+
+        auto results = searchCars(name, model, country, minPrice, maxPrice);
+        rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
     // Start the server
     app.port(8080).multithreaded().run();
 }

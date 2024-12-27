@@ -274,4 +274,13 @@ public:
         cout << "Number of cars with make and model: " << count << endl;
     }
     
+    void collectInRange(Node* node, const Date& start, const Date& end, std::vector<Car*>& results) {
+        if (node) {
+            collectInRange(node->left, start, end, results);
+            if (node->car->purchase_date >= start && node->car->purchase_date <= end) {
+                results.push_back(node->car);
+            }
+            collectInRange(node->right, start, end, results);
+        }
+    }
 };

@@ -19,21 +19,6 @@ private:
   std::size_t capacity;
   std::string type;
 
-//    std::size_t hash(int key) {
-//      key-=10;
-//      return size_t(key);
-//   }
-  
-  //  std::size_t hash(float key) {
-  //    key=(key/1000)-10;
-  //    return size_t(key);
-  // }
-// //   std::size_t hash(int key) {
-// //     return std::hash<K>{}(key) - 10;
-// //   }
-// //   std::size_t hash(float key) {
-// //     return std::hash<K>{}((key)/1000)-10;
-// //   }
   std::size_t hash(K key, string type) {
     if (type == "age")
       return std::hash<K>{}(key) - 10;
@@ -42,7 +27,6 @@ private:
       int key1=(key/1000)-10;
       return std::hash<int>{}(key1);
     }
-    // else if (type == "date") // if date ranges from 1/1/2014 to 1/1/2015
     else 
       return std::hash<K>{}(key);
   }
@@ -117,44 +101,76 @@ public:
     return capacity;
   }
   void sortedPrint() {
-    int count = 0;
-    for (auto i : table) {
-      Node<K>* current = i;
+    // Collect all car pointers
+    vector<Car*> allCars;
+    for (auto head : table) {
+      Node<K>* current = head;
       while (current) {
-        std::cout << *current->car << std::endl;
+        allCars.push_back(current->car);
         current = current->next;
-        count++;
       }
     }
-    cout << "Total number of cars: " << count << endl;
+    // Sort in ascending order by sale_price
+    std::sort(allCars.begin(), allCars.end(), [](Car* a, Car* b){
+      return a->sale_price < b->sale_price;
+    });
+    // Print
+    for (auto car : allCars) {
+      cout << *car;
+    }
   }
+
   void reversePrint() {
-    for (auto i = table.rbegin(); i != table.rend(); ++i) {
-      Node<K>* current = *i;
+    // Collect all car pointers
+    vector<Car*> allCars;
+    for (auto head : table) {
+      Node<K>* current = head;
       while (current) {
-        std::cout << *current->car << std::endl;
+        allCars.push_back(current->car);
         current = current->next;
       }
+    }
+    // Sort in descending order by sale_price
+    std::sort(allCars.begin(), allCars.end(), [](Car* a, Car* b){
+      return a->sale_price > b->sale_price;
+    });
+    // Print
+    for (auto car : allCars) {
+      cout << *car;
     }
   }
 
   void sortedPrint(const std::function<void(Car*)>& func) {
-    for (auto i : table) {
-      Node<K>* current = i;
+    vector<Car*> allCars;
+    for (auto head : table) {
+      Node<K>* current = head;
       while (current) {
-        func(current->car);
+        allCars.push_back(current->car);
         current = current->next;
       }
+    }
+    std::sort(allCars.begin(), allCars.end(), [](Car* a, Car* b){
+      return a->sale_price < b->sale_price;
+    });
+    for (auto car : allCars) {
+      func(car);
     }
   }
 
   void reversePrint(const std::function<void(Car*)>& func) {
-    for (auto i = table.rbegin(); i != table.rend(); ++i) {
-      Node<K>* current = *i;
+    vector<Car*> allCars;
+    for (auto head = table.begin(); head != table.end(); ++head) {
+      Node<K>* current = *head;
       while (current) {
-        func(current->car);
+        allCars.push_back(current->car);
         current = current->next;
       }
+    }
+    std::sort(allCars.begin(), allCars.end(), [](Car* a, Car* b){
+      return a->sale_price > b->sale_price;
+    });
+    for (auto car : allCars) {
+      func(car);
     }
   }
 
@@ -206,6 +222,39 @@ public:
     cout << "Total number of cars: " << count << endl;
     }
 
+  std::vector<Car*> searchCars(const std::string& name, const std::string& model, const std::string& country, float minPrice, float maxPrice) {
+    std::vector<Car*> results;
+    for (auto head : table) {
+        Node<K>* current = head;
+        while (current) {
+            Car* car = current->car;
+            if ((name.empty() || car->make == name) &&
+                (model.empty() || car->model == model) &&
+                (country.empty() || car->country == country) &&
+                (car->sale_price >= minPrice && car->sale_price <= maxPrice)) {
+                results.push_back(car);
+            }
+            current = current->next;
+        }
+    }
+    return results;
+  }
+
+  const std::vector<Node<K>*>& getTable() const {
+    return table;
+  }
+
+  void collectInRange(K key1, K key2, std::vector<Car*>& results) {
+    for (auto i : table) {
+      Node<K>* current = i;
+      while (current) {
+        if (current->key >= key1 && current->key <= key2) {
+          results.push_back(current->car);
+        }
+        current = current->next;
+      }
+    }
+  }
   
 };
 
