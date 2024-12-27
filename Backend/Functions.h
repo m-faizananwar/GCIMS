@@ -130,7 +130,7 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
 
 void rewriteJsonSortedByMake(bool ascending)
 {
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data.json");
+    ofstream jsonFile("../../final_data.json");
     jsonFile << "[\n";
     bool firstEntry = true;
     if (ascending) {
@@ -148,7 +148,7 @@ void rewriteJsonSortedByMake(bool ascending)
 
 void rewriteJsonSortedByKey(const std::string& key, bool ascending)
 {
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data2.json");
+    ofstream jsonFile("../../final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 
@@ -159,19 +159,20 @@ void rewriteJsonSortedByKey(const std::string& key, bool ascending)
             firstEntry = false;
         }
         jsonFile << "  {\n"
-                 << "    carName: \"" << car->make << " " << car->model << "\",\n"
-                 << "    model: \"" << car->model << "\",\n"
-                 << "    price: " << car->sale_price << ",\n"
-                 << "    speed: " << car->top_speed << "\n"
-                 << "    location: \"" << car->country << "\",\n"
-                 << "    gender: \"" << car->buyer_gender << "\",\n"
-                 << "    new_car: " << (car->new_car ? "true" : "false") << ",\n"
-                 << "    buyer_age: " << car->buyer_age << ",\n"
-                 << "    city: \"" << car->city << "\",\n"
-                 << "    dealer_latitude: " << car->dealer_latitude << ",\n"
-                 << "    dealer_longitude: " << car->dealer_longitude << ",\n"
-                 << "    color: \"" << car->color << "\",\n"
-                 << "  }";
+         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+         << "    \"model\": \"" << car->model << "\",\n"
+         << "    \"price\": " << car->sale_price << ",\n"
+         << "    \"speed\": " << car->top_speed << ",\n"
+         << "    \"location\": \"" << car->country << "\",\n"
+         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+         << "    \"buyer_age\": " << car->buyer_age << ",\n"
+         << "    \"city\": \"" << car->city << "\",\n"
+         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+         << "    \"color\": \"" << car->color << "\"\n"
+         << "  }";
+
     };
 
     if (key == "make") {

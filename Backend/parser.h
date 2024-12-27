@@ -18,13 +18,13 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
   
     int count=0;
     // Open the CSV file for reading
-    ifstream csvFile("D:/gcims-backend/GCIMS/Backend/final_data.csv");
+    ifstream csvFile("../../final_data.csv");
     if (!csvFile.is_open()) {
         cout << "Error opening file" << endl;
         return;
     }
     // Open the JSON file for writing
-    ofstream jsonFile("D:/gcims-backend/GCIMS/Backend/final_data.json");
+    ofstream jsonFile("../../final_data.json");
     jsonFile << "[\n";
     bool first = true;
 
@@ -83,21 +83,21 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         } else {
             first = false;
         }
-       jsonFile << "  {\n"
-                 << "    carName: \"" << car->make << " " << car->model << "\",\n"
-                 << "    model: \"" << car->model << "\",\n"
-                 << "    price: " << car->sale_price << ",\n"
-                 << "    speed: " << car->top_speed << "\n"
-                 << "    location: \"" << car->country << "\",\n"
-                 << "    gender: \"" << car->buyer_gender << "\",\n"
-                 << "    new_car: " << (car->new_car ? "true" : "false") << ",\n"
-                 << "    buyer_age: " << car->buyer_age << ",\n"
-                 << "    city: \"" << car->city << "\",\n"
-                 << "    dealer_latitude: " << car->dealer_latitude << ",\n"
-                 << "    dealer_longitude: " << car->dealer_longitude << ",\n"
-                 << "    color: \"" << car->color << "\",\n"
-                 << "  }";
-        
+      jsonFile << "  {\n"
+         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+         << "    \"model\": \"" << car->model << "\",\n"
+         << "    \"price\": " << car->sale_price << ",\n"
+         << "    \"speed\": " << car->top_speed << ",\n"
+         << "    \"location\": \"" << car->country << "\",\n"
+         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+         << "    \"buyer_age\": " << car->buyer_age << ",\n"
+         << "    \"city\": \"" << car->city << "\",\n"
+         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+         << "    \"color\": \"" << car->color << "\"\n"
+         << "  }";
+  
         // Increment the count
         count++;
 
