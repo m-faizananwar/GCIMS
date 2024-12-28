@@ -1,0 +1,76 @@
+.social__link-icon {
+  text-decoration: none;
+
+  color: #000d6b;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.contact__btn {
+  padding: 7px 15px;
+  background: #000d6b;
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 768px) {
+  .contact__btn {
+    margin-bottom: 40px;
+    font-size: 0.8rem;
+  }
+}
+/* Ensuring the form has a column layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds spacing between form elements */
+  width: 100%; /* Make sure the form takes full width */
+}
+
+/* Style for labels */
+form label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Style for inputs and textareas */
+form input,
+form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%; /* Ensures the fields fill the width of the form */
+}
+
+form textarea {
+  resize: vertical;
+  height: 150px; /* Give the textarea a height */
+}
+
+/* Wrapper for the button to align it right */
+form .send-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%; /* Ensures the button takes full width */
+}
+
+/* Style for the send button */
+form button {
+  padding: 10px 20px;
+  background-color: #f9a826;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #e6891a;
+}
