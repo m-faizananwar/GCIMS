@@ -43,27 +43,25 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
             className={`${showDetail ? 'z-10 shadow-[0_0_50px_50px_rgba(0,0,0,0.4)]' : ''} rounded-2xl bg-white text-black flex flex-col w-full p-4 gap-2 hover:text-white hover:bg-[#1C0F13] hover:cursor-pointer transition-all`}
             onClick={() => setShowDetail(true)}>
             {showDetail && <div className="flex py-2 text-sm font-normal text-gray-500">
-                <div className="basis-1/5">Make</div>
-                <div className="basis-1/5">Model</div>
-                <div className="basis-1/5">Colour</div>
-                <div className="basis-1/5">Location</div>
-                <div className="basis-1/5">Price</div>
+                <div className="basis-1/4">Name</div>
+                <div className="basis-1/4">Colour</div>
+                <div className="basis-1/4">Location</div>
+                <div className="basis-1/4">Price</div>
             </div>}
             <div className="flex text-md font-normal">
-                <div className="basis-1/5 items-center">{item.make}</div>
-                <div className="basis-1/5">{item.model}</div>
-                <div className="basis-1/5">{item.colour}</div>
-                <div className="basis-1/5">{`${item.city}, ${item.country}`}</div>
-                <div className="basis-1/5">$ {item.price}</div>
+                <div className="basis-1/4">{item.carName}</div>
+                <div className="basis-1/4">{item.colour}</div>
+                <div className="basis-1/4">{`${item.city}, ${item.country}`}</div>
+                <div className="basis-1/4">$ {item.price}</div>
             </div>
             {showDetail && <div className="flex py-2 justify-between text-sm font-normal text-gray-500">
-                <div className="basis-1/5">Status</div>
-                <div className="basis-1/5">Top Speed</div>
+                <div className="basis-1/4">Status</div>
+                <div className="basis-1/4">Top Speed</div>
             </div>}
             {showDetail &&
                 <div className="flex text-md font-bold justify-between">
-                    <div className="basis-1/5">{item.new ? "New" : "Used"}</div>
-                    <div className="basis-1/5">{item.topSpeed} km/h</div>
+                    <div className="basis-1/4">{item.new ? "New" : "Used"}</div>
+                    <div className="basis-1/4">{item.topSpeed} km/h</div>
                 </div>}
             {showDetail && <div className='w-full h-[500px]'>
                 <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={18} />
