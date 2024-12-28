@@ -1,0 +1,246 @@
+.find__cars-left {
+  background: linear-gradient(rgb(249, 168, 38, 0.9), rgb(249, 168, 38, 0.9)),
+    url("../assets/all-images/toyota-offer-2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 65px 35px;
+}
+
+.find__cars-left h2 {
+  font-weight: 600;
+  font-size: 2.8rem;
+}
+
+.form__group {
+  width: 30%;
+  margin-bottom: 0;
+}
+
+.form__group input {
+  border: 1px solid #7c8a972a;
+  padding: 8px 12px;
+
+  width: 100%;
+  outline: none;
+}
+.form__group input::placeholder {
+  color: #7c8a97;
+}
+
+.form {
+  background: #fff;
+  padding-top: 55px;
+  padding-bottom: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.select__group {
+  width: 30%;
+}
+
+.select__group select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #7c8a972a;
+  outline: none;
+  color: #7c8a97;
+}
+
+.hero__slider-section {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 200px;
+}
+
+.hero__form {
+  position: absolute;
+  bottom: -150px;
+  z-index: 11;
+  width: 100%;
+}
+
+.form__row {
+  background: #fff;
+  box-shadow: 5px 5px 15px -5px #7c8a97;
+}
+
+.journey__time::before {
+  content: "Journey time";
+  margin-right: 0.8rem;
+  color: #7c8a97;
+}
+
+.find__car-btn {
+  background: #000d6b !important;
+  color: #fff !important;
+  padding: 8px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+@media only screen and (max-width: 992px) {
+  .find__cars-left {
+    padding: 65px 22px;
+  }
+
+  .find__cars-left h2 {
+    font-size: 1.5rem;
+  }
+
+  .form {
+    padding: 30px 10px;
+  }
+
+  .form__group input,
+  .select__group select {
+    padding: 7px 10px;
+    font-size: 0.8rem;
+  }
+
+  .hero__form {
+    bottom: -100px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .find__cars-left {
+    padding-top: 20px;
+    padding-bottom: 0;
+    background: #fff;
+    text-align: center;
+  }
+
+  .form {
+    padding: 20px 10px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .form__group {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 15px;
+  }
+
+  .form__group input {
+    font-size: 0.7rem !important;
+  }
+
+  .select__group {
+    width: 100%;
+    padding-right: 10px;
+    font-size: 0.7rem;
+  }
+
+  .find__car-btn {
+    font-size: 0.8rem;
+  }
+
+  .find__cars-left h2 {
+    font-size: 1rem;
+  }
+
+  .hero__form {
+    bottom: -250px;
+  }
+}
+.form__group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form__group input {
+  width: 100%;
+  padding: 1rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.form__group input:focus {
+  border-color: #007bff;
+}
+
+.form__group label {
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  font-size: 1rem;
+  color: #aaa;
+  transform: translateY(-50%);
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.form__group input:focus + label,
+.form__group input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 0.8rem;
+  color: #007bff;
+  transform: translateY(-1rem);
+  background-color: white;
+  padding: 0 0.25rem;
+}
+.form__group.price-range-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Add space between the price inputs and separator */
+}
+
+.price-input-wrapper {
+  position: relative;
+  flex: 1; /* Make inputs evenly spaced */
+}
+
+.price-input-wrapper input {
+  width: 100%; /* Ensure the input takes the full width */
+}
+
+.price-input-wrapper label {
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.price-input-wrapper input:focus + label,
+.price-input-wrapper input:not(:placeholder-shown) + label {
+  top: -1rem;
+  font-size: 0.8rem;
+  color: #333;
+}
+.price-input-wrapper {
+  position: relative;
+  flex: 1; /* Make inputs evenly spaced */
+  margin-top: 1.5rem; /* Push the entire wrapper down slightly */
+}
+
+.price-input-wrapper input {
+  width: 100%; /* Ensure the input takes the full width */
+  margin-top: 0.3rem; /* Push the input itself lower */
+}
+
+.price-input-wrapper label {
+  position: absolute;
+  top: 20%; /* Lower the label vertically */
+  left: 0.5rem;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.price-input-wrapper input:focus + label,
+.price-input-wrapper input:not(:placeholder-shown) + label {
+  top: -1rem; /* Keep the label animation consistent */
+  font-size: 0.8rem;
+  color: #333;
+}
+
