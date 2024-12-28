@@ -1,3 +1,0 @@
-C:/GCIMS_repo/GCIMS/Backend/build/CMakeFiles/GCIMS.dir
-C:/GCIMS_repo/GCIMS/Backend/build/CMakeFiles/ALL_BUILD.dir
-C:/GCIMS_repo/GCIMS/Backend/build/CMakeFiles/ZERO_CHECK.dir
