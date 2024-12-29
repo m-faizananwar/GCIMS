@@ -73,11 +73,11 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
                 </div>
                 <div className="border"></div>
                 {loading && (
-                    <div className="w-full flex justify-center">
+                    <div className="w-full flex justify-center p-3">
                         <HashLoader color="#171502"/>
                     </div>
                 )}
-                {!loading && (cars.length === 0 ? <p>No cars found matching the given criteria.</p> : (
+                {!loading && (cars.length === 0 ? <p className="w-full flex justify-center p-3">No cars found matching the given criteria.</p> : (
                     paginate(cars, currentPage, pageSize).map((car, idx) => {
                         return (
                             <CarDisplayTableItem item={car as Car} key={idx}/>

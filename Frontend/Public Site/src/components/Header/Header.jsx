@@ -8,27 +8,33 @@ const navLinks = [
   {
     path: "/home",
     display: "Home",
+    noDisplay: false
   },
   {
     path: "/about",
     display: "About",
+    noDisplay: false
   },
   {
     path: "/cars",
     display: "Cars",
+    noDisplay: false
   },
 
   {
     path: "/blogs",
     display: "Blog",
+    noDisplay: false
   },
   {
     path: "/contact",
     display: "Contact",
+    noDisplay: false
   },
   {
     path: "http://localhost:3000/dashboard",
-    display: 'Dashboard'
+    display: 'Dashboard',
+    noDisplay: true
   }
 ];
 
@@ -47,7 +53,7 @@ const Header = () => {
               <div className="header__top__left">
                 <span>Need Help?</span>
                 <span className="header__top__help">
-                  <i class="ri-phone-fill">+92 000-0000000</i> 
+                  <i className="ri-phone-fill">+92 000-0000000</i>
                 </span>
               </div>
             </Col>
@@ -55,10 +61,10 @@ const Header = () => {
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
                 <Link to={navLinks.at(5).path} className=" d-flex align-items-center gap-1">
-                  <i class="ri-login-circle-line"></i> Login
+                  <i className="ri-login-circle-line"></i> Login
                 </Link>
 
-                
+
               </div>
             </Col>
           </Row>
@@ -73,9 +79,9 @@ const Header = () => {
               <div className="logo">
                 <h1>
                   <Link to="/home" className=" d-flex align-items-center gap-2">
-                    <i class="ri-car-line"></i>
+                    <i className="ri-car-line"></i>
                     <span>
-                    GCS Car Buying <br /> Service
+                      GCS Car Buying <br /> Service
                     </span>
                   </Link>
                 </h1>
@@ -85,7 +91,7 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i class="ri-earth-line"></i>
+                  <i className="ri-earth-line"></i>
                 </span>
                 <div className="header__location-content">
                   <h4>WorldWide</h4>
@@ -97,7 +103,7 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i class="ri-time-line"></i>
+                  <i className="ri-time-line"></i>
                 </span>
                 <div className="header__location-content">
                   <h4>Sunday to Friday</h4>
@@ -114,7 +120,7 @@ const Header = () => {
             >
               <button className="header__btn btn ">
                 <Link to="/contact">
-                  <i class="ri-phone-line"></i> Request a call
+                  <i className="ri-phone-line"></i> Request a call
                 </Link>
               </button>
             </Col>
@@ -128,13 +134,14 @@ const Header = () => {
         <Container>
           <div className="navigation__wrapper d-flex align-items-center justify-content-between">
             <span className="mobile__menu">
-              <i class="ri-menu-line" onClick={toggleMenu}></i>
+              <i className="ri-menu-line" onClick={toggleMenu}></i>
             </span>
 
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
               <div className="menu">
-                {navLinks.map((item, index) => (
-                  <NavLink
+                {navLinks.map((item, index) => {
+                  if (item.noDisplay) return <></>
+                  else return <NavLink
                     to={item.path}
                     className={(navClass) =>
                       navClass.isActive ? "nav__active nav__item" : "nav__item"
@@ -143,11 +150,12 @@ const Header = () => {
                   >
                     {item.display}
                   </NavLink>
-                ))}
+                }
+                )}
               </div>
             </div>
 
-           
+
           </div>
         </Container>
       </div>
