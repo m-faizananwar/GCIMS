@@ -209,7 +209,7 @@ void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
          << "    \"city\": \"" << car->city << "\",\n"
          << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
          << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-         << "    \"color\": \"" << car->color << "\"\n"
+         << "    \"color\": \"" << car->color << "\",\n"
          << "    \"registration_date\": " << car->purchase_date << ",\n"
          << "  }";          }
 

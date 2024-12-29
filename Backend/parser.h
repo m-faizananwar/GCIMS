@@ -96,7 +96,7 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
          << "    \"city\": \"" << car->city << "\",\n"
          << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
          << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-         << "    \"color\": \"" << car->color << "\"\n"
+         << "    \"color\": \"" << car->color << "\",\n"
          << "    \"registration_date\": " << car->purchase_date << ",\n"
          << "  }";
   
