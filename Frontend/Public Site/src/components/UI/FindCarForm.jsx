@@ -89,7 +89,30 @@ const FindCarForm = () => {
           <label htmlFor="location">Location</label>
         </FormGroup>
 
+        <div>
+          <label>Min Price:</label>
+          <input
+            type="number"
+            name="minPrice"
+            value={filters.minPrice}
+            onChange={handleInputChange}
+            placeholder={`${filters.maxPrice ? filters.maxPrice - 1 : ""}`}
+            max={filters.maxPrice || ""}
+          />
+        </div>
         
+        <div>
+          <label>Max Price:</label>
+          <input
+            type="number"
+            name="maxPrice"
+            value={filters.maxPrice}
+            onChange={handleInputChange}
+            placeholder={`${filters.minPrice ? Number(filters.minPrice) + 1 : ""}`}
+            min={filters.minPrice || ""}
+          />
+        </div>
+
 
         <FormGroup className="form__group">
           <button className="btn find__car-btn" type="submit" disabled={!filters.name}>

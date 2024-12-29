@@ -15,7 +15,8 @@ const carData = [
     carName: "Tesla Malibu",
     imgUrl: img01,
     model: "Model 3",
-    price: 50,
+    price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -29,7 +30,8 @@ const carData = [
     carName: "Toyota Aventador",
     imgUrl: img02,
     model: "Model-2022",
-    price: 50,
+    price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -43,7 +45,8 @@ const carData = [
     carName: "BMW X3",
     imgUrl: img03,
     model: "Model-2022",
-    price: 65,
+    price: 65000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -57,7 +60,8 @@ const carData = [
     carName: "Nissan Mercielago",
     imgUrl: img04,
     model: "Model-2022",
-    price: 70,
+    price: 70000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -71,7 +75,8 @@ const carData = [
     carName: "Ferrari Camry",
     imgUrl: img05,
     model: "Model-2022",
-    price: 45,
+    price: 45000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",
@@ -85,7 +90,8 @@ const carData = [
     carName: "Mercedes Benz XC90",
     imgUrl: img06,
     model: "Model-2022",
-    price: 85,
+    price: 85000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",
@@ -97,121 +103,6 @@ const carData = [
 ];
 
 
-
-const hotDeals = [
-  {
-    id: 1,
-    brand: "Tesla",
-    carName: "Tesla Malibu",
-    imgUrl: img01,
-    model: "Model 3",
-    price: 50,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "male",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 2,
-    brand: "Toyota",
-    carName: "Toyota Aventador",
-    imgUrl: img02,
-    model: "Model-2022",
-    price: 50,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "male",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 3,
-    brand: "BMW",
-    carName: "BMW X3",
-    imgUrl: img03,
-    model: "Model-2022",
-    price: 65,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "male",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 4,
-    brand: "Nissan",
-    carName: "Nissan Mercielago",
-    imgUrl: img04,
-    model: "Model-2022",
-    price: 70,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "male",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 5,
-    brand: "Ferrari",
-    carName: "Ferrari Camry",
-    imgUrl: img05,
-    model: "Model-2022",
-    price: 45,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "Female",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 6,
-    brand: "Mercedes",
-    carName: "Mercedes Benz XC90",
-    imgUrl: img06,
-    model: "Model-2022",
-    price: 85,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "Female",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 7,
-    brand: "Audi",
-    carName: "Audi Fiesta",
-    imgUrl: img07,
-    model: "Model 3",
-    price: 50,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "Female",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-
-  {
-    id: 8,
-    brand: "Colorado",
-    carName: "Rolls Royce Colorado",
-    imgUrl: img08,
-    model: "Model 3",
-    price: 50,
-    speed: "20kmpl",
-    location: "location Navigation",
-    gender: "Automatic",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
-  
-];
 
 
 export default carData;
