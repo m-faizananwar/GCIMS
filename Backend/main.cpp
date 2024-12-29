@@ -219,6 +219,98 @@ int main() {
         res.end();
     });
 
+    // Add new car endpoint
+    CROW_ROUTE(app, "/cars/add")
+        .methods("POST"_method)
+        ([addCORS](const crow::request& req, crow::response& res) {
+            addCORS(res);
+            auto x = crow::json::load(req.body);
+            if (!x) {
+                res.code = 400;
+                res.write("Invalid JSON");
+                res.end();
+                return;
+            }
+
+            try {
+                Car* newCar = new Car();
+                newCar->make = x["make"].s();
+                newCar->model = x["model"].s();
+                newCar->buyer_gender = x["buyer_gender"].s();
+                newCar->buyer_age = x["buyer_age"].i();
+                newCar->country = x["country"].s();
+                newCar->city = x["city"].s();
+                newCar->dealer_latitude = x["dealer_latitude"].d();
+                newCar->dealer_longitude = x["dealer_longitude"].d();
+                newCar->color = x["color"].s();
+                newCar->new_car = x["new_car"].b();
+                newCar->purchase_date = Date(x["purchase_date"].s());
+                newCar->sale_price = x["sale_price"].d();
+                newCar->top_speed = x["top_speed"].d();
+
+                // Add to data structures
+                carsByMake->insert(newCar->make, newCar);
+                carsByDate->insert(newCar->purchase_date, newCar);
+                carsByMakeAndModel->insert(*newCar, newCar);
+                carsByCountry->insert(newCar->country, newCar);
+                carsByAge->insert(newCar->buyer_age, newCar);
+                carsByPrice->insert(newCar->sale_price, newCar);
+                globe->insertCar(newCar);
+
+                // Append to CSV
+                appendToCSV(newCar);
+
+                res.code = 201;
+                res.write("Car added successfully");
+            } catch (const exception& e) {
+                res.code = 500;
+                res.write(e.what());
+            }
+            res.end();
+        });
+
+    // Delete car endpoint
+    CROW_ROUTE(app, "/cars/delete")
+        .methods("DELETE"_method)
+        ([addCORS](const crow::request& req, crow::response& res) {
+            addCORS(res);
+            auto x = crow::json::load(req.body);
+            if (!x) {
+                res.code = 400;
+                res.write("Invalid JSON");
+                res.end();
+                return;
+            }
+
+            try {
+                string make = x["make"].s();
+                string model = x["model"].s();
+                Date date(x["purchase_date"].s());
+
+                // Delete from data structures
+                Car searchCar;
+                searchCar.make = make;
+                searchCar.model = model;
+                searchCar.purchase_date = date;
+
+                // Delete from all data structures
+                carsByMakeAndModel->remove(searchCar);
+                carsByDate->remove(date);
+                carsByMake->remove(make);
+                // Note: You'll need to implement specific delete methods for other structures
+
+                // Delete from CSV
+                deleteFromCSV(make, model, date);
+
+                res.code = 200;
+                res.write("Car deleted successfully");
+            } catch (const exception& e) {
+                res.code = 500;
+                res.write(e.what());
+            }
+            res.end();
+        });
+
     // Start the server
     app.port(8080).multithreaded().run();
 }

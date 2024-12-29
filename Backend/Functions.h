@@ -256,3 +256,78 @@ std::vector<Car*> searchCars(const std::string& name, const std::string& model, 
     }
     return results;
 }
+
+// CSV file handling functions
+void openCSVForAppend(ofstream& csvFile) {
+    csvFile.open("../../final_data.csv", ios::app);
+    if (!csvFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for appending");
+    }
+}
+
+void closeCSV(ofstream& csvFile) {
+    csvFile.close();
+}
+
+void appendToCSV(const Car* car) {
+    ofstream csvFile;
+    openCSVForAppend(csvFile);
+    
+    csvFile << car->make << ","
+            << car->model << ","
+            << car->buyer_gender << ","
+            << car->buyer_age << ","
+            << car->country << ","
+            << car->city << ","
+            << car->dealer_latitude << ","
+            << car->dealer_longitude << ","
+            << car->color << ","
+            << (car->new_car ? "TRUE" : "FALSE") << ","
+            << car->purchase_date.day << "/"
+            << car->purchase_date.month << "/"
+            << car->purchase_date.year << ","
+            << car->sale_price << ","
+            << car->top_speed << endl;
+    
+    closeCSV(csvFile);
+}
+
+// Function to delete a line from CSV
+void deleteFromCSV(const string& make, const string& model, const Date& date) {
+    ifstream inFile("../../final_data.csv");
+    ofstream tempFile("../../temp.csv");
+    
+    string line;
+    bool found = false;
+    
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string field;
+        vector<string> fields;
+        
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+        
+        // Check if this is the line we want to delete
+        if (fields[0] == make && fields[1] == model) {
+            Date lineDate(fields[10]);
+            if (lineDate == date) {
+                found = true;
+                continue; // Skip this line
+            }
+        }
+        tempFile << line << endl;
+    }
+    
+    inFile.close();
+    tempFile.close();
+    
+    if (!found) {
+        remove("../../temp.csv");
+        throw runtime_error("Record not found");
+    }
+    
+    remove("../../final_data.csv");
+    rename("../../temp.csv", "../../final_data.csv");
+}
