@@ -17,7 +17,8 @@ const hotDeals = [
     carName: "Tesla Malibu",
     imgUrl: img01,
     model: "Model 3",
-    price: 50,
+    price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -31,7 +32,8 @@ const hotDeals = [
     carName: "Toyota Aventador",
     imgUrl: img02,
     model: "Model-2022",
-    price: 50,
+    price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -45,7 +47,8 @@ const hotDeals = [
     carName: "BMW X3",
     imgUrl: img03,
     model: "Model-2022",
-    price: 65,
+    price: 65000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -59,7 +62,8 @@ const hotDeals = [
     carName: "Nissan Mercielago",
     imgUrl: img04,
     model: "Model-2022",
-    price: 70,
+    price: 70000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -73,7 +77,9 @@ const hotDeals = [
     carName: "Ferrari Camry",
     imgUrl: img05,
     model: "Model-2022",
-    price: 45,
+
+    price: 45000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",
@@ -87,7 +93,9 @@ const hotDeals = [
     carName: "Mercedes Benz XC90",
     imgUrl: img06,
     model: "Model-2022",
-    price: 85,
+
+    price: 85000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",

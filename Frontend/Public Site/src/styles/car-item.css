@@ -8,19 +8,28 @@
   color: #f9a826;
   font-size: 1.1rem;
 }
-
 .car__item-btn {
-  border-radius: 0;
-  border: none;
-  outline: none;
-  background: #000d6b;
-  padding: 8px 0px;
+  border-radius: 0; /* Keep your original border radius */
+   /* Makes the button a block-level element */
+  border: none; /* Removes default border */
+  outline: none; /* Removes focus outline */
+  background: #000d6b; /* Button background color */
+   /* Padding inside the button */
+  width: 100%; /* Full width */
+  height: auto; /* Allow the height to adjust based on content */
+  text-align: center; /* Centers text within the button */
+  cursor: pointer; /* Changes the cursor to a pointer on hover */
 }
 
 .car__item-btn a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
+  display: block; /* Ensures the anchor fills the button */
+  width: 100%; /* Fills the entire button width */
+  height: 100%; /* Fills the entire button height */
+  text-decoration: none; /* Removes underline from the link */
+  color: #fff; /* Text color */
+  font-weight: 500; /* Makes the text bold */
+  line-height: 1.5; /* Improves text readability */
+
 }
 
 .car__item-btn a:hover {
@@ -65,8 +74,10 @@
   }
 
   .car__item-btn {
-    padding: 5px 10px;
+    padding: 8px 17px;
     font-size: 0.9rem;
+    display: block;
+
   }
 }
 

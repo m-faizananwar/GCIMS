@@ -33,9 +33,24 @@ const CarItem = (props) => {
             </span>
           </div>
 
-          <button className=" w-50 car__item-btn car__btn-rent">
-            <Link to={`/cars/${carName}`}>Book</Link>
-          </button>
+
+          <button
+  className="car__item-btn car__btn-rent"
+  style={{
+    display: "block",
+    width: "90%", // Adjust width to your preference
+    margin: "0 auto", // Centers the button horizontally
+    fontSize: "18px", // Increase font size
+    padding: "12px 24px", // Increase padding for a larger button
+  }}
+>
+  <Link to={`/cars/${carName}`} style={{ textAlign: "center", display: "block", width: "100%", height: "100%" }}>
+    Book
+  </Link>
+</button>
+
+
+
 
 
 

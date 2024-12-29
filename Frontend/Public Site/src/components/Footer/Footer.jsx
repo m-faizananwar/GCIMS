@@ -78,18 +78,6 @@ const Footer = () => {
             </div>
           </Col>
 
-          <Col lg="3" md="4" sm="12">
-            <div className="mb-4">
-              <h5 className="footer__link-title">Newsletter</h5>
-              <p className="section__description">Subscribe our newsletter</p>
-              <div className="newsletter">
-                <input type="email" placeholder="Email" />
-                <span>
-                  <i class="ri-send-plane-line"></i>
-                </span>
-              </div>
-            </div>
-          </Col>
 
           <Col lg="12">
             <div className="footer__bottom">

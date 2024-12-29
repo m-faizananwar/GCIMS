@@ -234,19 +234,19 @@ int main() {
 
             try {
                 Car* newCar = new Car();
-                newCar->make = x["make"].s();
+                newCar->make = x["brand"].s();
                 newCar->model = x["model"].s();
-                newCar->buyer_gender = x["buyer_gender"].s();
-                newCar->buyer_age = x["buyer_age"].i();
+                newCar->buyer_gender = x["gender"].s();
+                newCar->buyer_age = x["age"].i();
                 newCar->country = x["country"].s();
                 newCar->city = x["city"].s();
                 newCar->dealer_latitude = x["dealer_latitude"].d();
                 newCar->dealer_longitude = x["dealer_longitude"].d();
                 newCar->color = x["color"].s();
                 newCar->new_car = x["new_car"].b();
-                newCar->purchase_date = Date(x["purchase_date"].s());
-                newCar->sale_price = x["sale_price"].d();
-                newCar->top_speed = x["top_speed"].d();
+                newCar->purchase_date = Date(x["registration_date"].s());
+                newCar->sale_price = x["price"].d();
+                newCar->top_speed = x["speed"].d();
 
                 // Add to data structures
                 carsByMake->insert(newCar->make, newCar);
@@ -284,9 +284,9 @@ int main() {
             }
 
             try {
-                string make = x["make"].s();
+                string make = x["brand"].s();
                 string model = x["model"].s();
-                Date date(x["purchase_date"].s());
+                Date date(x["registration_date"].s());
 
                 // Create a temporary car object to help with deletion from globe
                 Car* tempCar = new Car();
@@ -336,9 +336,9 @@ int main() {
 
             try {
                 // First verify the car exists
-                string make = x["make"].s();
+                string make = x["brand"].s();
                 string model = x["model"].s();
-                Date date(x["purchase_date"].s());
+                Date date(x["registration_date"].s());
 
                 if (!carExists(make, model, date)) {
                     res.code = 404;
@@ -366,17 +366,17 @@ int main() {
                 Car* newCar = new Car();
                 newCar->make = x["new_make"].s();
                 newCar->model = x["new_model"].s();
-                newCar->buyer_gender = x["buyer_gender"].s();
-                newCar->buyer_age = x["buyer_age"].i();
+                newCar->buyer_gender = x["gender"].s();
+                newCar->buyer_age = x["age"].i();
                 newCar->country = x["country"].s();
                 newCar->city = x["city"].s();
                 newCar->dealer_latitude = x["dealer_latitude"].d();
                 newCar->dealer_longitude = x["dealer_longitude"].d();
                 newCar->color = x["color"].s();
                 newCar->new_car = x["new_car"].b();
-                newCar->purchase_date = Date(x["new_purchase_date"].s());
-                newCar->sale_price = x["sale_price"].d();
-                newCar->top_speed = x["top_speed"].d();
+                newCar->purchase_date = Date(x["registration_date"].s());
+                newCar->sale_price = x["price"].d();
+                newCar->top_speed = x["speed"].d();
 
                 // Remove old data from data structures
                 carsByMakeAndModel->remove(*oldCar);

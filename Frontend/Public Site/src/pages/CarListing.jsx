@@ -33,12 +33,18 @@ const CarListing = () => {
     const name = searchParams.get("name") || "";
     const model = searchParams.get("model") || "";
     const locationFilter = searchParams.get("location") || "";
-    const minPrice = searchParams.get("minPrice") || "";
-    const maxPrice = searchParams.get("maxPrice") || "";
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+
     let fetchUrl = "http://localhost:8080/cars"; // Default URL
 
     if (name || model || locationFilter || minPrice || maxPrice) {
-      fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+      if (minPrice || maxPrice) {
+        fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}&minprice=${minPrice || ''}&maxprice=${maxPrice || ''}`;
+      } else {
+        fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}`;
+      }
+
     }
 
     // Adjust the fetch URL based on the sort order
@@ -143,17 +149,19 @@ const CarListing = () => {
               </div>
             </Col>
 
+            {/* Display loading message when data is being fetched */}
+            {isLoading && <div>Loading...</div>}
+
             {/* Check if there was an error and display it */}
             {error && <div>Error: {error}</div>}
 
             {/* Displaying the fetched data */}
-            {carsToDisplay.length === 0 ? (
-              <div>No Cars Available</div>
-            ) : (
-              carsToDisplay.map((item) => (
-                <CarItem item={item} key={item.id} />
-              ))
-            )}
+            {!isLoading && carsToDisplay.length === 0 && <div>No Cars Available</div>}
+
+            {!isLoading &&
+              carsToDisplay.length > 0 &&
+              carsToDisplay.map((item) => <CarItem item={item} key={item.id} />)}
+
           </Row>
         </Container>
       </section>
