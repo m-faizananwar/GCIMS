@@ -72,7 +72,7 @@ const SearchForm = () => {
                 {["Country", "Name"].includes(searchBy || "Name") &&
                     <div className="flex w-full gap-3 items-center">
                         <TextInput
-                            addtionalClass={searchBy === "Name" ? "basis-1/3" : 'basis-1/2'}
+                            addtionalClass={searchBy === "Name" ? "basis-1/3" : ''}
                             name={searchBy === "Country" ? 'c' : 'n'}
                             type='text'
                             defaultValue={searchBy === "Name" ? (name || "") : (country || "")}
