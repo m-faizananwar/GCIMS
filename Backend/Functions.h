@@ -9,6 +9,14 @@
 
 using namespace std;
 
+// Forward declarations
+bool carExists(const string& make, const string& model, const Date& date);
+void updateCarInCSV(const Car* oldCar, const Car* newCar);
+void deleteFromCSV(const string& make, const string& model, const Date& date);
+void appendToCSV(const Car* car);
+void openCSVForAppend(ofstream& csvFile);
+void closeCSV(ofstream& csvFile);
+
 // AVL trees for each of the three attributes
 CarAVL <Car> * carsByMakeAndModel = new CarAVL<Car>();
 CarAVL <Date> * carsByDate = new CarAVL<Date>();
@@ -187,21 +195,23 @@ void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
         } else {
             firstEntry = false;
         }
-        jsonFile << "  {\n"
-                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
-                 << "    \"model\": \"" << car->model << "\",\n"
-                 << "    \"price\": " << car->sale_price << ",\n"
-                 << "    \"speed\": " << car->top_speed << ",\n"
-                 << "    \"location\": \"" << car->country << "\",\n"
-                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
-                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
-                 << "    \"city\": \"" << car->city << "\",\n"
-                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-                 << "    \"color\": \"" << car->color << "\"\n"
-                 << "  }";
-    }
+        
+      jsonFile << "  {\n"
+         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+         << "    \"brand\": \""  << car->make << "\",\n"
+         << "    \"model\": \"" << car->model << "\",\n"
+         << "    \"price\": " << car->sale_price << ",\n"
+         << "    \"speed\": " << car->top_speed << ",\n"
+         << "    \"country\": \"" << car->country << "\",\n"
+         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+         << "    \"age\": " << car->buyer_age << ",\n"
+         << "    \"city\": \"" << car->city << "\",\n"
+         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+         << "    \"color\": \"" << car->color << "\"\n"
+         << "    \"registration_date\": " << car->purchase_date << ",\n"
+         << "  }";          }
 
     jsonFile << "\n]\n";
     jsonFile.close();
@@ -255,4 +265,135 @@ std::vector<Car*> searchCars(const std::string& name, const std::string& model, 
         }
     }
     return results;
+}
+
+// CSV file handling functions
+void openCSVForAppend(ofstream& csvFile) {
+    csvFile.open("../../final_data.csv", ios::app);
+    if (!csvFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for appending");
+    }
+}
+
+void closeCSV(ofstream& csvFile) {
+    csvFile.close();
+}
+
+void appendToCSV(const Car* car) {
+    ofstream csvFile;
+    openCSVForAppend(csvFile);
+    
+    csvFile << car->make << ","
+            << car->model << ","
+            << car->buyer_gender << ","
+            << car->buyer_age << ","
+            << car->country << ","
+            << car->city << ","
+            << car->dealer_latitude << ","
+            << car->dealer_longitude << ","
+            << car->color << ","
+            << (car->new_car ? "TRUE" : "FALSE") << ","
+            << car->purchase_date.day << "/"
+            << car->purchase_date.month << "/"
+            << car->purchase_date.year << ","
+            << car->sale_price << ","
+            << car->top_speed << endl;
+    
+    closeCSV(csvFile);
+}
+
+// Function to delete a line from CSV
+void deleteFromCSV(const string& make, const string& model, const Date& date) {
+    ifstream inFile("../../final_data.csv");
+    if (!inFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for reading");
+    }
+
+    ofstream tempFile("../../temp.csv");
+    if (!tempFile.is_open()) {
+        inFile.close();
+        throw runtime_error("Cannot create temporary file");
+    }
+    
+    string line;
+    bool found = false;
+    
+    // Copy header if exists
+    if (getline(inFile, line)) {
+        tempFile << line << endl;
+    }
+    
+    // Process remaining lines
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string field;
+        vector<string> fields;
+        
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+        
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
+            Date lineDate(fields[10]);
+            if (lineDate == date) {
+                found = true;
+                continue; // Skip this line
+            }
+        }
+        tempFile << line << endl;
+    }
+    
+    inFile.close();
+    tempFile.close();
+    
+    if (!found) {
+        remove("../../temp.csv");
+        throw runtime_error("Record not found");
+    }
+    
+    // On Windows, we need to ensure the original file is closed before removing
+    if (remove("../../final_data.csv") != 0) {
+        throw runtime_error("Could not remove original file");
+    }
+    
+    if (rename("../../temp.csv", "../../final_data.csv") != 0) {
+        throw runtime_error("Could not rename temporary file");
+    }
+}
+
+bool carExists(const string& make, const string& model, const Date& date) {
+    ifstream inFile("../../final_data.csv");
+    if (!inFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for reading");
+    }
+    
+    string line;
+    // Skip header
+    getline(inFile, line);
+    
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string field;
+        vector<string> fields;
+        
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+        
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
+            Date lineDate(fields[10]);
+            if (lineDate == date) {
+                inFile.close();
+                return true;
+            }
+        }
+    }
+    inFile.close();
+    return false;
+}
+
+void updateCarInCSV(const Car* oldCar, const Car* newCar) {
+    // First delete the old entry
+    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);   
+    appendToCSV(newCar);
 }
