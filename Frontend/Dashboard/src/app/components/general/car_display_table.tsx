@@ -62,9 +62,9 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
     }, [searchParams])
 
     return (
-        <div className="w-full rounded-3xl bg-[#D8C5C8] shadow-lg flex flex-col py-3 gap-3">
+        <div className="light w-full rounded-lg bg-surface shadow-lg flex flex-col py-3 gap-3">
             <div className="text-xl font-semibold mx-3">Found {cars?.length} results:</div>
-            <div className="w-full rounded-3xl px-3 py-1 bg-white flex flex-col">
+            <div className="w-full py-1 bg-white flex flex-col">
                 <div className="flex px-4 pt-4 pb-2 text-sm font-normal text-gray-500">
                     <div className="basis-1/4">Name</div>
                     <div className="basis-1/4">Colour</div>
@@ -74,7 +74,7 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
                 <div className="border"></div>
                 {loading && (
                     <div className="w-full flex justify-center">
-                        <HashLoader />
+                        <HashLoader color="#171502"/>
                     </div>
                 )}
                 {!loading && (cars.length === 0 ? <p>No cars found matching the given criteria.</p> : (

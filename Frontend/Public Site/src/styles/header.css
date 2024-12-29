@@ -32,10 +32,11 @@
   text-decoration: none;
   color: #fff;
   font-size: 0.9rem;
+  transition: 0.3s;
 }
 
 .header__top__right a:hover {
-  color: #fff;
+  color: #f9a826;
 }
 
 /* ============ header middle style =========== */

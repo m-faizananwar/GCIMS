@@ -36,21 +36,21 @@ const Pagination: React.FC<PaginationProps> = ({ items, pageSize, currentPage, o
             <ul className='w-full flex gap-2 justify-center items-center list-none'>
                 {pagesCount > maxPagesToShow &&
                     <li onClick={() => onPageChange(1)}
-                        className={`flex justify-center items-center w-8 h-8 cursor-pointer hover:underline rounded-lg ${1 === currentPage ? 'bg-blue-500 text-white' : ''}`}>
+                        className={`flex justify-center items-center w-10 h-8 cursor-pointer hover:underline rounded-lg ${1 === currentPage ? 'bg-secondary text-white' : ''}`}>
                         1
                     </li>
                 }
                 {pagesCount > maxPagesToShow && "..."}
                 {pages.map(page => (
                     <li key={page} onClick={() => onPageChange(page)}
-                        className={`flex justify-center items-center w-8 h-8 cursor-pointer hover:underline rounded-lg ${page === currentPage ? 'bg-blue-500 text-white' : ''}`}>
+                        className={`flex justify-center items-center w-10 h-8 cursor-pointer hover:underline rounded-lg ${page === currentPage ? 'bg-secondary text-white' : ''}`}>
                         {page}
                     </li>
                 ))}
                 {pagesCount > maxPagesToShow && "..."}
                 {pagesCount > maxPagesToShow &&
                     <li onClick={() => onPageChange(pagesCount)}
-                        className={`flex justify-center items-center w-8 h-8 cursor-pointer hover:underline rounded-lg ${pagesCount === currentPage ? 'bg-blue-500 text-white' : ''}`}>
+                        className={`flex justify-center items-center w-10 h-8 cursor-pointer hover:underline rounded-lg ${pagesCount === currentPage ? 'bg-secondary text-white' : ''}`}>
                         {pagesCount}
                     </li>
                 }
@@ -59,7 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({ items, pageSize, currentPage, o
     );
 };
 
-export const paginate = (items: unknown[], pageNumber: number, pageSize: number) => {
+export const paginate = (items: any[], pageNumber: number, pageSize: number) => {
     const startIndex = (pageNumber - 1) * pageSize;
     return items.slice(startIndex, startIndex + pageSize);
 };

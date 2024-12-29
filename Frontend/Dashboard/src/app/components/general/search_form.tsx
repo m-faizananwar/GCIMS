@@ -3,6 +3,8 @@ import Form from 'next/form'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
+import TextInput from './text_input'
+import CustomButton from './custom_button'
 
 const SearchForm = () => {
 
@@ -32,27 +34,27 @@ const SearchForm = () => {
     const handleFormSubmit = (formData: FormData) => {
         const newParams = new URLSearchParams(searchParams.toString())
 
-        const country = formData.get('c')?.toString()
+        const country = formData.get('c')?.toString().trim()
         if (country) newParams.set('c', country)
         else newParams.delete('c')
 
-        const name = formData.get('n')?.toString()
+        const name = formData.get('n')?.toString().trim()
         if (name) newParams.set('n', name)
         else newParams.delete('n')
 
-        const model = formData.get('m')?.toString()
+        const model = formData.get('m')?.toString().trim()
         if (model) newParams.set('m', model)
         else newParams.delete('m')
 
-        const price = formData.get('p')?.toString()
+        const price = formData.get('p')?.toString().trim()
         if (price) newParams.set('p', price)
         else newParams.delete('p')
 
-        const startPrice = formData.get('sp')?.toString()
+        const startPrice = formData.get('sp')?.toString().trim()
         if (startPrice) newParams.set('sp', startPrice)
         else newParams.delete('sp')
 
-        const endPrice = formData.get('ep')?.toString()
+        const endPrice = formData.get('ep')?.toString().trim()
         if (endPrice) newParams.set('ep', endPrice)
         else newParams.delete('ep')
 
@@ -65,26 +67,26 @@ const SearchForm = () => {
     }
 
     return (
-        <Form action={handleFormSubmit} className='flex gap-2'>
+        <Form action={handleFormSubmit} className='flex gap-3'>
             <div className="basis-4/5">
                 {["Country", "Name"].includes(searchBy || "Name") &&
-                    <div className="flex w-full gap-2 items-center">
-                        <input
-                            className={`h-12 outline rounded-full px-4 outline-slate-200 hover:outline-slate-400 focus:outline-slate-400 hover:cursor-text w-full ${searchBy === "Name" && "basis-1/3"}`}
+                    <div className="flex w-full gap-3 items-center">
+                        <TextInput
+                            addtionalClass={searchBy === "Name" ? "basis-1/3" : 'basis-1/2'}
                             name={searchBy === "Country" ? 'c' : 'n'}
                             type='text'
-                            defaultValue={searchBy === "Name" ? (name || "") : (country || " ")}
+                            defaultValue={searchBy === "Name" ? (name || "") : (country || "")}
                             placeholder={searchBy ? `Enter ${searchBy.toLowerCase()}...` : 'Search...'} />
                         {searchBy === 'Name' &&
                             <>
-                                <input
-                                    className={`h-12 outline rounded-full px-4 outline-slate-200 hover:outline-slate-400 focus:outline-slate-400 hover:cursor-text w-full ${searchBy === "Name" && "basis-1/3"}`}
+                                <TextInput
+                                    addtionalClass={searchBy === "Name" ? "basis-1/3" : 'basis-1/2'}
                                     name='m'
                                     type='text'
                                     defaultValue={model || ""}
                                     placeholder='Enter model...' />
-                                <input
-                                    className={`h-12 outline rounded-full px-4 outline-slate-200 hover:outline-slate-400 focus:outline-slate-400 hover:cursor-text w-full ${searchBy === "Name" && "basis-1/3"}`}
+                                <TextInput
+                                    addtionalClass={searchBy === "Name" ? "basis-1/3" : 'basis-1/2'}
                                     name='c'
                                     type='text'
                                     defaultValue={country || ""}
@@ -94,17 +96,17 @@ const SearchForm = () => {
                 }
 
                 {searchBy === 'Price Range' &&
-                    <div className="flex w-full gap-2 items-center">
-                        <input
-                            className='h-12 basis-1/2 outline rounded-full px-4 outline-slate-200 hover:outline-slate-400 focus:outline-slate-400 hover:cursor-text w-full'
+                    <div className="flex w-full gap-3 items-center">
+                        <TextInput
+                            addtionalClass='basis-1/2'
                             name='sp'
                             type='number'
                             defaultValue={startPrice || ""}
                             placeholder='Starting price...'
                         />
-                        to
-                        <input
-                            className='h-12 basis-1/2 outline rounded-full px-4 outline-slate-200 hover:outline-slate-400 focus:outline-slate-400 hover:cursor-text w-full'
+                        -
+                        <TextInput
+                            addtionalClass='basis-1/2'
                             name='ep'
                             type='number'
                             defaultValue={endPrice || ""}
@@ -114,10 +116,10 @@ const SearchForm = () => {
                 }
             </div>
 
-            <button type='submit' className="flex justify-center items-center text-white text-center gap-3 bg-[#1C0F13] basis-1/5 rounded-full outline-[#D8C5C8] hover:bg-opacity-80 hover:outline hover:cursor-pointer transition-all">
+            <CustomButton type='submit' additionalClass="text-white bg-secondary basis-1/5">
                 <FaMagnifyingGlass size={20} />
                 Search
-            </button>
+            </CustomButton>
         </Form>
     )
 }

@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import React from 'react'
-import NavbarButton from './navbar_button'
+import NavButton from '../general/nav_button'
 import { FaHome, FaSignInAlt } from 'react-icons/fa'
 import { RiDashboardHorizontalFill } from 'react-icons/ri'
 
 const Navbar = () => {
     return (
-        <div className="flex gap-2 w-full bg-[#1C0F13] justify-between px-2 shadow-md">
+        <div className="flex gap-2 w-full bg-[#000d6b] justify-between px-2 shadow-md">
             <div className='flex gap-2'>
-                <NavbarButton link='/' icon={<FaHome size={20} color='white'/>}>Home</NavbarButton>
-                <NavbarButton link='/dashboard'icon={<RiDashboardHorizontalFill size={20} color='white'/>}>Dashboard</NavbarButton>
+                <NavButton link='http://localhost:5173' icon={<FaHome className="hover:text-secondary" size={20} />}>Home</NavButton>
+                <NavButton link='/dashboard' icon={<RiDashboardHorizontalFill className="hover:text-secondary" size={20} />}>Dashboard</NavButton>
             </div>
             <div className="flex gap-2">
-                <NavbarButton link='/login'icon={<FaSignInAlt size={20} color='white'/>}>Login</NavbarButton>
+                <NavButton link='/login' icon={<FaSignInAlt className="hover:text-secondary" size={20} />}>Login</NavButton>
             </div>
         </div>
     )

@@ -26,6 +26,10 @@ const navLinks = [
     path: "/contact",
     display: "Contact",
   },
+  {
+    path: "http://localhost:3000/dashboard",
+    display: 'Dashboard'
+  }
 ];
 
 const Header = () => {
@@ -50,7 +54,7 @@ const Header = () => {
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
-                <Link to="#" className=" d-flex align-items-center gap-1">
+                <Link to={navLinks.at(5).path} className=" d-flex align-items-center gap-1">
                   <i class="ri-login-circle-line"></i> Login
                 </Link>
 

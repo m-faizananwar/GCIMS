@@ -21,13 +21,13 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
     }
 
     useEffect(() => {
-      document.addEventListener('mousedown', handleClickOutside)
-    
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside)
-      }
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
     }, [])
-    
+
 
     const Map = useMemo(() => dynamic(
         () => import('@/app/components/general/map'),
@@ -40,8 +40,8 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
     return (
         <div
             ref={ref}
-            className={`${showDetail ? 'z-10 shadow-[0_0_50px_50px_rgba(0,0,0,0.4)]' : ''} rounded-2xl bg-white text-black flex flex-col w-full p-4 gap-2 hover:text-white hover:bg-[#1C0F13] hover:cursor-pointer transition-all`}
-            onClick={() => setShowDetail(true)}>
+            className={`${showDetail ? 'z-10 shadow-[0_0_50px_50px_rgba(0,0,0,0.4)] rounded-lg' : 'hover:text-white hover:bg-secondary hover:cursor-pointer '}  bg-white text-black flex flex-col w-full p-4 gap-2 transition-all`}
+            onClick={() => !showDetail && setShowDetail(true)}>
             {showDetail && <div className="flex py-2 text-sm font-normal text-gray-500">
                 <div className="basis-1/4">Name</div>
                 <div className="basis-1/4">Colour</div>
@@ -66,6 +66,11 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
             {showDetail && <div className='w-full h-[500px]'>
                 <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={18} />
             </div>}
+            {showDetail &&
+                <button className="rounded-md bg-special h-12 hover:bg-opacity-80 text-white justify-center items-center transition-all"
+                onClick={() => setShowDetail((pr) => !pr)}>
+                    Close
+                </button>}
         </div>
     )
 }
