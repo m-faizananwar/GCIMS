@@ -3,6 +3,8 @@
 #include "Functions.h"
 #include "Date.h"
 #include "crow.h"
+#include "HashMatrix.h"
+
 int main() {
     parsingData();
     int choice = 0;
@@ -148,6 +150,69 @@ int main() {
 
         auto results = searchCars(name, model, country, minPrice, maxPrice);
         rewriteJsonWithSearchResults(results);
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    // 10. Search by coordinates
+    CROW_ROUTE(app, "/cars/search/coordinates")([addCORS](const crow::request& req, crow::response& res) {
+        addCORS(res);
+        auto query_params = req.url_params;
+        float latitude = query_params.get("lat") ? std::stof(query_params.get("lat")) : 0.0f;
+        float longitude = query_params.get("lng") ? std::stof(query_params.get("lng")) : 0.0f;
+        
+        ofstream jsonFile("../../final_data2.json");
+        jsonFile << "[\n";
+        bool firstEntry = true;
+        globe->printByCoordinatesJSON(longitude, latitude, jsonFile, firstEntry);
+        jsonFile << "\n]\n";
+        jsonFile.close();
+
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    // 11. Search by location and radius
+    CROW_ROUTE(app, "/cars/search/radius")([addCORS](const crow::request& req, crow::response& res) {
+        addCORS(res);
+        auto query_params = req.url_params;
+        float latitude = query_params.get("lat") ? std::stof(query_params.get("lat")) : 0.0f;
+        float longitude = query_params.get("lng") ? std::stof(query_params.get("lng")) : 0.0f;
+        int radius = query_params.get("radius") ? std::stoi(query_params.get("radius")) : 1;
+
+        ofstream jsonFile("../../final_data2.json");
+        jsonFile << "[\n";
+        bool firstEntry = true;
+        globe->printByRegionJSON(longitude, latitude, radius, jsonFile, firstEntry);
+        jsonFile << "\n]\n";
+        jsonFile.close();
+
+        ifstream ifs("../../final_data2.json");
+        std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+        res.write(json);
+        res.end();
+    });
+
+    // 12. Search by rectangle coordinates
+    CROW_ROUTE(app, "/cars/search/rectangle")([addCORS](const crow::request& req, crow::response& res) {
+        addCORS(res);
+        auto query_params = req.url_params;
+        float lat1 = query_params.get("lat1") ? std::stof(query_params.get("lat1")) : 0.0f;
+        float lng1 = query_params.get("lng1") ? std::stof(query_params.get("lng1")) : 0.0f;
+        float lat2 = query_params.get("lat2") ? std::stof(query_params.get("lat2")) : 0.0f;
+        float lng2 = query_params.get("lng2") ? std::stof(query_params.get("lng2")) : 0.0f;  // Fixed syntax error here
+
+        ofstream jsonFile("../../final_data2.json");
+        jsonFile << "[\n";
+        bool firstEntry = true;
+        globe->printRectangularRegionJSON(lng1, lat1, lng2, lat2, jsonFile, firstEntry);
+        jsonFile << "\n]\n";
+        jsonFile.close();
+
         ifstream ifs("../../final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
