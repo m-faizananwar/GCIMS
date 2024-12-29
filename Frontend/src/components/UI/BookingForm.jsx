@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";  // Import useParams from react-router-dom
 import { Form, FormGroup } from "reactstrap";
 import emailjs from "@emailjs/browser";
@@ -57,21 +57,25 @@ const BookingForm = () => {
   return (
     <Form onSubmit={submitHandler}>
       <h3>Book {slug}</h3> {/* Display the car name using the slug */}
+
       <FormGroup className="booking__form d-inline-block me-4 mb-4">
+        <label htmlFor="firstName">First Name</label> {/* Label added */}
         <input
           type="text"
           name="firstName"
-          placeholder="First Name"
+          placeholder=""
           value={formData.firstName}
           onChange={handleChange}
           required
         />
       </FormGroup>
+
       <FormGroup className="booking__form d-inline-block ms-1 mb-4">
+        <label htmlFor="lastName">Last Name</label> {/* Label added */}
         <input
           type="text"
           name="lastName"
-          placeholder="Last Name"
+          placeholder=""
           value={formData.lastName}
           onChange={handleChange}
           required
@@ -79,43 +83,38 @@ const BookingForm = () => {
       </FormGroup>
 
       <FormGroup className="booking__form d-inline-block me-4 mb-4">
+        <label htmlFor="email">Email</label> {/* Label added */}
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder=""
           value={formData.email}
           onChange={handleChange}
           required
         />
       </FormGroup>
+
       <FormGroup className="booking__form d-inline-block ms-1 mb-4">
+        <label htmlFor="phone">Phone Number</label> {/* Label added */}
         <input
           type="number"
           name="phone"
-          placeholder="Phone Number"
+          placeholder=""
           value={formData.phone}
           onChange={handleChange}
           required
         />
       </FormGroup>
 
-      <FormGroup className="booking__form d-inline-block me-4 mb-4">
-        <input
-          type="date"
-          name="journeyDate"
-          placeholder="Journey Date"
-          value={formData.journeyDate}
-          onChange={handleChange}
-          required
-        />
-      </FormGroup>
+      
 
       <FormGroup>
+        <label htmlFor="message">Message</label> {/* Label added */}
         <textarea
           rows={5}
           className="textarea"
           name="message"
-          placeholder="Write"
+          placeholder=""
           value={formData.message}
           onChange={handleChange}
         ></textarea>
