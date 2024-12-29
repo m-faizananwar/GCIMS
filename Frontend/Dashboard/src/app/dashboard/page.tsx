@@ -49,8 +49,10 @@ const Search: React.FC<SearchProps> = async ({ params, searchParams }) => {
           </Menu>
         </div>
         <CustomButton additionalClass="basis-1/5 bg-special text-white">
-          <FaPlus className='text-white' size={20} /> 
-          Add
+          <a className='w-full flex gap-2 justify-center' href={`/dashboard/edit`}>
+            <FaPlus className='text-white' size={20} />
+            Add
+          </a>
         </CustomButton>
       </div>
       {searchBy && <SearchForm />}

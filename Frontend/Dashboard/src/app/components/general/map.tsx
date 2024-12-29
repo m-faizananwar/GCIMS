@@ -2,8 +2,8 @@
 "use client"
 import { LatLngExpression } from 'leaflet'
 import L from 'leaflet';
-import React, { useEffect } from 'react'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import React, { useEffect, useState } from 'react'
+import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css';
 
@@ -35,7 +35,7 @@ const Map: React.FC<MapProps> = ({ position, zoom }) => {
     }
     return (
         <div className="h-full w-full">
-            <MapContainer center={position} zoom={zoom} scrollWheelZoom={false} style={{ height: '100%', width: '100%', borderRadius: '0.75 rem'}}>
+            <MapContainer center={position} zoom={zoom} scrollWheelZoom={false} style={{ height: '100%', width: '100%', borderRadius: '0.75 rem' }}>
                 <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={position} riseOnHover={true}>
                 </Marker>
@@ -44,5 +44,64 @@ const Map: React.FC<MapProps> = ({ position, zoom }) => {
         </div>
     )
 }
+
+interface ClickableMapProps {
+    onClick: (e: L.LeafletMouseEvent) => void;
+    center?: [number, number];
+    position?: [number, number];
+    defaultZoom?: number;
+}
+
+export const ClickableMap: React.FC<ClickableMapProps> = ({ onClick, center: defaultCenter, defaultZoom, position: givenPos }) => {
+    const [position, setPosition] = useState<[number, number] | undefined>(givenPos);
+    const [center, setCenter] = useState<[number, number] | undefined>(defaultCenter);
+
+    useEffect(() => {
+        if (givenPos) {
+            setPosition(givenPos);
+        }
+    }, [givenPos]);
+
+    useEffect(() => {
+        if (defaultCenter) {
+            setCenter(defaultCenter);
+        }
+    }, [defaultCenter]);
+
+    console.warn("Position: ", position, "Center: ", center);
+
+    const LocationMarker = () => {
+        useMapEvents({
+            click(e) {
+                setPosition([e.latlng.lat, e.latlng.lng]);
+                onClick(e);
+            },
+        });
+        return position === undefined ? null : (
+            <Marker position={position}></Marker>
+        );
+    };
+
+    const MapCenterUpdater = () => {
+        const map = useMap()
+        useEffect(() =>{
+            if (center) {
+                map.setView(center)
+            }
+        }, [center, map])
+        return null
+    }
+
+    return (
+        <MapContainer center={center || [51.505, -0.09]} zoom={defaultZoom || 13} style={{ height: '100%', width: '100%', borderRadius: '0.75rem' }}>
+            <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <LocationMarker />
+            <MapCenterUpdater />
+        </MapContainer>
+    );
+};
 
 export default Map

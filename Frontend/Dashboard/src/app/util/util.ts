@@ -6,14 +6,15 @@ export const parseCar = (input: any) => {
         brand: input.brand,
         model: input.model,
         price: input.price,
-        topSpeed: input.speed,
-        country: input.location,
-        gender: input.gender,
+        speed: input.speed,
+        country: input.country,
         city: input.city,
-        new: input.new_car,
-        buyerAge: input.buyer_age,
+        newCar: input.new_car,
+        age: input.buyer_age,
+        gender: input.gender,
         dealerLatitude: input.dealer_latitude,
         dealerLongitude: input.dealer_longitude,
-        colour: input.color
+        color: input.color,
+        registrationDate: input.registration_date || ""
     } as Car
 }

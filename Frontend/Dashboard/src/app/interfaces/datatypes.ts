@@ -1,16 +1,21 @@
 export interface Car {
-    carName: string,
+    carName?: string,
     brand: string,
     model: string,
-    gender: string;
-    buyerAge: number;
+    age: number;
+    gender?: string;
     country: string;
     city: string;
     dealerLatitude: number;
     dealerLongitude: number;
-    colour: string;
-    new: boolean;
-    // purchaseDate: Date;
+    color: string;
+    newCar: boolean;
+    registrationDate: Date;
     price: number;
-    topSpeed: number;
+    speed: number;
+}
+
+export interface updatedCar extends Car {
+    newBrand: string;
+    newModel: string;
 }

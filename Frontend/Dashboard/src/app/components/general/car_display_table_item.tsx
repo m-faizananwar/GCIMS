@@ -50,7 +50,7 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
             </div>}
             <div className="flex text-md font-normal">
                 <div className="basis-1/4">{item.carName}</div>
-                <div className="basis-1/4">{item.colour}</div>
+                <div className="basis-1/4">{item.color}</div>
                 <div className="basis-1/4">{`${item.city}, ${item.country}`}</div>
                 <div className="basis-1/4">$ {item.price}</div>
             </div>
@@ -60,8 +60,8 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
             </div>}
             {showDetail &&
                 <div className="flex text-md font-bold justify-between">
-                    <div className="basis-1/4">{item.new ? "New" : "Used"}</div>
-                    <div className="basis-1/4">{item.topSpeed} km/h</div>
+                    <div className="basis-1/4">{item.newCar ? "New" : "Used"}</div>
+                    <div className="basis-1/4">{item.speed} km/h</div>
                 </div>}
             {showDetail && <div className='w-full h-[500px]'>
                 <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={18} />
