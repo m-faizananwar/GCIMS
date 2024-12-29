@@ -9,6 +9,14 @@
 
 using namespace std;
 
+// Forward declarations
+bool carExists(const string& make, const string& model, const Date& date);
+void updateCarInCSV(const Car* oldCar, const Car* newCar);
+void deleteFromCSV(const string& make, const string& model, const Date& date);
+void appendToCSV(const Car* car);
+void openCSVForAppend(ofstream& csvFile);
+void closeCSV(ofstream& csvFile);
+
 // AVL trees for each of the three attributes
 CarAVL <Car> * carsByMakeAndModel = new CarAVL<Car>();
 CarAVL <Date> * carsByDate = new CarAVL<Date>();
@@ -295,11 +303,25 @@ void appendToCSV(const Car* car) {
 // Function to delete a line from CSV
 void deleteFromCSV(const string& make, const string& model, const Date& date) {
     ifstream inFile("../../final_data.csv");
+    if (!inFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for reading");
+    }
+
     ofstream tempFile("../../temp.csv");
+    if (!tempFile.is_open()) {
+        inFile.close();
+        throw runtime_error("Cannot create temporary file");
+    }
     
     string line;
     bool found = false;
     
+    // Copy header if exists
+    if (getline(inFile, line)) {
+        tempFile << line << endl;
+    }
+    
+    // Process remaining lines
     while (getline(inFile, line)) {
         istringstream ss(line);
         string field;
@@ -309,8 +331,7 @@ void deleteFromCSV(const string& make, const string& model, const Date& date) {
             fields.push_back(field);
         }
         
-        // Check if this is the line we want to delete
-        if (fields[0] == make && fields[1] == model) {
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
             Date lineDate(fields[10]);
             if (lineDate == date) {
                 found = true;
@@ -328,6 +349,51 @@ void deleteFromCSV(const string& make, const string& model, const Date& date) {
         throw runtime_error("Record not found");
     }
     
-    remove("../../final_data.csv");
-    rename("../../temp.csv", "../../final_data.csv");
+    // On Windows, we need to ensure the original file is closed before removing
+    if (remove("../../final_data.csv") != 0) {
+        throw runtime_error("Could not remove original file");
+    }
+    
+    if (rename("../../temp.csv", "../../final_data.csv") != 0) {
+        throw runtime_error("Could not rename temporary file");
+    }
+}
+
+bool carExists(const string& make, const string& model, const Date& date) {
+    ifstream inFile("../../final_data.csv");
+    if (!inFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for reading");
+    }
+    
+    string line;
+    // Skip header
+    getline(inFile, line);
+    
+    while (getline(inFile, line)) {
+        istringstream ss(line);
+        string field;
+        vector<string> fields;
+        
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+        
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
+            Date lineDate(fields[10]);
+            if (lineDate == date) {
+                inFile.close();
+                return true;
+            }
+        }
+    }
+    inFile.close();
+    return false;
+}
+
+void updateCarInCSV(const Car* oldCar, const Car* newCar) {
+    // First delete the old entry
+    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);
+    
+    // Then append the new entry
+    appendToCSV(newCar);
 }

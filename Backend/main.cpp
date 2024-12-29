@@ -267,6 +267,7 @@ int main() {
                 res.write(e.what());
             }
             res.end();
+            // Remove the parsingData() call here
         });
 
     // Delete car endpoint
@@ -287,23 +288,117 @@ int main() {
                 string model = x["model"].s();
                 Date date(x["purchase_date"].s());
 
-                // Delete from data structures
-                Car searchCar;
-                searchCar.make = make;
-                searchCar.model = model;
-                searchCar.purchase_date = date;
+                // Create a temporary car object to help with deletion from globe
+                Car* tempCar = new Car();
+                tempCar->make = make;
+                tempCar->model = model;
+                tempCar->purchase_date = date;
+                
+                // Get the location data from existing car before deletion
+                if (auto node = carsByMakeAndModel->search(*tempCar)) {
+                    tempCar->dealer_latitude = node->car->dealer_latitude;
+                    tempCar->dealer_longitude = node->car->dealer_longitude;
+                    
+                    // Remove from globe structure
+                    globe->removeCar(tempCar);
+                }
 
-                // Delete from all data structures
-                carsByMakeAndModel->remove(searchCar);
+                // Delete from CSV and other data structures
+                deleteFromCSV(make, model, date);
+                carsByMakeAndModel->remove(*tempCar);
                 carsByDate->remove(date);
                 carsByMake->remove(make);
-                // Note: You'll need to implement specific delete methods for other structures
 
-                // Delete from CSV
-                deleteFromCSV(make, model, date);
+                delete tempCar;  // Clean up
 
                 res.code = 200;
                 res.write("Car deleted successfully");
+            } catch (const exception& e) {
+                res.code = 500;
+                res.write(e.what());
+            }
+            res.end();
+            // Remove parsingData() call from here
+        });
+
+    // Update car endpoint
+    CROW_ROUTE(app, "/cars/update")
+        .methods("PUT"_method)
+        ([addCORS](const crow::request& req, crow::response& res) {
+            addCORS(res);
+            auto x = crow::json::load(req.body);
+            if (!x) {
+                res.code = 400;
+                res.write("Invalid JSON");
+                res.end();
+                return;
+            }
+
+            try {
+                // First verify the car exists
+                string make = x["make"].s();
+                string model = x["model"].s();
+                Date date(x["purchase_date"].s());
+
+                if (!carExists(make, model, date)) {
+                    res.code = 404;
+                    res.write("Car not found");
+                    res.end();
+                    return;
+                }
+
+                // Create old car object for deletion
+                Car* oldCar = new Car();
+                oldCar->make = make;
+                oldCar->model = model;
+                oldCar->purchase_date = date;
+
+                // Get the location data from existing car
+                if (auto node = carsByMakeAndModel->search(*oldCar)) {
+                    oldCar->dealer_latitude = node->car->dealer_latitude;
+                    oldCar->dealer_longitude = node->car->dealer_longitude;
+                    
+                    // Remove from globe structure
+                    globe->removeCar(oldCar);
+                }
+
+                // Create new car with updated data
+                Car* newCar = new Car();
+                newCar->make = x["new_make"].s();
+                newCar->model = x["new_model"].s();
+                newCar->buyer_gender = x["buyer_gender"].s();
+                newCar->buyer_age = x["buyer_age"].i();
+                newCar->country = x["country"].s();
+                newCar->city = x["city"].s();
+                newCar->dealer_latitude = x["dealer_latitude"].d();
+                newCar->dealer_longitude = x["dealer_longitude"].d();
+                newCar->color = x["color"].s();
+                newCar->new_car = x["new_car"].b();
+                newCar->purchase_date = Date(x["new_purchase_date"].s());
+                newCar->sale_price = x["sale_price"].d();
+                newCar->top_speed = x["top_speed"].d();
+
+                // Remove old data from data structures
+                carsByMakeAndModel->remove(*oldCar);
+                carsByDate->remove(oldCar->purchase_date);
+                carsByMake->remove(oldCar->make);
+
+                // Add new data to data structures
+                carsByMake->insert(newCar->make, newCar);
+                carsByDate->insert(newCar->purchase_date, newCar);
+                carsByMakeAndModel->insert(*newCar, newCar);
+                carsByCountry->insert(newCar->country, newCar);
+                carsByAge->insert(newCar->buyer_age, newCar);
+                carsByPrice->insert(newCar->sale_price, newCar);
+                globe->insertCar(newCar);
+
+                // Update in CSV
+                updateCarInCSV(oldCar, newCar);
+
+                delete oldCar;  // Clean up
+
+                res.code = 200;
+                res.write("Car updated successfully");
             } catch (const exception& e) {
                 res.code = 500;
                 res.write(e.what());

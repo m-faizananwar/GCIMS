@@ -149968,5 +149968,50 @@
     "dealer_latitude": 14.0482,
     "dealer_longitude": 122.956,
     "color": "Pink"
+  },
+  {
+    "carName": "Toyota Camry",
+    "brand": "Camry",
+    "model": "Camry",
+    "price": 25000,
+    "speed": 180,
+    "location": "USA",
+    "gender": "Male",
+    "new_car": true,
+    "buyer_age": 35,
+    "city": "New York",
+    "dealer_latitude": 40.7128,
+    "dealer_longitude": -74.006,
+    "color": "Blue"
+  },
+  {
+    "carName": "Toyota Camry",
+    "brand": "Camry",
+    "model": "Camry",
+    "price": 25000,
+    "speed": 180,
+    "location": "USA",
+    "gender": "Male",
+    "new_car": true,
+    "buyer_age": 35,
+    "city": "New York",
+    "dealer_latitude": 40.7128,
+    "dealer_longitude": -74.006,
+    "color": "Blue"
+  },
+  {
+    "carName": "Toyota Camry",
+    "brand": "Camry",
+    "model": "Camry",
+    "price": 25000,
+    "speed": 180,
+    "location": "USA",
+    "gender": "Male",
+    "new_car": true,
+    "buyer_age": 35,
+    "city": "New York",
+    "dealer_latitude": 40.7128,
+    "dealer_longitude": -74.006,
+    "color": "Blue"
   }
 ]
