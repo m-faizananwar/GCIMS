@@ -195,21 +195,23 @@ void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
         } else {
             firstEntry = false;
         }
-        jsonFile << "  {\n"
-                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
-                 << "    \"model\": \"" << car->model << "\",\n"
-                 << "    \"price\": " << car->sale_price << ",\n"
-                 << "    \"speed\": " << car->top_speed << ",\n"
-                 << "    \"location\": \"" << car->country << "\",\n"
-                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
-                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
-                 << "    \"city\": \"" << car->city << "\",\n"
-                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-                 << "    \"color\": \"" << car->color << "\"\n"
-                 << "  }";
-    }
+        
+      jsonFile << "  {\n"
+         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+         << "    \"brand\": \""  << car->make << "\",\n"
+         << "    \"model\": \"" << car->model << "\",\n"
+         << "    \"price\": " << car->sale_price << ",\n"
+         << "    \"speed\": " << car->top_speed << ",\n"
+         << "    \"country\": \"" << car->country << "\",\n"
+         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+         << "    \"age\": " << car->buyer_age << ",\n"
+         << "    \"city\": \"" << car->city << "\",\n"
+         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+         << "    \"color\": \"" << car->color << "\"\n"
+         << "    \"registration_date\": " << car->purchase_date << ",\n"
+         << "  }";          }
 
     jsonFile << "\n]\n";
     jsonFile.close();
@@ -392,8 +394,6 @@ bool carExists(const string& make, const string& model, const Date& date) {
 
 void updateCarInCSV(const Car* oldCar, const Car* newCar) {
     // First delete the old entry
-    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);
-    
-    // Then append the new entry
+    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);   
     appendToCSV(newCar);
 }

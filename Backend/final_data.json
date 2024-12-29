@@ -150013,5 +150013,20 @@
     "dealer_latitude": 40.7128,
     "dealer_longitude": -74.006,
     "color": "Blue"
+  },
+  {
+    "carName": "Suzuki Vitara",
+    "brand": "Vitara",
+    "model": "Vitara",
+    "price": 54806.1,
+    "speed": 200.9,
+    "location": "Belgium",
+    "gender": "Female",
+    "new_car": false,
+    "buyer_age": 51,
+    "city": "Antwerpen",
+    "dealer_latitude": 51.5074,
+    "dealer_longitude": 4.5,
+    "color": "Yellow"
   }
 ]
