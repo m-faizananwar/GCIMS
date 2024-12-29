@@ -44,6 +44,7 @@ const CarListing = () => {
       } else {
         fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}`;
       }
+
     }
 
     // Adjust the fetch URL based on the sort order
@@ -160,6 +161,7 @@ const CarListing = () => {
             {!isLoading &&
               carsToDisplay.length > 0 &&
               carsToDisplay.map((item) => <CarItem item={item} key={item.id} />)}
+
           </Row>
         </Container>
       </section>

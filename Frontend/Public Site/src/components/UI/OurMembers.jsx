@@ -9,6 +9,7 @@ import ava03 from "../../assets/all-images/ava-3.jpg";
 const OUR__MEMBERS = [
   {
     name: "Muhammed Ahmed",
+
     experience: "5 years of experience",
     fbUrl: "#",
     instUrl: "#",
@@ -19,6 +20,7 @@ const OUR__MEMBERS = [
 
   {
     name: "Ayesha Khan",
+
     experience: "5 years of experience",
     fbUrl: "#",
     instUrl: "#",
@@ -29,6 +31,7 @@ const OUR__MEMBERS = [
 
   {
     name: "Sohaib Shah",
+
     experience: "5 years of experience",
     fbUrl: "#",
     instUrl: "#",
@@ -39,6 +42,7 @@ const OUR__MEMBERS = [
 
   {
     name: "Faizan Anwar",
+
     experience: "5 years of experience",
     fbUrl: "#",
     instUrl: "#",

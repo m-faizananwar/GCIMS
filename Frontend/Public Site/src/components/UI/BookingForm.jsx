@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";  // Import useParams from react-router-dom
 import { Form, FormGroup } from "reactstrap";
 import emailjs from "@emailjs/browser";
@@ -64,6 +65,7 @@ const BookingForm = () => {
           type="text"
           name="firstName"
           placeholder=""
+
           value={formData.firstName}
           onChange={handleChange}
           required
@@ -76,6 +78,7 @@ const BookingForm = () => {
           type="text"
           name="lastName"
           placeholder=""
+
           value={formData.lastName}
           onChange={handleChange}
           required
@@ -88,6 +91,7 @@ const BookingForm = () => {
           type="email"
           name="email"
           placeholder=""
+
           value={formData.email}
           onChange={handleChange}
           required
@@ -100,21 +104,23 @@ const BookingForm = () => {
           type="number"
           name="phone"
           placeholder=""
+
           value={formData.phone}
           onChange={handleChange}
           required
         />
       </FormGroup>
-
-      
+  
 
       <FormGroup>
         <label htmlFor="message">Message</label> {/* Label added */}
+
         <textarea
           rows={5}
           className="textarea"
           name="message"
-          placeholder=""
+
+          placeholder="Write"
           value={formData.message}
           onChange={handleChange}
         ></textarea>

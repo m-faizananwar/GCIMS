@@ -78,7 +78,6 @@ const Footer = () => {
             </div>
           </Col>
 
-          
 
           <Col lg="12">
             <div className="footer__bottom">

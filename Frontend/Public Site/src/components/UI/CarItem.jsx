@@ -33,6 +33,7 @@ const CarItem = (props) => {
             </span>
           </div>
 
+
           <button
   className="car__item-btn car__btn-rent"
   style={{
@@ -47,6 +48,7 @@ const CarItem = (props) => {
     Book
   </Link>
 </button>
+
 
 
 

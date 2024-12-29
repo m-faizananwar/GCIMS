@@ -18,6 +18,7 @@ const hotDeals = [
     imgUrl: img01,
     model: "Model 3",
     price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -32,6 +33,7 @@ const hotDeals = [
     imgUrl: img02,
     model: "Model-2022",
     price: 50000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -46,6 +48,7 @@ const hotDeals = [
     imgUrl: img03,
     model: "Model-2022",
     price: 65000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -60,6 +63,7 @@ const hotDeals = [
     imgUrl: img04,
     model: "Model-2022",
     price: 70000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "male",
@@ -73,7 +77,9 @@ const hotDeals = [
     carName: "Ferrari Camry",
     imgUrl: img05,
     model: "Model-2022",
+
     price: 45000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",
@@ -87,7 +93,9 @@ const hotDeals = [
     carName: "Mercedes Benz XC90",
     imgUrl: img06,
     model: "Model-2022",
+
     price: 85000,
+
     speed: "20kmpl",
     location: "location Navigation",
     gender: "Female",
