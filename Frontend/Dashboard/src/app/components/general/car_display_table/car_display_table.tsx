@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { HashLoader } from "react-spinners";
 import { SERVER_URL } from "@/app/constants/consts";
 import { parseCar } from "@/app/util/util";
-import Pagination, { paginate } from "./pagination";
+import Pagination, { paginate } from "../pagination";
 
 
 interface CarDisplayTableProps {
@@ -35,6 +35,10 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
             country: searchParams.get('c'),
             startPrice: searchParams.get('sp'),
             endPrice: searchParams.get('ep'),
+            lat1: searchParams.get('lat1'),
+            lng1: searchParams.get('lng1'),
+            lat2: searchParams.get('lat2'),
+            lng2: searchParams.get('lng2'),
         }
 
         let url: string = `${SERVER_URL}/cars`
@@ -44,6 +48,8 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
             url = `${SERVER_URL}/cars/search/country/${params.country}`
         else if (params.searchBy === 'Name') 
             url = `${SERVER_URL}/cars/search?name=${params.name || ""}&model=${params.model || ""}&country=${params.country || ""}`
+        else if (params.searchBy == 'Map Area' && params.lat1 && params.lng1 && params.lat2 && params.lng2)
+            url=`${SERVER_URL}/cars/search/rectangle?lat1=${params.lat1}&lng1=${params.lng1}&lat2=${params.lat2}&lng2=${params.lng2}`
         fetch(url)
             .then(res => {
                 if (!res.ok)

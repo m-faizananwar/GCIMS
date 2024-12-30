@@ -1,4 +1,4 @@
-import CarDisplayTable from '@/app/components/general/car_display_table';
+import CarDisplayTable from '@/app/components/general/car_display_table/car_display_table';
 import SearchForm from '@/app/components/general/search_form';
 // import { testCars } from '@/app/interfaces/datatypes';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
@@ -24,17 +24,12 @@ const Search: React.FC<SearchProps> = async ({ params, searchParams }) => {
               {searchBy ? `Search by: ${searchBy}` : "Search by..."}
               <FaChevronDown />
             </MenuButton>
-            <MenuItems anchor="bottom" className="shadow-xl bg-white outline outline-2 w-72 outline-slate-200 flex flex-col rounded-md mt-2">
+            <MenuItems anchor="bottom" className="z-[1000] shadow-xl bg-white outline outline-2 w-72 outline-slate-200 flex flex-col rounded-md mt-2">
               <MenuItem>
                 <a className="block data-[focus]:bg-surface p-2" href={`/dashboard?sb=Name`}>
                   Name
                 </a>
               </MenuItem>
-              {/* <MenuItem>
-              <a className="block data-[focus]:bg-[#D8C5C8] p-2" href="/dashboard?sb=Price">
-                Price
-              </a>
-            </MenuItem> */}
               <MenuItem>
                 <a className="block data-[focus]:bg-surface p-2" href="/dashboard?sb=Price Range">
                   Price Range
@@ -43,6 +38,16 @@ const Search: React.FC<SearchProps> = async ({ params, searchParams }) => {
               <MenuItem>
                 <a className="block data-[focus]:bg-surface p-2" href="/dashboard?sb=Country">
                   Country
+                </a>
+              </MenuItem>
+              <MenuItem>
+                <a className="block data-[focus]:bg-surface p-2" href="/dashboard?sb=Map Area">
+                  Map Area
+                </a>
+              </MenuItem>
+              <MenuItem>
+                <a className="block data-[focus]:bg-surface p-2" href="/dashboard?sb=Map Radius">
+                  Map Radius
                 </a>
               </MenuItem>
             </MenuItems>
