@@ -432,6 +432,7 @@ int main() {
                     newCar->purchase_date = Date(x["registration_date"].s());
                     newCar->sale_price = x["price"].d();
                     newCar->top_speed = x["speed"].d();
+                    newCar->setID();
 
                     // Re-insert
                     carsByMake->insert(newCar->make, newCar);
@@ -448,6 +449,71 @@ int main() {
                     res.code = 200;
                     res.write("{\"message\": \"Car updated successfully by make/model/date\"}");
                 }
+            } catch (const exception& e) {
+                res.code = 500;
+                res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
+            }
+            res.end();
+        });
+
+    // Custom JSON sorting endpoint
+    CROW_ROUTE(app, "/sort")
+        .methods("POST"_method)
+        ([addCORS](const crow::request& req, crow::response& res) {
+            addCORS(res);
+            auto x = crow::json::load(req.body);
+            if (!x || !x.has("data") || !x.has("sortBy")) {
+                res.code = 400;
+                res.write("{\"error\": \"Invalid JSON! Required fields: data (array) and sortBy (string)\"}");
+                res.end();
+                return;
+            }
+
+            try {
+                vector<Car*> cars;
+                // Parse the input data array
+                for (const auto& item : x["data"]) {
+                    Car* car = new Car();
+                    car->make = item["brand"].s();
+                    car->model = item["model"].s();
+                    car->buyer_gender = item["gender"].s();
+                    car->buyer_age = item["age"].i();
+                    car->country = item["country"].s();
+                    car->city = item["city"].s();
+                    car->dealer_latitude = item["dealer_latitude"].d();
+                    car->dealer_longitude = item["dealer_longitude"].d();
+                    car->color = item["color"].s();
+                    car->new_car = item["new_car"].b();
+                    car->purchase_date = Date(item["registration_date"].s());
+                    car->sale_price = item["price"].d();
+                    car->top_speed = item["speed"].d();
+                    car->setID();
+                    cars.push_back(car);
+                }
+
+                // Get sorting parameters
+                string sortBy = x["sortBy"].s();
+                bool ascending = true;
+                if (x.has("order")) {
+                    ascending = (x["order"].s() != "desc");
+                }
+
+                // Sort the data
+                sortCars(cars, sortBy, ascending);
+
+                // Write sorted results to JSON
+                rewriteJsonWithSearchResults(cars);
+
+                // Clean up
+                for (auto car : cars) {
+                    delete car;
+                }
+
+                // Return the sorted data
+                ifstream ifs("../../final_data2.json");
+                std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+                res.write(json);
+
             } catch (const exception& e) {
                 res.code = 500;
                 res.write("{\"error\": \"" + std::string(e.what()) + "\"}");

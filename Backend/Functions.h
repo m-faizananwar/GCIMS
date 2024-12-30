@@ -6,6 +6,7 @@
 #include "CarTAVL.h"
 #include "HashTable.h"
 #include "HashMatrix.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -16,6 +17,7 @@ void deleteFromCSV(const string& make, const string& model, const Date& date);
 void appendToCSV(const Car* car);
 void openCSVForAppend(ofstream& csvFile);
 void closeCSV(ofstream& csvFile);
+void sortCars(std::vector<Car*>& cars, const std::string& sortKey, bool ascending);
 
 // AVL trees for each of the three attributes
 CarAVL <Car> * carsByMakeAndModel = new CarAVL<Car>();
@@ -94,7 +96,7 @@ void searchByPrice(float price)
 void searchByLocation(float latitude, float longitude, int radius)
 {
     cout << "Cars sold in region: " << latitude << " and " << longitude << " and " << radius << endl;
-    globe->printByRegion(longitude, latitude, radius);
+    globe->printByRegion(static_cast<int>(longitude), static_cast<int>(latitude), radius);
 }
 
 void searchByCoordinates(int latitude, int longitude)
@@ -111,7 +113,12 @@ void printMap()
 void searchByRectangle(float latitude1, float longitude1, float latitude2, float longitude2)
 {
     cout << "Cars sold in: (" << latitude1 << " , " << longitude1 << ") to (" << latitude2 << " , " << longitude2 << ")" << endl;
-    globe->printRectangularRegion(longitude1, latitude1, longitude2, latitude2);
+    globe->printRectangularRegion(
+        static_cast<int>(longitude1),
+        static_cast<int>(latitude1),
+        static_cast<int>(longitude2),
+        static_cast<int>(latitude2)
+    );
 }
 
 void rewriteJsonSortedByKey(const std::string& key, bool ascending)
@@ -462,4 +469,35 @@ void deleteFromCSVByID(const std::string& id) {
     }
     remove("../../final_data.csv");
     rename("../../temp.csv", "../../final_data.csv");
+}
+
+void sortCars(std::vector<Car*>& cars, const std::string& sortKey, bool ascending) {
+    if (sortKey == "make") {
+        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+            return ascending ? (a->make < b->make) : (a->make > b->make);
+        });
+    } 
+    else if (sortKey == "make_and_model") {
+        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+            if (a->make == b->make) {
+                return ascending ? (a->model < b->model) : (a->model > b->model);
+            }
+            return ascending ? (a->make < b->make) : (a->make > b->make);
+        });
+    }
+    else if (sortKey == "age") {
+        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+            return ascending ? (a->buyer_age < b->buyer_age) : (a->buyer_age > b->buyer_age);
+        });
+    }
+    else if (sortKey == "date") {
+        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+            return ascending ? (a->purchase_date < b->purchase_date) : (a->purchase_date > b->purchase_date);
+        });
+    }
+    else if (sortKey == "price") {
+        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+            return ascending ? (a->sale_price < b->sale_price) : (a->sale_price > b->sale_price);
+        });
+    }
 }
