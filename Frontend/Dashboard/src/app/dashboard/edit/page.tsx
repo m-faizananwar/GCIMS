@@ -106,7 +106,7 @@ const EditCar = () => {
                 }
             ).then(res => {
                 if (!res.ok) {
-                    throw new Error("Could not udpate data!")
+                    throw new Error("Could not update data!")
                 }
                 return res.json()
             }).then(data => {
@@ -147,8 +147,8 @@ const EditCar = () => {
     }
 
     if (loading) return (
-        <div className="w-full h-full justify-center items-center">
-            <HashLoader color='#171502' />
+        <div className="w-full flex h-screen justify-center text-center align-middle items-center">
+            <HashLoader color='#171502' className='mx-auto my-auto' />
         </div>
     )
 
