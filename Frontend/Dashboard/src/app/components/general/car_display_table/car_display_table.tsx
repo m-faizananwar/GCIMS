@@ -39,6 +39,7 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
             lng1: searchParams.get('lng1'),
             lat2: searchParams.get('lat2'),
             lng2: searchParams.get('lng2'),
+            radius: searchParams.get('radius')
         }
 
         let url: string = `${SERVER_URL}/cars`
@@ -48,8 +49,10 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
             url = `${SERVER_URL}/cars/search/country/${params.country}`
         else if (params.searchBy === 'Name') 
             url = `${SERVER_URL}/cars/search?name=${params.name || ""}&model=${params.model || ""}&country=${params.country || ""}`
-        else if (params.searchBy == 'Map Area' && params.lat1 && params.lng1 && params.lat2 && params.lng2)
+        else if (params.searchBy === 'Map Area' && params.lat1 && params.lng1 && params.lat2 && params.lng2)
             url=`${SERVER_URL}/cars/search/rectangle?lat1=${params.lat1}&lng1=${params.lng1}&lat2=${params.lat2}&lng2=${params.lng2}`
+        else if (params.searchBy === 'Map Radius' && params.lat1 && params.lng1 && params.radius)
+            url = `${SERVER_URL}/cars/search/radius?lat=${params.lat1}&lng=${params.lng1}&radius=${params.radius}`
         fetch(url)
             .then(res => {
                 if (!res.ok)

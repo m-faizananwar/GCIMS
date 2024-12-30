@@ -7,6 +7,7 @@ import TextInput from './text_input'
 import CustomButton from './custom_button'
 import { MapSearch } from './map/map'
 import { fetchLocationData } from '@/app/util/util'
+import { LatLng } from 'leaflet'
 
 const SearchForm = () => {
 
@@ -40,6 +41,8 @@ const SearchForm = () => {
             Number(searchParams.get('mclat')),
             Number(searchParams.get('mclng'))
         ] : undefined)
+
+    const [radius, setRadius] = useState<number | undefined>(undefined)
     const [clickCount, setClickCount] = useState<number>(0)
 
     useEffect(() => {
@@ -72,14 +75,32 @@ const SearchForm = () => {
                 secondPos ?
                     [(secondPos.lat + pos.lat) / 2, (secondPos.lng + pos.lng) / 2]
                     : [pos.lat, pos.lng])
-        } else {
+        } else if (clickCount === 1) {
             setSecondPos(pos)
             setMapCenter(
                 firstPos ?
                     [(firstPos.lat + pos.lat) / 2, (firstPos.lng + pos.lng) / 2]
                     : [pos.lat, pos.lng])
+            if (searchBy === 'Map Radius') {
+                // const newRadius = (firstPos && pos) ?
+                //     (new LatLng(firstPos.lat, firstPos.lng)).distanceTo(new LatLng(pos.lat, pos.lng))
+                //     : undefined
+
+                const latDiff = firstPos ? (firstPos.lat - pos.lat) : 0
+                const lngDiff = firstPos ? (firstPos.lng - pos.lng) : 0
+                const latSq = latDiff * latDiff
+                const lngSq = lngDiff * lngDiff
+                const newRadius = Math.sqrt(latSq + lngSq)
+                
+                console.warn("Ran radius. Radius: ", newRadius.toString())
+                setRadius(newRadius)
+            }
+        } else {
+            setFirstPos(undefined)
+            setSecondPos(undefined)
+            setRadius(undefined)
         }
-        setClickCount(old => (old + 1) % 2)
+        setClickCount(old => (old + 1) % 3)
     }
 
     const handleFormSubmit = (formData: FormData) => {
@@ -109,11 +130,6 @@ const SearchForm = () => {
         if (endPrice) newParams.set('ep', endPrice)
         else newParams.delete('ep')
 
-        // const lat1 = firstPos ? firstPos.lat : null
-        // const lng1 = firstPos ? firstPos.lng : null
-        // const lat2 = secondPos ? secondPos.lat : null
-        // const lng2 = secondPos ? secondPos.lng : null
-
         if (firstPos) {
             newParams.set('lat1', firstPos.lat.toString())
             newParams.set('lng1', firstPos.lng.toString())
@@ -121,14 +137,17 @@ const SearchForm = () => {
             newParams.delete('lat1')
             newParams.delete('lng1')
         }
-        
-        if (secondPos) {
+
+        if (secondPos && searchBy === 'Map Area') {
             newParams.set('lat2', secondPos.lat.toString())
             newParams.set('lng2', secondPos.lng.toString())
         } else {
             newParams.delete('lat2')
             newParams.delete('lng2')
         }
+
+        if (radius && searchBy == 'Map Radius') newParams.set('radius', radius.toString())
+        else newParams.delete('radius')
 
         if (mapCenter) {
             newParams.set('mclat', mapCenter[0].toString())
@@ -198,9 +217,10 @@ const SearchForm = () => {
                 {searchBy && ["Map Area", "Map Radius"].includes(searchBy) &&
                     <MapSearch
                         center={mapCenter}
-                        position={firstPos && [firstPos.lat, firstPos.lng]}
-                        position2={secondPos && [secondPos.lat, secondPos.lng]}
-                        onClick={mapOnClick} />
+                        position={firstPos ? [firstPos.lat, firstPos.lng] : undefined}
+                        position2={secondPos ? [secondPos.lat, secondPos.lng] : undefined}
+                        onClick={mapOnClick}
+                        radius={searchBy === 'Map Radius'} />
                 }
             </div>
 

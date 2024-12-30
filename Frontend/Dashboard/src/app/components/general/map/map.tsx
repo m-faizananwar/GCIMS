@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 "use client"
-import { LatLngExpression } from 'leaflet'
+import { LatLng, LatLngExpression } from 'leaflet'
 import L from 'leaflet';
 import React, { useEffect, useState } from 'react'
-import { MapContainer, Marker, Rectangle, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { Circle, MapContainer, Marker, Rectangle, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -107,9 +107,10 @@ export const ClickableMap: React.FC<ClickableMapProps> = ({ onClick, center: def
 
 interface MapSearchProps extends ClickableMapProps {
     position2?: [number, number]
+    radius?: boolean;
 }
 
-export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCenter, defaultZoom, position: firstPos, position2: secondPos }) => {
+export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCenter, defaultZoom, position: firstPos, position2: secondPos, radius: givenRadius }) => {
 
     const router = useRouter()              // TODO: Implement functionality
     const pathname = usePathname()          // TODO: Implement functionality
@@ -124,17 +125,15 @@ export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCe
     })
 
     const [firstPosition, setFirstPosition] = useState<[number, number] | undefined>(firstPos);
-    const [secondPosition, setSecondPosition] = useState<[number, number] | undefined>(secondPos)
+    const [secondPosition, setSecondPosition] = useState<[number, number] | undefined>(secondPos);
+    const [radius, setRadius] = useState<boolean | undefined>(givenRadius)
     const [center, setCenter] = useState<[number, number] | undefined>(defaultCenter);
 
     useEffect(() => {
-        if (firstPos) {
-            setFirstPosition(firstPos);
-        }
-        if (secondPos) {
-            setSecondPosition(secondPos)
-        }
-    }, [firstPos, secondPos]);
+        setFirstPosition(firstPos)
+        setSecondPosition(secondPos)
+        setRadius(givenRadius)
+    }, [firstPos, secondPos, givenRadius]);
 
     useEffect(() => {
         if (defaultCenter) {
@@ -170,7 +169,7 @@ export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCe
         return null
     }
 
-    const bounds = firstPosition && secondPosition ? [firstPosition, secondPosition] : undefined
+    const bounds = (firstPosition && secondPosition && !radius) ? [firstPosition, secondPosition] : undefined
     
     return (
         <div className="w-full flex flex-col gap-6 items-center">
@@ -180,7 +179,8 @@ export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCe
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    {bounds && <Rectangle bounds={bounds} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
+                    {!radius && bounds && <Rectangle bounds={bounds} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
+                    {firstPosition && secondPosition && radius && <Circle center={new LatLng(firstPosition[0], firstPosition[1])} radius={(new LatLng(firstPosition[0], firstPosition[1])).distanceTo(new LatLng(secondPosition[0], secondPosition[1]))} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
                     <ClickHandler />
                     <PositionMarker position={firstPosition} />
                     <PositionMarker position={secondPosition} />
