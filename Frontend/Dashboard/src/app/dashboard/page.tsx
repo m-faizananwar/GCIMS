@@ -15,7 +15,7 @@ const Search: React.FC<SearchProps> = async ({ params, searchParams }) => {
   const searchBy = (await searchParams).sb || "Name"
 
   return (
-    <div className='flex flex-col gap-3 overflow-y-auto w-full p-7'>
+    <div className='flex flex-col gap-6 overflow-y-auto w-full p-7'>
       <div className="text-4xl font-bold">Search</div>
       <div className='flex justify-between align-middle'>
         <div>

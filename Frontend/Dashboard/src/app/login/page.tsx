@@ -15,12 +15,12 @@ const Login = () => {
 
     return (
         <div className="flex h-full w-full items-center justify-center">
-            <div className="bg-white py-8 shadow-xl px-8 rounded-lg flex flex-col gap-3 sm:w-full sm:m-5 md:w-1/2 lg:w-1/3">
+            <div className="bg-white py-8 shadow-xl px-8 rounded-lg flex flex-col gap-6 sm:w-full sm:m-5 md:w-1/2 lg:w-1/3">
                 <h2 className='font-bold text-2xl'>
                     Login
                 </h2>
                 <Form action={handleFormSubmit}
-                    className='flex flex-col gap-4 mt-5'>
+                    className='flex flex-col gap-6 mt-5'>
                     <TextInput
                         value={username}
                         onChange={e => setUsername(e.currentTarget.value)}

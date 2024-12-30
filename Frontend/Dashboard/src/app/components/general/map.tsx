@@ -68,8 +68,6 @@ export const ClickableMap: React.FC<ClickableMapProps> = ({ onClick, center: def
         }
     }, [defaultCenter]);
 
-    console.warn("Position: ", position, "Center: ", center);
-
     const LocationMarker = () => {
         useMapEvents({
             click(e) {

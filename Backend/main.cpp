@@ -227,7 +227,7 @@ int main() {
             auto x = crow::json::load(req.body);
             if (!x) {
                 res.code = 400;
-                res.write("Invalid JSON");
+                res.write("{\"error\": \"Invalid JSON!\"}");
                 res.end();
                 return;
             }
@@ -261,10 +261,10 @@ int main() {
                 appendToCSV(newCar);
 
                 res.code = 201;
-                res.write("Car added successfully");
+                res.write("{\"message\": \"Car added successfully\"}");
             } catch (const exception& e) {
                 res.code = 500;
-                res.write(e.what());
+                res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
             }
             res.end();
             // Remove the parsingData() call here
@@ -278,7 +278,7 @@ int main() {
             auto x = crow::json::load(req.body);
             if (!x) {
                 res.code = 400;
-                res.write("Invalid JSON");
+                res.write("{\"error\": \"Invalid JSON!\"}");
                 res.end();
                 return;
             }
@@ -312,10 +312,10 @@ int main() {
                 delete tempCar;  // Clean up
 
                 res.code = 200;
-                res.write("Car deleted successfully");
+                res.write("{\"message\": \"Car deleted successfully!\"}");
             } catch (const exception& e) {
                 res.code = 500;
-                res.write(e.what());
+                res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
             }
             res.end();
             // Remove parsingData() call from here
@@ -329,7 +329,7 @@ int main() {
             auto x = crow::json::load(req.body);
             if (!x) {
                 res.code = 400;
-                res.write("Invalid JSON");
+                res.write("{\"error\": \"Invalid JSON!\"}");
                 res.end();
                 return;
             }
@@ -342,7 +342,7 @@ int main() {
 
                 if (!carExists(make, model, date)) {
                     res.code = 404;
-                    res.write("Car not found");
+                    res.write("{\"error\": \"Car not found!\"}");
                     res.end();
                     return;
                 }
@@ -398,10 +398,10 @@ int main() {
                 delete oldCar;  // Clean up
 
                 res.code = 200;
-                res.write("Car updated successfully");
+                res.write("{\"message\": \"Car updated successfully\"}");
             } catch (const exception& e) {
                 res.code = 500;
-                res.write(e.what());
+                res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
             }
             res.end();
         });

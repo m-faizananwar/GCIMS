@@ -3,12 +3,17 @@ import { Car } from '@/app/interfaces/datatypes'
 import { LatLng } from 'leaflet';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import CustomButton from './custom_button';
+import { FaPen, FaTimes, FaTrash } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 interface CarDisplayTableItemProps {
     item: Car;
 }
 
 const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
+
+    const router = useRouter()
 
     const [showDetail, setShowDetail] = useState(false)
 
@@ -64,13 +69,27 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
                     <div className="basis-1/4">{item.speed} km/h</div>
                 </div>}
             {showDetail && <div className='w-full h-[500px]'>
-                <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={18} />
+                <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={13} />
             </div>}
             {showDetail &&
-                <button className="rounded-md bg-special h-12 hover:bg-opacity-80 text-white justify-center items-center transition-all"
-                onClick={() => setShowDetail((pr) => !pr)}>
-                    Close
-                </button>}
+                <div className="flex gap-3 w-full">
+                    <CustomButton additionalClass='basis-1/3 bg-special text-white'
+                        onClick={() => setShowDetail((pr) => !pr)}>
+                            <FaTimes />
+                        Close
+                    </CustomButton>
+                    <CustomButton additionalClass='basis-1/3 bg-tertiary text-white'
+                        onClick={() => router.push(`/dashboard/edit?car=${encodeURIComponent(JSON.stringify(item))}`)}>
+                        <FaPen />
+                        Edit
+                    </CustomButton>
+                    <CustomButton additionalClass='basis-1/3 bg-red-500 text-white'
+                        onClick={() => setShowDetail((pr) => !pr)}>
+                        <FaTrash />
+                        Delete
+                    </CustomButton>
+                </div>
+            }
         </div>
     )
 }
