@@ -127,6 +127,7 @@ void rewriteJsonSortedByKey(const std::string& key, bool ascending)
             firstEntry = false;
         }
         jsonFile << "  {\n"
+         << "    \"id\": \"" << car->id << "\",\n"
          << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
          << "    \"brand\": \""  << car->model << "\",\n"
          << "    \"model\": \"" << car->model << "\",\n"
@@ -197,6 +198,7 @@ void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
         }
         
       jsonFile << "  {\n"
+         << "    \"id\": \"" << car->id << "\",\n"
          << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
          << "    \"brand\": \""  << car->make << "\",\n"
          << "    \"model\": \"" << car->model << "\",\n"
@@ -396,4 +398,68 @@ void updateCarInCSV(const Car* oldCar, const Car* newCar) {
     // First delete the old entry
     deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);   
     appendToCSV(newCar);
+}
+
+Car* findCarByID(const std::string& id) {
+    // Example: scan through carsByPrice->getTable() until a matching ID is found
+    for (auto head : carsByPrice->getTable()) {
+        auto current = head;
+        while (current) {
+            if (current->car->id == id) {
+                return current->car;
+            }
+            current = current->next;
+        }
+    }
+    return nullptr; // Not found
+}
+
+void deleteFromCSVByID(const std::string& id) {
+    ifstream inFile("../../final_data.csv");
+    if (!inFile.is_open()) {
+        throw runtime_error("Cannot open CSV file for reading");
+    }
+    ofstream tempFile("../../temp.csv");
+    if (!tempFile.is_open()) {
+        inFile.close();
+        throw runtime_error("Cannot create temporary file");
+    }
+
+    string line;
+    bool found = false;
+
+    // (Optional) Copy header
+    if (getline(inFile, line)) {
+        tempFile << line << "\n";
+    }
+
+    while (getline(inFile, line)) {
+        // Split line into fields
+        istringstream ss(line);
+        vector<string> fields;
+        string field;
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+        // Reconstruct the ID: make + model + price
+        if (fields.size() >= 12) {
+            string generatedID = fields[0] + fields[1] + fields[11];
+            if (generatedID == id) {
+                found = true;
+                continue; // Skip this record
+            }
+        }
+        // Write line if not matching
+        tempFile << line << "\n";
+    }
+
+    inFile.close();
+    tempFile.close();
+
+    if (!found) {
+        remove("../../temp.csv");
+        throw runtime_error("Record not found");
+    }
+    remove("../../final_data.csv");
+    rename("../../temp.csv", "../../final_data.csv");
 }

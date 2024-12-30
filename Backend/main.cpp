@@ -247,6 +247,7 @@ int main() {
                 newCar->purchase_date = Date(x["registration_date"].s());
                 newCar->sale_price = x["price"].d();
                 newCar->top_speed = x["speed"].d();
+                newCar->setID();    
 
                 // Add to data structures
                 carsByMake->insert(newCar->make, newCar);
@@ -284,35 +285,34 @@ int main() {
             }
 
             try {
-                string make = x["brand"].s();
-                string model = x["model"].s();
-                Date date(x["registration_date"].s());
+                // Get ID from JSON
+                string id = x["id"].s();
 
-                // Create a temporary car object to help with deletion from globe
-                Car* tempCar = new Car();
-                tempCar->make = make;
-                tempCar->model = model;
-                tempCar->purchase_date = date;
-                
-                // Get the location data from existing car before deletion
-                if (auto node = carsByMakeAndModel->search(*tempCar)) {
-                    tempCar->dealer_latitude = node->car->dealer_latitude;
-                    tempCar->dealer_longitude = node->car->dealer_longitude;
-                    
-                    // Remove from globe structure
-                    globe->removeCar(tempCar);
+                // Locate the car
+                Car* foundCar = findCarByID(id);
+                if (!foundCar) {
+                    res.code = 404;
+                    res.write("{\"error\": \"Car not found!\"}");
+                    res.end();
+                    return;
                 }
 
-                // Delete from CSV and other data structures
-                deleteFromCSV(make, model, date);
-                carsByMakeAndModel->remove(*tempCar);
-                carsByDate->remove(date);
-                carsByMake->remove(make);
+                // Remove from globe
+                globe->removeCar(foundCar);
 
-                delete tempCar;  // Clean up
+                // Remove from CSV
+                deleteFromCSVByID(id);
+
+                // Remove from data structures
+                carsByMakeAndModel->remove(*foundCar);
+                carsByDate->remove(foundCar->purchase_date);
+                carsByMake->remove(foundCar->make);
+                carsByCountry->remove(foundCar->country);
+                carsByAge->remove(foundCar->buyer_age);
+                carsByPrice->remove(foundCar->sale_price);
 
                 res.code = 200;
-                res.write("{\"message\": \"Car deleted successfully!\"}");
+                res.write("{\"message\": \"Car deleted successfully by ID!\"}");
             } catch (const exception& e) {
                 res.code = 500;
                 res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
@@ -335,70 +335,119 @@ int main() {
             }
 
             try {
-                // First verify the car exists
-                string make = x["brand"].s();
-                string model = x["model"].s();
-                Date date(x["registration_date"].s());
-
-                if (!carExists(make, model, date)) {
-                    res.code = 404;
-                    res.write("{\"error\": \"Car not found!\"}");
-                    res.end();
-                    return;
-                }
-
-                // Create old car object for deletion
-                Car* oldCar = new Car();
-                oldCar->make = make;
-                oldCar->model = model;
-                oldCar->purchase_date = date;
-
-                // Get the location data from existing car
-                if (auto node = carsByMakeAndModel->search(*oldCar)) {
-                    oldCar->dealer_latitude = node->car->dealer_latitude;
-                    oldCar->dealer_longitude = node->car->dealer_longitude;
-                    
-                    // Remove from globe structure
+                // Check if we have an ID for ID-based update
+                if (x.has("id")) {
+                    // ID-based path
+                    string id = x["id"].s();
+                    Car* oldCar = findCarByID(id);
+                    if (!oldCar) {
+                        res.code = 404;
+                        res.write("{\"error\": \"Car not found by ID!\"}");
+                        res.end();
+                        return;
+                    }
+                    // Remove from data structures
                     globe->removeCar(oldCar);
+                    carsByMakeAndModel->remove(*oldCar);
+                    carsByDate->remove(oldCar->purchase_date);
+                    carsByMake->remove(oldCar->make);
+                    carsByCountry->remove(oldCar->country);
+                    carsByAge->remove(oldCar->buyer_age);
+                    carsByPrice->remove(oldCar->sale_price);
+
+                    // Create new car object
+                    Car* newCar = new Car();
+                    // ...existing code...
+                    newCar->make = x["new_make"].s();
+                    newCar->model = x["new_model"].s();
+                    newCar->buyer_gender = x["gender"].s();
+                    newCar->buyer_age = x["age"].i();
+                    newCar->country = x["country"].s();
+                    newCar->city = x["city"].s();
+                    newCar->dealer_latitude = x["dealer_latitude"].d();
+                    newCar->dealer_longitude = x["dealer_longitude"].d();
+                    newCar->color = x["color"].s();
+                    newCar->new_car = x["new_car"].b();
+                    newCar->purchase_date = Date(x["registration_date"].s());
+                    newCar->sale_price = x["price"].d();
+                    newCar->top_speed = x["speed"].d();
+                    newCar->setID();
+
+                    // Re-insert
+                    carsByMake->insert(newCar->make, newCar);
+                    carsByDate->insert(newCar->purchase_date, newCar);
+                    carsByMakeAndModel->insert(*newCar, newCar);
+                    carsByCountry->insert(newCar->country, newCar);
+                    carsByAge->insert(newCar->buyer_age, newCar);
+                    carsByPrice->insert(newCar->sale_price, newCar);
+                    globe->insertCar(newCar);
+
+                    // Update CSV
+                    updateCarInCSV(oldCar, newCar);
+
+                    delete oldCar;
+                    res.code = 200;
+                    res.write("{\"message\": \"Car updated successfully by ID\"}");
+                } else {
+                    // Existing make/model/date path
+                    string make = x["brand"].s();
+                    string model = x["model"].s();
+                    Date date(x["registration_date"].s());
+
+                    if (!carExists(make, model, date)) {
+                        res.code = 404;
+                        res.write("{\"error\": \"Car not found by make/model/date!\"}");
+                        res.end();
+                        return;
+                    }
+                    // Create old car
+                    Car* oldCar = new Car();
+                    oldCar->make = make;
+                    oldCar->model = model;
+                    oldCar->purchase_date = date;
+
+                    // ...existing removal code...
+                    if (auto node = carsByMakeAndModel->search(*oldCar)) {
+                        oldCar->dealer_latitude = node->car->dealer_latitude;
+                        oldCar->dealer_longitude = node->car->dealer_longitude;
+                        globe->removeCar(oldCar);
+                    }
+                    carsByMakeAndModel->remove(*oldCar);
+                    carsByDate->remove(oldCar->purchase_date);
+                    carsByMake->remove(oldCar->make);
+
+                    // Create new car
+                    Car* newCar = new Car();
+                    // ...existing code...
+                    newCar->make = x["new_make"].s();
+                    newCar->model = x["new_model"].s();
+                    newCar->buyer_gender = x["gender"].s();
+                    newCar->buyer_age = x["age"].i();
+                    newCar->country = x["country"].s();
+                    newCar->city = x["city"].s();
+                    newCar->dealer_latitude = x["dealer_latitude"].d();
+                    newCar->dealer_longitude = x["dealer_longitude"].d();
+                    newCar->color = x["color"].s();
+                    newCar->new_car = x["new_car"].b();
+                    newCar->purchase_date = Date(x["registration_date"].s());
+                    newCar->sale_price = x["price"].d();
+                    newCar->top_speed = x["speed"].d();
+
+                    // Re-insert
+                    carsByMake->insert(newCar->make, newCar);
+                    carsByDate->insert(newCar->purchase_date, newCar);
+                    carsByMakeAndModel->insert(*newCar, newCar);
+                    carsByCountry->insert(newCar->country, newCar);
+                    carsByAge->insert(newCar->buyer_age, newCar);
+                    carsByPrice->insert(newCar->sale_price, newCar);
+                    globe->insertCar(newCar);
+
+                    updateCarInCSV(oldCar, newCar);
+                    delete oldCar;
+
+                    res.code = 200;
+                    res.write("{\"message\": \"Car updated successfully by make/model/date\"}");
                 }
-
-                // Create new car with updated data
-                Car* newCar = new Car();
-                newCar->make = x["new_make"].s();
-                newCar->model = x["new_model"].s();
-                newCar->buyer_gender = x["gender"].s();
-                newCar->buyer_age = x["age"].i();
-                newCar->country = x["country"].s();
-                newCar->city = x["city"].s();
-                newCar->dealer_latitude = x["dealer_latitude"].d();
-                newCar->dealer_longitude = x["dealer_longitude"].d();
-                newCar->color = x["color"].s();
-                newCar->new_car = x["new_car"].b();
-                newCar->purchase_date = Date(x["registration_date"].s());
-                newCar->sale_price = x["price"].d();
-                newCar->top_speed = x["speed"].d();
-
-                // Remove old data from data structures
-                carsByMakeAndModel->remove(*oldCar);
-                carsByDate->remove(oldCar->purchase_date);
-                carsByMake->remove(oldCar->make);
-
-                // Add new data to data structures
-                carsByMake->insert(newCar->make, newCar);
-                carsByDate->insert(newCar->purchase_date, newCar);
-                carsByMakeAndModel->insert(*newCar, newCar);
-                carsByCountry->insert(newCar->country, newCar);
-                carsByAge->insert(newCar->buyer_age, newCar);
-                carsByPrice->insert(newCar->sale_price, newCar);
-                globe->insertCar(newCar);
-
-                // Update in CSV
-                updateCarInCSV(oldCar, newCar);
-
-                delete oldCar;  // Clean up
-
-                res.code = 200;
-                res.write("{\"message\": \"Car updated successfully\"}");
             } catch (const exception& e) {
                 res.code = 500;
                 res.write("{\"error\": \"" + std::string(e.what()) + "\"}");

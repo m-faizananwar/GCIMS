@@ -188,6 +188,7 @@ public:
             firstEntry = false;
         }
         jsonFile << "  {\n"
+                << "    \"id\": \"" << car->id << "\",\n"
                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
                 << "    \"model\": \"" << car->model << "\",\n"
                 << "    \"price\": " << car->sale_price << ",\n"
