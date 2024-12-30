@@ -371,7 +371,7 @@ int main() {
                     newCar->purchase_date = Date(x["registration_date"].s());
                     newCar->sale_price = x["price"].d();
                     newCar->top_speed = x["speed"].d();
-                    newCar->setID();
+                    newCar->id= oldCar->id;
 
                     // Re-insert
                     carsByMake->insert(newCar->make, newCar);

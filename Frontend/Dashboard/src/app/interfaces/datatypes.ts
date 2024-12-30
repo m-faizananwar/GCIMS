@@ -1,4 +1,5 @@
 export interface Car {
+    id?: number,
     carName?: string,
     brand: string,
     model: string,

@@ -3,6 +3,7 @@ import { Car } from "../interfaces/datatypes"
 
 export const parseCar = (input: any) => {
     return {
+        id: input.id,
         carName: input.carName,
         brand: input.brand,
         model: input.model,

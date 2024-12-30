@@ -71,6 +71,7 @@ const EditCar = () => {
         console.log("Pre-Format:", regDate, "Post-Format", `${regDate?.getDate()}-${regDate?.getMonth() + 1}-${regDate?.getFullYear()}`)
 
         var carData = {
+            ...(car && { id: car.id }),
             brand: car ? car.brand : brand,
             model: car ? car.model : model,
             gender: "Male",
@@ -90,7 +91,7 @@ const EditCar = () => {
 
         if (car) {
             setLoading(true)
-            console.log(JSON.stringify(carData))
+            console.warn("Updated Data:", JSON.stringify(carData))
             fetch(
                 '/api/cars',
                 {
