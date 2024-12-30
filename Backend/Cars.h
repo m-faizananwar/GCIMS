@@ -19,6 +19,7 @@ class Car
     Date purchase_date;
     float sale_price;
     float top_speed;
+    string id;
 
      bool operator==(Car car)
     {
@@ -66,5 +67,16 @@ class Car
         purchase_date = Date();
         sale_price = 0;
         top_speed = 0;
+        id = "";
+    }
+
+    void setID()
+    {
+        id = make + model + to_string(sale_price);
+    }
+
+    string getID()
+    {
+        return make + model + to_string(sale_price);
     }
 };

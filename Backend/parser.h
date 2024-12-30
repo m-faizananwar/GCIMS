@@ -62,6 +62,7 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         }
         car->purchase_date = Date(fields[10]);
         car->sale_price = stof(fields[11]);
+        car->id = car->make + car->model + to_string(car->sale_price);
         car->top_speed = stof(fields[12]);
 
         // Add the car to the AVL tree
@@ -84,6 +85,7 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
             first = false;
         }
       jsonFile << "  {\n"
+         << "    \"id\": \"" << car->id << "\",\n"
          << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
          << "    \"brand\": \""  << car->make << "\",\n"
          << "    \"model\": \"" << car->model << "\",\n"
