@@ -3,7 +3,7 @@ import { Car } from '@/app/interfaces/datatypes'
 import { LatLng } from 'leaflet';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import CustomButton from './custom_button';
+import CustomButton from '../custom_button';
 import { FaPen, FaTimes, FaTrash } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
@@ -35,7 +35,7 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
 
 
     const Map = useMemo(() => dynamic(
-        () => import('@/app/components/general/map'),
+        () => import('@/app/components/general/map/map'),
         {
             loading: () => <p>Loading map...</p>,
             ssr: false

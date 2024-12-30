@@ -1,3 +1,4 @@
+import { LatLngExpression } from "leaflet"
 import { Car } from "../interfaces/datatypes"
 
 export const parseCar = (input: any) => {
@@ -7,7 +8,7 @@ export const parseCar = (input: any) => {
         model: input.model,
         price: input.price,
         speed: input.speed,
-        country: input.country,
+        country: input.country || input.location,
         city: input.city,
         newCar: input.new_car,
         age: input.buyer_age,
@@ -20,7 +21,7 @@ export const parseCar = (input: any) => {
 }
 
 export const parseDate = (input: string, type: number): Date => {
-        const date = input.split('-').map(Number)
+    const date = input.split('-').map(Number)
     const val = type === 2 ? new Date(date[2], date[1] - 1, date[0])
         : new Date(date[0], date[1] - 1, date[2])
     return val
@@ -33,3 +34,21 @@ export const formatDateForInput = (date: Date): string => {
     return `${year}-${month}-${day}`;
 };
 
+export const fetchLocationData = async (lat: number, lng: number): Promise<any> => {
+    var val
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Could not get location")
+            }
+            return res.json()
+        })
+        .then(data => {
+            val = data
+        })
+    return val
+}
+
+String.prototype.capitalizeFirstLetter = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1)
+}

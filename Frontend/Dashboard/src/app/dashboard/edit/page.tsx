@@ -1,9 +1,9 @@
 'use client'
 import CustomButton from '@/app/components/general/custom_button'
-import { ClickableMap } from '@/app/components/general/map'
+import { ClickableMap } from '@/app/components/general/map/map'
 import TextInput from '@/app/components/general/text_input'
 import { Car } from '@/app/interfaces/datatypes'
-import { formatDateForInput, parseDate } from '@/app/util/util'
+import { fetchLocationData, formatDateForInput, parseDate } from '@/app/util/util'
 import Form from 'next/form'
 import { redirect, RedirectType, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -41,7 +41,7 @@ const EditCar = () => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     setCurrLocation([position.coords.latitude, position.coords.longitude])
-                    fetchLocationData(position.coords.latitude, position.coords.longitude)
+                    getLocationData(position.coords.latitude, position.coords.longitude)
                     !latitude && setLatitude(position.coords.latitude)
                     !longitude && setLongitude(position.coords.longitude)
                 }
@@ -49,31 +49,27 @@ const EditCar = () => {
         }
     }, [])
 
-    const fetchLocationData = async (lat: number, lng: number) => {
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Could not get location")
-                }
-                return res.json()
-            })
+    const getLocationData = (lat: number, lng: number) => {
+        fetchLocationData(lat, lng)
             .then(data => {
                 console.log(data)
-                const address = data.address
-                setCity(address.city || address.town || address.county || address.state)
-                setCountry(address.country)
+                if (data && data.address) {
+                    const address = data.address
+                    setCity(address.city || address.town || address.county || address.state)
+                    setCountry(address.country)
+                }
             })
     }
 
     const MapOnClick = (e: L.LeafletMouseEvent) => {
         setLatitude(e.latlng.lat)
         setLongitude(e.latlng.lng)
-        fetchLocationData(e.latlng.lat, e.latlng.lng)
+        getLocationData(e.latlng.lat, e.latlng.lng)
     }
 
     const onFormSubmit = () => {
         console.log("Pre-Format:", regDate, "Post-Format", `${regDate?.getDate()}-${regDate?.getMonth() + 1}-${regDate?.getFullYear()}`)
-        
+
         var carData = {
             brand: car ? car.brand : brand,
             model: car ? car.model : model,
@@ -122,27 +118,27 @@ const EditCar = () => {
             fetch(
                 "/api/cars",
                 {
-                    method: 'POST', 
-                    headers: { 
-                        'Content-Type': 'application/json', 
-                    }, 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify(carData),
                 }
             )
-            .then(res => {
-                if (!res.ok)
-                    throw new Error('Failed to post data!')
-                return res.json()
-            })
-            .then(data => {
-                setLoading(false)
-                router.replace('/dashboard')
-            })
-            .catch(e => {
-                setLoading(false)
-                console.error(e)
-                setError(`Error: ${e.message}`)
-            })
+                .then(res => {
+                    if (!res.ok)
+                        throw new Error('Failed to post data!')
+                    return res.json()
+                })
+                .then(data => {
+                    setLoading(false)
+                    router.replace('/dashboard')
+                })
+                .catch(e => {
+                    setLoading(false)
+                    console.error(e)
+                    setError(`Error: ${e.message}`)
+                })
         }
     }
 

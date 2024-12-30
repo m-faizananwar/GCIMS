@@ -1,10 +1,12 @@
 "use client"
 import Form from 'next/form'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import TextInput from './text_input'
 import CustomButton from './custom_button'
+import { MapSearch } from './map/map'
+import { fetchLocationData } from '@/app/util/util'
 
 const SearchForm = () => {
 
@@ -23,26 +25,75 @@ const SearchForm = () => {
     const startPrice = searchParams.get('sp')
     const endPrice = searchParams.get('ep')
 
+    const [firstPos, setFirstPos] = useState<{ lat: number, lng: number } | undefined>(
+        searchParams.get('lat1') && searchParams.get('lng1') ? {
+            lat: Number(searchParams.get('lat1')),
+            lng: Number(searchParams.get('lng1'))
+        } : undefined)
+    const [secondPos, setSecondPos] = useState<{ lat: number, lng: number } | undefined>(
+        searchParams.get('lat2') && searchParams.get('lng2') ? {
+            lat: Number(searchParams.get('lat2')),
+            lng: Number(searchParams.get('lng2'))
+        } : undefined)
+    const [mapCenter, setMapCenter] = useState<[number, number] | undefined>(
+        searchParams.get('mclat') && searchParams.get('mclng') ? [
+            Number(searchParams.get('mclat')),
+            Number(searchParams.get('mclng'))
+        ] : undefined)
+    const [clickCount, setClickCount] = useState<number>(0)
+
     useEffect(() => {
         if (!searchBy) {
             const newParams = new URLSearchParams(searchParams.toString())
             newParams.set('sb', 'Name')
             router.push(`${pathname}?${newParams}`)
         }
-    }, [pathname, router, searchParams, searchBy])
+    }, [, pathname, router, searchParams, searchBy])
+
+    useEffect(() => {
+        if (!mapCenter && navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // setFirstPos({ lat: position.coords.latitude, lng: position.coords.longitude })
+                    setMapCenter([position.coords.latitude, position.coords.longitude])
+                }
+            )
+        }
+    }, [])
+
+    const mapOnClick = (e: L.LeafletMouseEvent) => {
+        const pos = {
+            lat: e.latlng.lat,
+            lng: e.latlng.lng
+        }
+        if (clickCount === 0) {
+            setFirstPos(pos)
+            setMapCenter(
+                secondPos ?
+                    [(secondPos.lat + pos.lat) / 2, (secondPos.lng + pos.lng) / 2]
+                    : [pos.lat, pos.lng])
+        } else {
+            setSecondPos(pos)
+            setMapCenter(
+                firstPos ?
+                    [(firstPos.lat + pos.lat) / 2, (firstPos.lng + pos.lng) / 2]
+                    : [pos.lat, pos.lng])
+        }
+        setClickCount(old => (old + 1) % 2)
+    }
 
     const handleFormSubmit = (formData: FormData) => {
         const newParams = new URLSearchParams(searchParams.toString())
 
-        const country = formData.get('c')?.toString().trim()
+        const country = formData.get('c')?.toString().trim().capitalizeFirstLetter()
         if (country) newParams.set('c', country)
         else newParams.delete('c')
 
-        const name = formData.get('n')?.toString().trim()
+        const name = formData.get('n')?.toString().trim().capitalizeFirstLetter()
         if (name) newParams.set('n', name)
         else newParams.delete('n')
 
-        const model = formData.get('m')?.toString().trim()
+        const model = formData.get('m')?.toString().trim().capitalizeFirstLetter()
         if (model) newParams.set('m', model)
         else newParams.delete('m')
 
@@ -58,7 +109,36 @@ const SearchForm = () => {
         if (endPrice) newParams.set('ep', endPrice)
         else newParams.delete('ep')
 
-        if (startPrice && endPrice && parseInt(startPrice) > parseInt(endPrice)) {
+        // const lat1 = firstPos ? firstPos.lat : null
+        // const lng1 = firstPos ? firstPos.lng : null
+        // const lat2 = secondPos ? secondPos.lat : null
+        // const lng2 = secondPos ? secondPos.lng : null
+
+        if (firstPos) {
+            newParams.set('lat1', firstPos.lat.toString())
+            newParams.set('lng1', firstPos.lng.toString())
+        } else {
+            newParams.delete('lat1')
+            newParams.delete('lng1')
+        }
+        
+        if (secondPos) {
+            newParams.set('lat2', secondPos.lat.toString())
+            newParams.set('lng2', secondPos.lng.toString())
+        } else {
+            newParams.delete('lat2')
+            newParams.delete('lng2')
+        }
+
+        if (mapCenter) {
+            newParams.set('mclat', mapCenter[0].toString())
+            newParams.set('mclng', mapCenter[1].toString())
+        } else {
+            newParams.delete('mclat')
+            newParams.delete('mclng')
+        }
+
+        if (startPrice && endPrice && Number(startPrice) > Number(endPrice)) {
             newParams.set('sp', endPrice)
             newParams.set('ep', startPrice)
         }
@@ -113,6 +193,14 @@ const SearchForm = () => {
                             placeholder='Ending price...'
                         />
                     </div>
+                }
+
+                {searchBy && ["Map Area", "Map Radius"].includes(searchBy) &&
+                    <MapSearch
+                        center={mapCenter}
+                        position={firstPos && [firstPos.lat, firstPos.lng]}
+                        position2={secondPos && [secondPos.lat, secondPos.lng]}
+                        onClick={mapOnClick} />
                 }
             </div>
 
