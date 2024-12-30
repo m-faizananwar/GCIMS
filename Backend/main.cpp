@@ -458,21 +458,36 @@ int main() {
 
     // Custom JSON sorting endpoint
     CROW_ROUTE(app, "/sort")
-        .methods("POST"_method)
+        .methods("GET"_method)
         ([addCORS](const crow::request& req, crow::response& res) {
             addCORS(res);
-            auto x = crow::json::load(req.body);
-            if (!x || !x.has("data") || !x.has("sortBy")) {
+            auto query_params = req.url_params;
+            std::string sortBy = query_params.get("sortBy") ? query_params.get("sortBy") : "";
+            std::string order = query_params.get("order") ? query_params.get("order") : "asc";
+
+            if (sortBy.empty()) {
                 res.code = 400;
-                res.write("{\"error\": \"Invalid JSON! Required fields: data (array) and sortBy (string)\"}");
+                res.write("{\"error\": \"Missing required parameter: sortBy\"}");
                 res.end();
                 return;
             }
 
+            bool ascending = (order != "desc");
+
             try {
+                // Read data from final_data2.json
+                ifstream ifs("../../final_data2.json");
+                if (!ifs.is_open()) {
+                    throw runtime_error("Cannot open final_data2.json");
+                }
+                std::string json_str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+                auto json_data = crow::json::load(json_str);
+                if (!json_data) {
+                    throw runtime_error("Invalid JSON in final_data2.json");
+                }
+
                 vector<Car*> cars;
-                // Parse the input data array
-                for (const auto& item : x["data"]) {
+                for (const auto& item : json_data) {
                     Car* car = new Car();
                     car->make = item["brand"].s();
                     car->model = item["model"].s();
@@ -491,13 +506,6 @@ int main() {
                     cars.push_back(car);
                 }
 
-                // Get sorting parameters
-                string sortBy = x["sortBy"].s();
-                bool ascending = true;
-                if (x.has("order")) {
-                    ascending = (x["order"].s() != "desc");
-                }
-
                 // Sort the data
                 sortCars(cars, sortBy, ascending);
 
@@ -510,8 +518,8 @@ int main() {
                 }
 
                 // Return the sorted data
-                ifstream ifs("../../final_data2.json");
-                std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+                ifstream sorted_ifs("../../final_data2.json");
+                std::string json((std::istreambuf_iterator<char>(sorted_ifs)), std::istreambuf_iterator<char>());
                 res.write(json);
 
             } catch (const exception& e) {

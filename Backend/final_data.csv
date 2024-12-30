@@ -1,5 +1,4 @@
 Suzuki,Vitara,Female,51,Belgium,Antwerpen,51.2472392,4.4403455,Yellow,FALSE,19/07/2009,54806.14,200.9
-Honda,S2000,Male,30,China,Jinhu,33.025433,119.020584,Crimson,FALSE,26/10/2015,51826.3,158.5
 Toyota,Previa,Female,67,Brazil,Freguesia do Ribeirao da Ilha,-27.7203552,-48.563999,Violet,TRUE,02/03/2004,82844.12,135.4
 Lamborghini,Diablo,Male,38,Mexico,Providencia,32.458113,-116.9193767,Mauv,FALSE,28/02/2013,87311.9,245.1
 Land Rover,Defender,Female,34,Indonesia,Kedungharjo,-6.9731701,111.7227125,Blue,TRUE,05/02/2019,23915.86,244.3
@@ -10000,3 +9999,4 @@ Toyota,Camry,Male,35,USA,New York,40.7128,-74.006,Blue,TRUE,15/3/2023,25000,180
 Toyota,Camry,Male,35,USA,New York,40.7128,-74.006,Blue,TRUE,15/3/2023,25000,180
 Toyota,Camry,Male,35,USA,New York,40.7128,-74.006,Blue,TRUE,15/3/2023,25000,180
 Suzuki,Vitara,Female,51,Belgium,Antwerpen,51.5074,4.5,Yellow,FALSE,25/12/2023,54806.1,200.9
+Toyota,Corolla,Male,30,USA,New York,40.7128,-74.006,Red,TRUE,1/1/2020,21000,120
