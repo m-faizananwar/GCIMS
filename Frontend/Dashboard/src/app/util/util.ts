@@ -37,7 +37,7 @@ export const formatDateForInput = (date: Date): string => {
 
 export const fetchLocationData = async (lat: number, lng: number): Promise<any> => {
     var val
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
+    await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
         .then(res => {
             if (!res.ok) {
                 throw new Error("Could not get location")

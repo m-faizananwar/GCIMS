@@ -7,8 +7,11 @@
 
 using namespace std;
 
-const int LATITUDE_MAX = 14;
-const int LONGITUDE_MAX = 37;
+// const int LATITUDE_MAX = 14;
+// const int LONGITUDE_MAX = 37;
+
+const int LATITUDE_MAX = 180;
+const int LONGITUDE_MAX = 360;
 
 class Globe
 {
@@ -40,8 +43,11 @@ public:
     }
 
     void hash (int &longitude, int &latitude) {
-        latitude = static_cast<int>(latitude/10)+6;
-        longitude = static_cast<int>(longitude/10)+18;
+        // latitude = static_cast<int>(latitude/10)+6; // skip by 10 degrees
+        // longitude = static_cast<int>(longitude/10)+18;
+
+        latitude = static_cast<int>(latitude) + 90;
+        longitude = static_cast<int>(longitude) + 180;
     }
 
     void insertCar(Car* car) {

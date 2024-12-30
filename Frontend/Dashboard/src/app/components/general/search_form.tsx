@@ -91,8 +91,6 @@ const SearchForm = () => {
                 const latSq = latDiff * latDiff
                 const lngSq = lngDiff * lngDiff
                 const newRadius = Math.sqrt(latSq + lngSq)
-                
-                console.warn("Ran radius. Radius: ", newRadius.toString())
                 setRadius(newRadius)
             }
         } else {
@@ -138,7 +136,7 @@ const SearchForm = () => {
             newParams.delete('lng1')
         }
 
-        if (secondPos && searchBy === 'Map Area') {
+        if (secondPos) {
             newParams.set('lat2', secondPos.lat.toString())
             newParams.set('lng2', secondPos.lng.toString())
         } else {
