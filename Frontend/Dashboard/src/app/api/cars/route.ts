@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       JSON.stringify(data),
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     return new NextResponse(
       JSON.stringify({ error: error.message }),
       { status: 500 }
@@ -67,7 +67,7 @@ export async function PUT(request: NextRequest) {
           JSON.stringify(data),
           { status: 200 }
         );
-      } catch (error) {
+      } catch (error: any) {
         console.error(error)
         return new NextResponse(
           JSON.stringify({ error: error.message }),
