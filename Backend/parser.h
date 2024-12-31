@@ -121,3 +121,49 @@ void parseData(CarAVL<string> *carByMake, CarAVL<Date> *carByDate, CarAVL<Car> *
     jsonFile << "\n]\n";
     jsonFile.close();
 }
+
+void updateJsonFromCsv(const std::string& csvFilename, const std::string& jsonFilename) {
+    std::ifstream csvFile(csvFilename);
+    std::ofstream jsonFile(jsonFilename);
+    jsonFile << "[\n";
+    bool first = true;
+
+    std::string line;
+    while (std::getline(csvFile, line)) {
+        std::istringstream lineStream(line);
+        std::string field;
+        std::vector<std::string> fields;
+
+        while (std::getline(lineStream, field, ',')) {
+            fields.push_back(field);
+        }
+
+        if (!first) {
+            jsonFile << ",\n";
+        } else {
+            first = false;
+        }
+
+        jsonFile << "  {\n"
+                 << "    \"id\": \"" << fields[13] << "\",\n"
+                 << "    \"carName\": \"" << fields[0] << " " << fields[1] << "\",\n"
+                 << "    \"brand\": \"" << fields[0] << "\",\n"
+                 << "    \"model\": \"" << fields[1] << "\",\n"
+                 << "    \"price\": " << fields[11] << ",\n"
+                 << "    \"speed\": " << fields[12] << ",\n"
+                 << "    \"country\": \"" << fields[4] << "\",\n"
+                 << "    \"gender\": \"" << fields[2] << "\",\n"
+                 << "    \"new_car\": " << (fields[9] == "TRUE" ? "true" : "false") << ",\n"
+                 << "    \"buyer_age\": " << fields[3] << ",\n"
+                 << "    \"city\": \"" << fields[5] << "\",\n"
+                 << "    \"dealer_latitude\": " << fields[6] << ",\n"
+                 << "    \"dealer_longitude\": " << fields[7] << ",\n"
+                 << "    \"color\": \"" << fields[8] << "\",\n"
+                 << "    \"registration_date\": \"" << fields[10] << "\"\n"
+                 << "  }";
+    }
+
+    jsonFile << "\n]\n";
+    csvFile.close();
+    jsonFile.close();
+}

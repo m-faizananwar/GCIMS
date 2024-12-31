@@ -269,6 +269,7 @@ int main() {
             }
             res.end();
             // Remove the parsingData() call here
+            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
         });
 
     // Delete car endpoint
@@ -320,6 +321,7 @@ int main() {
             }
             res.end();
             // Remove parsingData() call from here
+            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
         });
 
     // Update car endpoint
@@ -455,6 +457,7 @@ int main() {
                 res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
             }
             res.end();
+            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
         });
 
     // Custom JSON sorting endpoint
