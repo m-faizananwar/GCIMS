@@ -9886,7 +9886,6 @@ Cadillac,Escalade,Male,60,China,Hongqiao,28.220406,121.038129,Mauv,FALSE,07/10/2
 Honda,CR-V,Male,50,Indonesia,Kalate,-8.5693726,118.6557911,Green,TRUE,29/06/2003,92647.5,120.1,9891
 GMC,Savana,Male,73,Russia,Kotel’niki,55.6271504,37.864193,Indigo,TRUE,16/04/2012,45528.18,245.1,9892
 Pontiac,Firebird,Male,51,Nigeria,Ndeaboh,6.0312787,7.5626411,Khaki,FALSE,24/10/2008,38346.14,244.2,9893
-Lexus,LX,Male,58,Nepal,Dailekh,28.9261863,81.647344,Purple,TRUE,01/03/2020,21686.61,193.1,9894
 Mazda,MX-5,Female,38,Bangladesh,Bogra,24.8435589,89.3701078,Mauv,FALSE,07/10/2003,91994.62,231.2,9895
 Plymouth,Voyager,Female,60,Iceland,Neskaupstaður,65.1474586,-13.6711979,Khaki,TRUE,29/04/2008,66760.66,180.8,9896
 Buick,Enclave,Male,42,China,Xinfeng,25.386379,114.922922,Green,FALSE,23/09/2019,76734.95,248.7,9897
@@ -9997,3 +9996,4 @@ Suzuki,Vitara,Female,51,Belgium,Antwerpen,51.5074,4.5,Yellow,FALSE,25/12/2023,54
 Toyota,Corolla,Male,30,USA,New York,40.7128,-74.006,Red,TRUE,1/1/2020,21000,120,10002
 Bugatti,Divo,Male,0,Pakistan,Islamabad Capital Territory,33.5625,73.1315,Orange,TRUE,31/12/2024,5.7e+06,380,10003
 Toyota,Yaris,Male,0,Pakistan,Islamabad Capital Territory,33.5624,73.1318,Pearl White,FALSE,13/11/2020,16150,210,10004
+Bugatti,Divo,Male,0,Pakistan,Islamabad Capital Territory,33.5625,73.1321,Orange,TRUE,1/1/2025,5.7e+06,380,10005

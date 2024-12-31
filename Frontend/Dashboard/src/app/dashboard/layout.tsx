@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react'
+import React from 'react'
 import DashboardSidebar from '../components/dashboard/sidebar'
 
 interface DashboardLayoutProps {
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
 const DashboardLayout : React.FC<DashboardLayoutProps> = ({ children }) => {
@@ -10,7 +10,7 @@ const DashboardLayout : React.FC<DashboardLayoutProps> = ({ children }) => {
     <div className="flex w-full h-full overflow-y-hidden mt-2">
         <div className="basis-1/5">
           <DashboardSidebar />
-        </div>
+        </div> 
         <div className="w-full shadow-md ml-2 bg-white rounded-tl-lg">{children}</div>
       </div>
   )

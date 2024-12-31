@@ -93,7 +93,7 @@ const CarListing = () => {
             model: car.model || "Unknown Model",
             price: car.price || "Unknown",
             speed: car.speed || "Unknown Speed",
-            location: car.location || "Unknown Location",
+            location: car.country || "Unknown Location",
             gender: car.gender || "Unknown",
             description: car.description || "No description available",
           };
