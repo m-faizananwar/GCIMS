@@ -16,7 +16,7 @@ const SearchForm = () => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const searchBy = searchParams.get('sb')
+    const searchBy = searchParams.get('sb') || 'Name'
 
     const country = searchParams.get('c')
 
@@ -218,7 +218,8 @@ const SearchForm = () => {
                         position={firstPos ? [firstPos.lat, firstPos.lng] : undefined}
                         position2={secondPos ? [secondPos.lat, secondPos.lng] : undefined}
                         onClick={mapOnClick}
-                        radius={searchBy === 'Map Radius'} />
+                        radius={searchBy === 'Map Radius'}
+                        defaultZoom={10} />
                 }
             </div>
 

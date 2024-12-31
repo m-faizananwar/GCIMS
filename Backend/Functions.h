@@ -11,26 +11,26 @@
 using namespace std;
 
 // Forward declarations
-bool carExists(const string& make, const string& model, const Date& date);
-void updateCarInCSV(const Car* oldCar, const Car* newCar);
-void deleteFromCSV(const string& make, const string& model, const Date& date);
-void appendToCSV(const Car* car);
-void openCSVForAppend(ofstream& csvFile);
-void closeCSV(ofstream& csvFile);
-void sortCars(std::vector<Car*>& cars, const std::string& sortKey, bool ascending);
+bool carExists(const string &make, const string &model, const Date &date);
+void updateCarInCSV(const Car *oldCar, const Car *newCar);
+void deleteFromCSV(const string &make, const string &model, const Date &date);
+void appendToCSV(const Car *car);
+void openCSVForAppend(ofstream &csvFile);
+void closeCSV(ofstream &csvFile);
+void sortCars(std::vector<Car *> &cars, const std::string &sortKey, bool ascending);
 
 // AVL trees for each of the three attributes
-CarAVL <Car> * carsByMakeAndModel = new CarAVL<Car>();
-CarAVL <Date> * carsByDate = new CarAVL<Date>();
-CarAVL <string> * carsByMake = new CarAVL<string>();
-CarTAVL <string> * carsByCountry = new CarTAVL<string>();
+CarAVL<Car> *carsByMakeAndModel = new CarAVL<Car>();
+CarAVL<Date> *carsByDate = new CarAVL<Date>();
+CarAVL<string> *carsByMake = new CarAVL<string>();
+CarTAVL<string> *carsByCountry = new CarTAVL<string>();
 
 // Hash table for the country attribute
-HashTable <int>* carsByAge = new HashTable<int>(75, "age");
-HashTable <float>* carsByPrice = new HashTable<float>(150, "price");
+HashTable<int> *carsByAge = new HashTable<int>(75, "age");
+HashTable<float> *carsByPrice = new HashTable<float>(150, "price");
 
 // Hash matrix for the location attribute
-Globe * globe = new Globe();
+Globe *globe = new Globe();
 
 void parsingData()
 {
@@ -117,73 +117,95 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
         static_cast<int>(longitude1),
         static_cast<int>(latitude1),
         static_cast<int>(longitude2),
-        static_cast<int>(latitude2)
-    );
+        static_cast<int>(latitude2));
 }
 
-void rewriteJsonSortedByKey(const std::string& key, bool ascending)
+void rewriteJsonSortedByKey(const std::string &key, bool ascending)
 {
     ofstream jsonFile("../../final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 
-    auto writeCarToJson = [&](Car* car) {
-        if (!firstEntry) {
+    auto writeCarToJson = [&](Car *car)
+    {
+        if (!firstEntry)
+        {
             jsonFile << ",\n";
-        } else {
+        }
+        else
+        {
             firstEntry = false;
         }
         jsonFile << "  {\n"
-         << "    \"id\": \"" << car->id << "\",\n"
-         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
-         << "    \"brand\": \""  << car->model << "\",\n"
-         << "    \"model\": \"" << car->model << "\",\n"
-         << "    \"price\": " << car->sale_price << ",\n"
-         << "    \"speed\": " << car->top_speed << ",\n"
-         << "    \"location\": \"" << car->country << "\",\n"
-         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
-         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-         << "    \"buyer_age\": " << car->buyer_age << ",\n"
-         << "    \"city\": \"" << car->city << "\",\n"
-         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-         << "    \"color\": \"" << car->color << "\"\n"
-         << "  }";
-
+                 << "    \"id\": \"" << car->id << "\",\n"
+                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+                 << "    \"brand\": \"" << car->model << "\",\n"
+                 << "    \"model\": \"" << car->model << "\",\n"
+                 << "    \"price\": " << car->sale_price << ",\n"
+                 << "    \"speed\": " << car->top_speed << ",\n"
+                 << "    \"location\": \"" << car->country << "\",\n"
+                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    \"buyer_age\": " << car->buyer_age << ",\n"
+                 << "    \"city\": \"" << car->city << "\",\n"
+                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+                 << "    \"color\": \"" << car->color << "\"\n"
+                 << "  }";
     };
 
-    if (key == "make") {
-        if (ascending) {
+    if (key == "make")
+    {
+        if (ascending)
+        {
             carsByMake->printInOrder(writeCarToJson);
-        } else {
+        }
+        else
+        {
             carsByMake->printInReverseOrder(writeCarToJson);
         }
     }
-    else if (key == "make_and_model") {
-        if (ascending) {
+    else if (key == "make_and_model")
+    {
+        if (ascending)
+        {
             carsByMakeAndModel->printInOrder(writeCarToJson);
-        } else {
+        }
+        else
+        {
             carsByMakeAndModel->printInReverseOrder(writeCarToJson);
         }
     }
-    else if (key == "age") {
-        if (ascending) {
+    else if (key == "age")
+    {
+        if (ascending)
+        {
             carsByAge->sortedPrint(writeCarToJson);
-        } else {
+        }
+        else
+        {
             carsByAge->reversePrint(writeCarToJson);
         }
     }
-    else if (key == "date") {
-        if (ascending) {
+    else if (key == "date")
+    {
+        if (ascending)
+        {
             carsByDate->printInOrder(writeCarToJson);
-        } else {
+        }
+        else
+        {
             carsByDate->printInReverseOrder(writeCarToJson);
         }
     }
-    else if (key == "price") {
-        if (ascending) {
+    else if (key == "price")
+    {
+        if (ascending)
+        {
             carsByPrice->sortedPrint(writeCarToJson);
-        } else {
+        }
+        else
+        {
             carsByPrice->reversePrint(writeCarToJson);
         }
     }
@@ -192,65 +214,78 @@ void rewriteJsonSortedByKey(const std::string& key, bool ascending)
     jsonFile.close();
 }
 
-void rewriteJsonWithSearchResults(const std::vector<Car*>& cars) {
+void rewriteJsonWithSearchResults(const std::vector<Car *> &cars)
+{
     ofstream jsonFile("../../final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 
-    for (const auto& car : cars) {
-        if (!firstEntry) {
+    for (const auto &car : cars)
+    {
+        if (!firstEntry)
+        {
             jsonFile << ",\n";
-        } else {
+        }
+        else
+        {
             firstEntry = false;
         }
-        
-      jsonFile << "  {\n"
-         << "    \"id\": \"" << car->id << "\",\n"
-         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
-         << "    \"brand\": \""  << car->make << "\",\n"
-         << "    \"model\": \"" << car->model << "\",\n"
-         << "    \"price\": " << car->sale_price << ",\n"
-         << "    \"speed\": " << car->top_speed << ",\n"
-         << "    \"country\": \"" << car->country << "\",\n"
-         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
-         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-         << "    \"age\": " << car->buyer_age << ",\n"
-         << "    \"city\": \"" << car->city << "\",\n"
-         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-         << "    \"color\": \"" << car->color << "\",\n"
-         << "    \"registration_date\": \"" << car->purchase_date << "\"\n"
-         << "  }";          }
+
+        jsonFile << "  {\n"
+                 << "    \"id\": \"" << car->id << "\",\n"
+                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+                 << "    \"brand\": \"" << car->make << "\",\n"
+                 << "    \"model\": \"" << car->model << "\",\n"
+                 << "    \"price\": " << car->sale_price << ",\n"
+                 << "    \"speed\": " << car->top_speed << ",\n"
+                 << "    \"country\": \"" << car->country << "\",\n"
+                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    \"age\": " << car->buyer_age << ",\n"
+                 << "    \"city\": \"" << car->city << "\",\n"
+                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+                 << "    \"color\": \"" << car->color << "\",\n"
+                 << "    \"registration_date\": \"" << car->purchase_date << "\"\n"
+                 << "  }";
+    }
 
     jsonFile << "\n]\n";
     jsonFile.close();
 }
 
-std::vector<Car*> findCarsByName(const std::string& name) {
-    std::vector<Car*> results;
-    if (carsByMake->search(name)) {
+std::vector<Car *> findCarsByName(const std::string &name)
+{
+    std::vector<Car *> results;
+    if (carsByMake->search(name))
+    {
         auto node = carsByMake->search(name);
         results.push_back(node->car);
     }
     return results;
 }
 
-std::vector<Car*> findCarsByDateRange(const Date& start, const Date& end) {
-    std::vector<Car*> results;
+std::vector<Car *> findCarsByDateRange(const Date &start, const Date &end)
+{
+    std::vector<Car *> results;
     carsByDate->collectInRange(carsByDate->root, start, end, results);
     return results;
 }
 
-std::vector<Car*> findCarsByPriceRange(float minPrice, float maxPrice) {
-    std::vector<Car*> results;
+std::vector<Car *> findCarsByPriceRange(float minPrice, float maxPrice)
+{
+    std::vector<Car *> results;
     carsByPrice->collectInRange(minPrice, maxPrice, results);
     return results;
 }
 
-std::vector<Car*> findCarsByCountry(const std::string& country) {
-    std::vector<Car*> results;
-    if (auto node = carsByCountry->search(country)) {
-        while (node) {
+std::vector<Car *> findCarsByCountry(const std::string &country)
+{
+    std::vector<Car *> results;
+    if (auto node = carsByCountry->search(country))
+    {
+        while (node)
+        {
             results.push_back(node->car);
             node = node->next;
         }
@@ -258,16 +293,20 @@ std::vector<Car*> findCarsByCountry(const std::string& country) {
     return results;
 }
 
-std::vector<Car*> searchCars(const std::string& name, const std::string& model, const std::string& country, float minPrice, float maxPrice) {
-    std::vector<Car*> results;
-    for (auto head : carsByPrice->getTable()) {
+std::vector<Car *> searchCars(const std::string &name, const std::string &model, const std::string &country, float minPrice, float maxPrice)
+{
+    std::vector<Car *> results;
+    for (auto head : carsByPrice->getTable())
+    {
         auto current = head;
-        while (current) {
-            Car* car = current->car;
+        while (current)
+        {
+            Car *car = current->car;
             if ((name.empty() || car->make == name) &&
                 (model.empty() || car->model == model) &&
                 (country.empty() || car->country == country) &&
-                (car->sale_price >= minPrice && car->sale_price <= maxPrice)) {
+                (car->sale_price >= minPrice && car->sale_price <= maxPrice))
+            {
                 results.push_back(car);
             }
             current = current->next;
@@ -277,21 +316,25 @@ std::vector<Car*> searchCars(const std::string& name, const std::string& model, 
 }
 
 // CSV file handling functions
-void openCSVForAppend(ofstream& csvFile) {
+void openCSVForAppend(ofstream &csvFile)
+{
     csvFile.open("../../final_data.csv", ios::app);
-    if (!csvFile.is_open()) {
+    if (!csvFile.is_open())
+    {
         throw runtime_error("Cannot open CSV file for appending");
     }
 }
 
-void closeCSV(ofstream& csvFile) {
+void closeCSV(ofstream &csvFile)
+{
     csvFile.close();
 }
 
-void appendToCSV(const Car* car) {
+void appendToCSV(const Car *car)
+{
     ofstream csvFile;
     openCSVForAppend(csvFile);
-    
+
     csvFile << car->make << ","
             << car->model << ","
             << car->buyer_gender << ","
@@ -307,91 +350,108 @@ void appendToCSV(const Car* car) {
             << car->purchase_date.year << ","
             << car->sale_price << ","
             << car->top_speed << endl;
-    
+
     closeCSV(csvFile);
 }
 
 // Function to delete a line from CSV
-void deleteFromCSV(const string& make, const string& model, const Date& date) {
+void deleteFromCSV(const string &make, const string &model, const Date &date)
+{
     ifstream inFile("../../final_data.csv");
-    if (!inFile.is_open()) {
+    if (!inFile.is_open())
+    {
         throw runtime_error("Cannot open CSV file for reading");
     }
 
     ofstream tempFile("../../temp.csv");
-    if (!tempFile.is_open()) {
+    if (!tempFile.is_open())
+    {
         inFile.close();
         throw runtime_error("Cannot create temporary file");
     }
-    
+
     string line;
     bool found = false;
-    
+
     // Copy header if exists
-    if (getline(inFile, line)) {
+    if (getline(inFile, line))
+    {
         tempFile << line << endl;
     }
-    
+
     // Process remaining lines
-    while (getline(inFile, line)) {
+    while (getline(inFile, line))
+    {
         istringstream ss(line);
         string field;
         vector<string> fields;
-        
-        while (getline(ss, field, ',')) {
+
+        while (getline(ss, field, ','))
+        {
             fields.push_back(field);
         }
-        
-        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
+
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model)
+        {
             Date lineDate(fields[10]);
-            if (lineDate == date) {
+            if (lineDate == date)
+            {
                 found = true;
                 continue; // Skip this line
             }
         }
         tempFile << line << endl;
     }
-    
+
     inFile.close();
     tempFile.close();
-    
-    if (!found) {
+
+    if (!found)
+    {
         remove("../../temp.csv");
         throw runtime_error("Record not found");
     }
-    
+
     // On Windows, we need to ensure the original file is closed before removing
-    if (remove("../../final_data.csv") != 0) {
+    if (remove("../../final_data.csv") != 0)
+    {
         throw runtime_error("Could not remove original file");
     }
-    
-    if (rename("../../temp.csv", "../../final_data.csv") != 0) {
+
+    if (rename("../../temp.csv", "../../final_data.csv") != 0)
+    {
         throw runtime_error("Could not rename temporary file");
     }
 }
 
-bool carExists(const string& make, const string& model, const Date& date) {
+bool carExists(const string &make, const string &model, const Date &date)
+{
     ifstream inFile("../../final_data.csv");
-    if (!inFile.is_open()) {
+    if (!inFile.is_open())
+    {
         throw runtime_error("Cannot open CSV file for reading");
     }
-    
+
     string line;
     // Skip header
     getline(inFile, line);
-    
-    while (getline(inFile, line)) {
+
+    while (getline(inFile, line))
+    {
         istringstream ss(line);
         string field;
         vector<string> fields;
-        
-        while (getline(ss, field, ',')) {
+
+        while (getline(ss, field, ','))
+        {
             fields.push_back(field);
         }
-        
-        if (fields.size() >= 11 && fields[0] == make && fields[1] == model) {
+
+        if (fields.size() >= 11 && fields[0] == make && fields[1] == model)
+        {
             Date lineDate(fields[10]);
-            if (lineDate == date) {
+            if (lineDate == date)
+            {
                 inFile.close();
                 return true;
             }
@@ -401,18 +461,23 @@ bool carExists(const string& make, const string& model, const Date& date) {
     return false;
 }
 
-void updateCarInCSV(const Car* oldCar, const Car* newCar) {
+void updateCarInCSV(const Car *oldCar, const Car *newCar)
+{
     // First delete the old entry
-    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);   
+    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);
     appendToCSV(newCar);
 }
 
-Car* findCarByID(const std::string& id) {
+Car *findCarByID(const std::string &id)
+{
     // Example: scan through carsByPrice->getTable() until a matching ID is found
-    for (auto head : carsByPrice->getTable()) {
+    for (auto head : carsByPrice->getTable())
+    {
         auto current = head;
-        while (current) {
-            if (current->car->id == id) {
+        while (current)
+        {
+            if (current->car->id == id)
+            {
                 return current->car;
             }
             current = current->next;
@@ -421,13 +486,16 @@ Car* findCarByID(const std::string& id) {
     return nullptr; // Not found
 }
 
-void deleteFromCSVByID(const std::string& id) {
+void deleteFromCSVByID(const std::string &id)
+{
     ifstream inFile("../../final_data.csv");
-    if (!inFile.is_open()) {
+    if (!inFile.is_open())
+    {
         throw runtime_error("Cannot open CSV file for reading");
     }
     ofstream tempFile("../../temp.csv");
-    if (!tempFile.is_open()) {
+    if (!tempFile.is_open())
+    {
         inFile.close();
         throw runtime_error("Cannot create temporary file");
     }
@@ -436,22 +504,27 @@ void deleteFromCSVByID(const std::string& id) {
     bool found = false;
 
     // (Optional) Copy header
-    if (getline(inFile, line)) {
+    if (getline(inFile, line))
+    {
         tempFile << line << "\n";
     }
 
-    while (getline(inFile, line)) {
+    while (getline(inFile, line))
+    {
         // Split line into fields
         istringstream ss(line);
         vector<string> fields;
         string field;
-        while (getline(ss, field, ',')) {
+        while (getline(ss, field, ','))
+        {
             fields.push_back(field);
         }
         // Reconstruct the ID: make + model + price
-        if (fields.size() >= 12) {
+        if (fields.size() >= 12)
+        {
             string generatedID = fields[0] + fields[1] + fields[11];
-            if (generatedID == id) {
+            if (generatedID == id)
+            {
                 found = true;
                 continue; // Skip this record
             }
@@ -463,7 +536,8 @@ void deleteFromCSVByID(const std::string& id) {
     inFile.close();
     tempFile.close();
 
-    if (!found) {
+    if (!found)
+    {
         remove("../../temp.csv");
         throw runtime_error("Record not found");
     }
@@ -471,33 +545,35 @@ void deleteFromCSVByID(const std::string& id) {
     rename("../../temp.csv", "../../final_data.csv");
 }
 
-void sortCars(std::vector<Car*>& cars, const std::string& sortKey, bool ascending) {
-    if (sortKey == "make") {
-        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
-            return ascending ? (a->make < b->make) : (a->make > b->make);
-        });
-    } 
-    else if (sortKey == "make_and_model") {
-        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
+void sortCars(std::vector<Car *> &cars, const std::string &sortKey, bool ascending)
+{
+    if (sortKey == "make")
+    {
+        std::sort(cars.begin(), cars.end(), [ascending](Car *a, Car *b)
+                  { return ascending ? (a->make < b->make) : (a->make > b->make); });
+    }
+    else if (sortKey == "make_and_model")
+    {
+        std::sort(cars.begin(), cars.end(), [ascending](Car *a, Car *b)
+                  {
             if (a->make == b->make) {
                 return ascending ? (a->model < b->model) : (a->model > b->model);
             }
-            return ascending ? (a->make < b->make) : (a->make > b->make);
-        });
+            return ascending ? (a->make < b->make) : (a->make > b->make); });
     }
-    else if (sortKey == "age") {
-        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
-            return ascending ? (a->buyer_age < b->buyer_age) : (a->buyer_age > b->buyer_age);
-        });
+    else if (sortKey == "age")
+    {
+        std::sort(cars.begin(), cars.end(), [ascending](Car *a, Car *b)
+                  { return ascending ? (a->buyer_age < b->buyer_age) : (a->buyer_age > b->buyer_age); });
     }
-    else if (sortKey == "date") {
-        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
-            return ascending ? (a->purchase_date < b->purchase_date) : (a->purchase_date > b->purchase_date);
-        });
+    else if (sortKey == "date")
+    {
+        std::sort(cars.begin(), cars.end(), [ascending](Car *a, Car *b)
+                  { return ascending ? (a->purchase_date < b->purchase_date) : (a->purchase_date > b->purchase_date); });
     }
-    else if (sortKey == "price") {
-        std::sort(cars.begin(), cars.end(), [ascending](Car* a, Car* b) {
-            return ascending ? (a->sale_price < b->sale_price) : (a->sale_price > b->sale_price);
-        });
+    else if (sortKey == "price")
+    {
+        std::sort(cars.begin(), cars.end(), [ascending](Car *a, Car *b)
+                  { return ascending ? (a->sale_price < b->sale_price) : (a->sale_price > b->sale_price); });
     }
 }
