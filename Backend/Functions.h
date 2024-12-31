@@ -505,12 +505,6 @@ void deleteFromCSVByID(const std::string &id)
     string line;
     bool found = false;
 
-    // (Optional) Copy header
-    if (getline(inFile, line))
-    {
-        tempFile << line << "\n";
-    }
-
     while (getline(inFile, line))
     {
         // Split line into fields
