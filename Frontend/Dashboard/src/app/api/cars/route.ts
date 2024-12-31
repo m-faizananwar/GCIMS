@@ -2,6 +2,35 @@
 import { SERVER_URL } from '@/app/constants/consts';
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET(request: NextRequest) {
+  try {
+    const reqUrl = request.nextUrl.searchParams.get('link')
+
+    if (!reqUrl) throw new Error("No link provided!")
+    
+    const decodedUrl = decodeURIComponent(reqUrl)
+
+    const res = await fetch(decodedUrl);
+
+    if (!res.ok) {
+      throw new Error((await res.json()).error);
+    }
+
+    const data = await res.json();
+
+    return new NextResponse(
+      JSON.stringify(data),
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error(error.message)
+    return new NextResponse(
+      JSON.stringify({ error: error.message }),
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const car = await request.json();
@@ -13,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const res = await fetch('http://localhost:8080/cars/add', {
+    const res = await fetch(`${SERVER_URL}/cars/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +51,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!res.ok) {
-      throw new Error(await res.json());
+      throw new Error((await res.json()).error);
     }
 
     const data = await res.json();
@@ -32,6 +61,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
+    console.error(error.message)
     return new NextResponse(
       JSON.stringify({ error: error.message }),
       { status: 500 }
@@ -50,7 +80,7 @@ export async function PUT(request: NextRequest) {
           );
         }
     
-        const res = await fetch('http://localhost:8080/cars/update', {
+        const res = await fetch(`${SERVER_URL}/cars/update`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -59,7 +89,7 @@ export async function PUT(request: NextRequest) {
         });
     
         if (!res.ok) {
-          throw new Error('Failed to update data');
+          throw new Error((await res.json()).error);
         }
     
         const data = await res.json();
@@ -69,7 +99,7 @@ export async function PUT(request: NextRequest) {
           { status: 200 }
         );
       } catch (error: any) {
-        console.error(error)
+        console.error(error.message)
         return new NextResponse(
           JSON.stringify({ error: error.message }),
           { status: 500 }

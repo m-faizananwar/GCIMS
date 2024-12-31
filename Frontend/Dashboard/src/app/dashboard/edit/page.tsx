@@ -73,7 +73,7 @@ const EditCar = () => {
             brand: car ? car.brand : brand.toString().capitalizeFirstLetter(),
             model: car ? car.model : model.toString().capitalizeFirstLetter(),
             gender: "Male",
-            age: age,
+            buyer_age: age,
             country: country.toString().capitalizeFirstLetter(),
             city: city.toString().capitalizeFirstLetter(),
             dealer_latitude: latitude,
@@ -86,8 +86,6 @@ const EditCar = () => {
             new_make: brand.toString().capitalizeFirstLetter(),
             new_model: model.toString().capitalizeFirstLetter(),
         }
-
-        console.log("Update/Add CarData: ", JSON.stringify(carData))
 
         if (car) {
             setLoading(true)
@@ -127,12 +125,14 @@ const EditCar = () => {
             )
                 .then(res => {
                     if (!res.ok)
-                        throw new Error('Failed to post data!')
-                    return res.json()
+                        res.json().then((error) => { throw new Error(error.error) })
+                    else return res.json()
                 })
                 .then(data => {
-                    setLoading(false)
-                    router.replace('/dashboard')
+                    if (data) {
+                        setLoading(false)
+                        router.replace('/dashboard')
+                    }
                 })
                 .catch(e => {
                     setLoading(false)
@@ -144,9 +144,7 @@ const EditCar = () => {
 
     const handleOnDeleteClick = () => {
         if (car) {
-            console.log("Car: ", car)
             var carData = parseJson(car)
-            console.log("CarData: ", carData)
             setLoading(true)
             fetch(
                 "/api/cars",
@@ -160,12 +158,14 @@ const EditCar = () => {
             )
                 .then(res => {
                     if (!res.ok)
-                        throw new Error('Failed to delete data!')
-                    return res.json()
+                        res.json().then((error) => { throw new Error(error.error) })
+                    else return res.json()
                 })
                 .then(data => {
-                    setLoading(false)
-                    router.replace('/dashboard')
+                    if (data) {
+                        setLoading(false)
+                        router.replace('/dashboard')
+                    }
                 })
                 .catch(e => {
                     setLoading(false)

@@ -64,31 +64,35 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
             url = `${SERVER_URL}/cars/search/rectangle?lat1=${params.lat1}&lng1=${params.lng1}&lat2=${params.lat2}&lng2=${params.lng2}`
         else if (params.searchBy === 'Map Radius' && params.lat1 && params.lng1 && params.radius)
             url = `${SERVER_URL}/cars/search/radius?lat=${params.lat1}&lng=${params.lng1}&radius=${params.radius}`
-        fetch(url)
+
+        fetch(`/api/cars?link=${encodeURIComponent(url)}`)
             .then(res => {
                 if (!res.ok)
-                    console.error("Error in receiving data")
+                    res.json().then((error) => { throw new Error(error.error) })
 
-                return res.json()
+                else return res.json()
             }).then(data => {
-                var finalCars: Car[] = data.map((car: unknown) => parseCar(car))
+                if (data) {
+                    var finalCars: Car[] = data?.map((car: unknown) => parseCar(car))
 
-                if (params.sortBy && params.sortOrder) {
-                    const newUrl = `${SERVER_URL}/sort?sortBy=${params.sortBy}&order=${params.sortOrder}`
-                    fetch(newUrl).then(res => {
-                        if (!res.ok) console.error("Error in receiving data")
-
-                        return res.json()
-                    }).then(data => {
-                        finalCars = data.map((car: unknown) => parseCar(car))
+                    if (params.sortBy && params.sortOrder) {
+                        const newUrl = `${SERVER_URL}/sort?sortBy=${params.sortBy}&order=${params.sortOrder}`
+                        fetch(`/api/cars?link=${encodeURIComponent(newUrl)}`).then(res => {
+                            if (!res.ok)
+                                res.json().then((error) => { throw new Error(error.error) })
+                            else return res.json()
+                        }).then(data => {
+                            if (data) {
+                                finalCars = data.map((car: unknown) => parseCar(car))
+                                setCars(finalCars)
+                                setLoading(false)
+                            }
+                        })
+                    } else {
                         setCars(finalCars)
                         setLoading(false)
-                    })
-                } else {
-                    setCars(finalCars)
-                    setLoading(false)
+                    }
                 }
-
             })
             .catch(e => console.log(e))
     }, [searchParams])

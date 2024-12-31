@@ -28,7 +28,7 @@ export const parseJson = (car: Car) : string => {
         brand: car.brand,
         model: car.model,
         gender: car.gender,
-        age: car.age,
+        buyer_age: car.age,
         country: car.country,
         city: car.city,
         dealer_latitude: car.dealerLatitude,

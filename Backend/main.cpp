@@ -237,7 +237,7 @@ int main() {
                 newCar->make = x["brand"].s();
                 newCar->model = x["model"].s();
                 newCar->buyer_gender = x["gender"].s();
-                newCar->buyer_age = x["age"].i();
+                newCar->buyer_age = x["buyer_age"].i();
                 newCar->country = x["country"].s();
                 newCar->city = x["city"].s();
                 newCar->dealer_latitude = x["dealer_latitude"].d();
@@ -362,7 +362,7 @@ int main() {
                     newCar->make = x["new_make"].s();
                     newCar->model = x["new_model"].s();
                     newCar->buyer_gender = x["gender"].s();
-                    newCar->buyer_age = x["age"].i();
+                    newCar->buyer_age = x["buyer_age"].i();
                     newCar->country = x["country"].s();
                     newCar->city = x["city"].s();
                     newCar->dealer_latitude = x["dealer_latitude"].d();
@@ -423,7 +423,7 @@ int main() {
                     newCar->make = x["new_make"].s();
                     newCar->model = x["new_model"].s();
                     newCar->buyer_gender = x["gender"].s();
-                    newCar->buyer_age = x["age"].i();
+                    newCar->buyer_age = x["buyer_age"].i();
                     newCar->country = x["country"].s();
                     newCar->city = x["city"].s();
                     newCar->dealer_latitude = x["dealer_latitude"].d();
@@ -490,10 +490,11 @@ int main() {
                 vector<Car*> cars;
                 for (const auto& item : json_data) {
                     Car* car = new Car();
+                    car->id = item["id"].s();
                     car->make = item["brand"].s();
                     car->model = item["model"].s();
                     car->buyer_gender = item["gender"].s();
-                    car->buyer_age = item["age"].i();
+                    car->buyer_age = item["buyer_age"].i();
                     car->country = item["country"].s();
                     car->city = item["city"].s();
                     car->dealer_latitude = item["dealer_latitude"].d();
