@@ -3,11 +3,11 @@ import CustomButton from '@/app/components/general/custom_button'
 import { ClickableMap } from '@/app/components/general/map/map'
 import TextInput from '@/app/components/general/text_input'
 import { Car } from '@/app/interfaces/datatypes'
-import { fetchLocationData, formatDateForInput, parseDate } from '@/app/util/util'
+import { fetchLocationData, formatDateForInput, parseDate, parseJson } from '@/app/util/util'
 import Form from 'next/form'
 import { redirect, RedirectType, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { FaSave } from 'react-icons/fa'
+import { FaSave, FaTrash } from 'react-icons/fa'
 import { HashLoader } from 'react-spinners'
 
 // Brand, Model, *GENDER*, *REG DATE*, etc.
@@ -16,7 +16,7 @@ const EditCar = () => {
     const searchParams = useSearchParams()
     const router = useRouter()
 
-    const car = searchParams.get('car') ? JSON.parse(decodeURIComponent(searchParams.get('car') as string)) : undefined
+    const car = searchParams.get('car') ? (JSON.parse(decodeURIComponent(searchParams.get('car') as string))) : undefined
 
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -68,30 +68,29 @@ const EditCar = () => {
     }
 
     const onFormSubmit = () => {
-        console.log("Pre-Format:", regDate, "Post-Format", `${regDate?.getDate()}-${regDate?.getMonth() + 1}-${regDate?.getFullYear()}`)
-
         var carData = {
             ...(car && { id: car.id }),
-            brand: car ? car.brand : brand,
-            model: car ? car.model : model,
+            brand: car ? car.brand : brand.toString().capitalizeFirstLetter(),
+            model: car ? car.model : model.toString().capitalizeFirstLetter(),
             gender: "Male",
             age: age,
-            country: country,
-            city: city,
+            country: country.toString().capitalizeFirstLetter(),
+            city: city.toString().capitalizeFirstLetter(),
             dealer_latitude: latitude,
             dealer_longitude: longitude,
-            color: color,
+            color: color.toString().capitalizeFirstLetter(),
             new_car: newCar,
             registration_date: `${regDate?.getDate().toString().padStart(2, '0')}-${(regDate?.getMonth() + 1).toString().padStart(2, '0')}-${regDate?.getFullYear().toString().padStart(4, '0')}`,
             price: Number(price),
             speed: Number(speed),
-            new_make: brand,
-            new_model: model,
+            new_make: brand.toString().capitalizeFirstLetter(),
+            new_model: model.toString().capitalizeFirstLetter(),
         }
+
+        console.log("Update/Add CarData: ", JSON.stringify(carData))
 
         if (car) {
             setLoading(true)
-            console.warn("Updated Data:", JSON.stringify(carData))
             fetch(
                 '/api/cars',
                 {
@@ -129,6 +128,39 @@ const EditCar = () => {
                 .then(res => {
                     if (!res.ok)
                         throw new Error('Failed to post data!')
+                    return res.json()
+                })
+                .then(data => {
+                    setLoading(false)
+                    router.replace('/dashboard')
+                })
+                .catch(e => {
+                    setLoading(false)
+                    console.error(e)
+                    setError(`Error: ${e.message}`)
+                })
+        }
+    }
+
+    const handleOnDeleteClick = () => {
+        if (car) {
+            console.log("Car: ", car)
+            var carData = parseJson(car)
+            console.log("CarData: ", carData)
+            setLoading(true)
+            fetch(
+                "/api/cars",
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: carData,
+                }
+            )
+                .then(res => {
+                    if (!res.ok)
+                        throw new Error('Failed to delete data!')
                     return res.json()
                 })
                 .then(data => {
@@ -241,13 +273,23 @@ const EditCar = () => {
                 />
             </div>
 
-            <CustomButton
-                additionalClass='bg-green-500 text-white'
-                type='submit'
-            >
-                <FaSave />
-                Save
-            </CustomButton>
+            <div className={`w-full flex ${car ? `justify-between` : 'justify-end'} gap-3`}>
+                {car && <CustomButton
+                    additionalClass='bg-red-500 text-white basis-2/12'
+                    onClick={handleOnDeleteClick}
+                >
+                    <FaTrash />
+                    Delete
+                </CustomButton>}
+                <CustomButton
+                    additionalClass='bg-green-500 text-white basis-2/12'
+                    type='submit'
+                >
+                    <FaSave />
+                    Save
+                </CustomButton>
+            </div>
+
         </Form>
     )
 }

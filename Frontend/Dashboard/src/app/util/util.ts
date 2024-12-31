@@ -21,6 +21,26 @@ export const parseCar = (input: any) => {
     } as Car
 }
 
+export const parseJson = (car: Car) : string => {
+    const newDate = parseDate(car.registrationDate.toString(), 2)
+    return JSON.stringify({
+        id: car.id,
+        brand: car.brand,
+        model: car.model,
+        gender: car.gender,
+        age: car.age,
+        country: car.country,
+        city: car.city,
+        dealer_latitude: car.dealerLatitude,
+        dealer_longitude: car.dealerLongitude,
+        color: car.color,
+        new_car: car.newCar,
+        registration_date: `${ newDate.getDate().toString().padStart(2, '0')}-${(newDate.getMonth() + 1).toString().padStart(2, '0')}-${newDate.getFullYear().toString().padStart(4, '0')}`,
+        price: car.price,
+        speed: car.speed,
+    })
+}
+
 export const parseDate = (input: string, type: number): Date => {
     const date = input.split('-').map(Number)
     const val = type === 2 ? new Date(date[2], date[1] - 1, date[0])

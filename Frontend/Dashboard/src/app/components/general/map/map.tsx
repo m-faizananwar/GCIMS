@@ -36,7 +36,7 @@ const Map: React.FC<MapProps> = ({ position, zoom }) => {
     }
     return (
         <div className="h-full w-full">
-            <MapContainer center={position} zoom={zoom} scrollWheelZoom={false} style={{ height: '100%', width: '100%', borderRadius: '0.75 rem' }}>
+            <MapContainer center={position} zoom={zoom || 13} scrollWheelZoom={false} style={{ height: '100%', width: '100%', borderRadius: '0.75 rem' }}>
                 <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={position} riseOnHover={true}>
                 </Marker>
@@ -94,7 +94,7 @@ export const ClickableMap: React.FC<ClickableMapProps> = ({ onClick, center: def
     }
 
     return (
-        <MapContainer center={center || [51.505, -0.09]} zoom={defaultZoom || 13} style={{ height: '100%', width: '100%', borderRadius: '0.75rem' }}>
+        <MapContainer center={center || [51.505, -0.09]} zoom={defaultZoom || 13} style={{ height: '100%', width: '100%', borderRadius: '0.375rem' }}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -111,14 +111,8 @@ interface MapSearchProps extends ClickableMapProps {
 }
 
 export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCenter, defaultZoom, position: firstPos, position2: secondPos, radius: givenRadius }) => {
-
-    const router = useRouter()              // TODO: Implement functionality
-    const pathname = usePathname()          // TODO: Implement functionality
-    const searchParams = useSearchParams()  // TODO: Implement functionality
-
     const customMarkerIcon = L.divIcon({
         className: 'w-full h-full rounded-full bg-secondary outline outline-2 outline-black hover:bg-black',
-        // html: '<div style="background-color: #E6A22A;  width: 10px; height: 10px; border-radius: 50%"></div>',
         html: '<div></div>',
         iconSize: [10, 10],
         iconAnchor: [5, 5]
@@ -170,22 +164,23 @@ export const MapSearch: React.FC<MapSearchProps> = ({ onClick, center: defaultCe
     }
 
     const bounds = (firstPosition && secondPosition && !radius) ? [firstPosition, secondPosition] : undefined
-    
+
     return (
-        <div className="w-full flex flex-col gap-6 items-center">
-            <div className="w-full h-[400px] flex gap-3 items-center">
-                <MapContainer center={center || [51.505, -0.09]} zoom={defaultZoom || 13} style={{ height: '100%', width: '100%', borderRadius: '0.75rem' }}>
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    {!radius && bounds && <Rectangle bounds={bounds} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
-                    {firstPosition && secondPosition && radius && <Circle center={new LatLng(firstPosition[0], firstPosition[1])} radius={(new LatLng(firstPosition[0], firstPosition[1])).distanceTo(new LatLng(secondPosition[0], secondPosition[1]))} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
-                    <ClickHandler />
-                    <PositionMarker position={firstPosition} />
-                    <PositionMarker position={secondPosition} />
-                    <MapCenterUpdater />
-                </MapContainer>
-            </div>
-        </div>)
+        // <div className="w-full flex flex-col gap-6 items-center">
+        <div className="w-full h-[400px] flex gap-3 items-center">
+            <MapContainer center={center || [51.505, -0.09]} zoom={defaultZoom || 13} style={{ height: '100%', width: '100%', borderRadius: '0.375rem' }}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {!radius && bounds && <Rectangle bounds={bounds} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
+                {firstPosition && secondPosition && radius && <Circle center={new LatLng(firstPosition[0], firstPosition[1])} radius={(new LatLng(firstPosition[0], firstPosition[1])).distanceTo(new LatLng(secondPosition[0], secondPosition[1]))} pathOptions={{ color: '#E6A22A', fillOpacity: 0.5 }} />}
+                <ClickHandler />
+                <PositionMarker position={firstPosition} />
+                <PositionMarker position={secondPosition} />
+                <MapCenterUpdater />
+            </MapContainer>
+            {/* </div>) */ }
+        </div>
+    )
 }

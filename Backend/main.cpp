@@ -310,6 +310,7 @@ int main() {
                 carsByCountry->remove(foundCar->country);
                 carsByAge->remove(foundCar->buyer_age);
                 carsByPrice->remove(foundCar->sale_price);
+                globe->removeCar(foundCar);
 
                 res.code = 200;
                 res.write("{\"message\": \"Car deleted successfully by ID!\"}");
@@ -502,7 +503,7 @@ int main() {
                     car->purchase_date = Date(item["registration_date"].s());
                     car->sale_price = item["price"].d();
                     car->top_speed = item["speed"].d();
-                    car->setID();
+                    car->id = item["id"].s();
                     cars.push_back(car);
                 }
 

@@ -4,7 +4,7 @@ import { LatLng } from 'leaflet';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import CustomButton from '../custom_button';
-import { FaPen, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaPen, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
 interface CarDisplayTableItemProps {
@@ -47,6 +47,19 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
             ref={ref}
             className={`${showDetail ? 'z-10 shadow-[0_0_50px_50px_rgba(0,0,0,0.4)] rounded-lg' : 'hover:text-white hover:bg-secondary hover:cursor-pointer '}  bg-white text-black flex flex-col w-full p-4 gap-2 transition-all`}
             onClick={() => !showDetail && setShowDetail(true)}>
+            {showDetail &&
+                <div className="flex gap-3 w-full justify-between">
+                    <CustomButton additionalClass='basis-1/6 bg-tertiary text-white'
+                        onClick={() => router.push(`/dashboard/edit?car=${encodeURIComponent(JSON.stringify(item))}`)}>
+                        <FaPen />
+                        Edit
+                    </CustomButton>
+                    <CustomButton additionalClass='basis-1/12 bg-special text-white'
+                        onClick={() => setShowDetail((pr) => !pr)}>
+                            <FaTimes />
+                    </CustomButton>
+                </div>
+            }
             {showDetail && <div className="flex py-2 text-sm font-normal text-gray-500">
                 <div className="basis-1/4">Name</div>
                 <div className="basis-1/4">Colour</div>
@@ -59,7 +72,7 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
                 <div className="basis-1/4">{`${item.city}, ${item.country}`}</div>
                 <div className="basis-1/4">$ {item.price}</div>
             </div>
-            {showDetail && <div className="flex py-2 justify-between text-sm font-normal text-gray-500">
+            {showDetail && <div className="flex mt-5 py-2 justify-between text-sm font-normal text-gray-500">
                 <div className="basis-1/4">Status</div>
                 <div className="basis-1/4">Top Speed</div>
             </div>}
@@ -68,28 +81,9 @@ const CarDisplayTableItem: React.FC<CarDisplayTableItemProps> = ({ item }) => {
                     <div className="basis-1/4">{item.newCar ? "New" : "Used"}</div>
                     <div className="basis-1/4">{item.speed} km/h</div>
                 </div>}
-            {showDetail && <div className='w-full h-[500px]'>
+            {showDetail && <div className='w-full h-[300px]'>
                 <Map position={new LatLng(item.dealerLatitude, item.dealerLongitude)} zoom={13} />
             </div>}
-            {showDetail &&
-                <div className="flex gap-3 w-full">
-                    <CustomButton additionalClass='basis-1/3 bg-special text-white'
-                        onClick={() => setShowDetail((pr) => !pr)}>
-                            <FaTimes />
-                        Close
-                    </CustomButton>
-                    <CustomButton additionalClass='basis-1/3 bg-tertiary text-white'
-                        onClick={() => router.push(`/dashboard/edit?car=${encodeURIComponent(JSON.stringify(item))}`)}>
-                        <FaPen />
-                        Edit
-                    </CustomButton>
-                    <CustomButton additionalClass='basis-1/3 bg-red-500 text-white'
-                        onClick={() => setShowDetail((pr) => !pr)}>
-                        <FaTrash />
-                        Delete
-                    </CustomButton>
-                </div>
-            }
         </div>
     )
 }

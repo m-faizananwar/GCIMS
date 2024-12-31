@@ -14,12 +14,14 @@
 
 using namespace std;
 
-void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car>* carByMakeAndModel, CarTAVL <string> * carsByCountry, HashTable <float>* carsByPrice, HashTable <int>* carByAge, Globe * globe ) {
-  
-    int count=0;
+void parseData(CarAVL<string> *carByMake, CarAVL<Date> *carByDate, CarAVL<Car> *carByMakeAndModel, CarTAVL<string> *carsByCountry, HashTable<float> *carsByPrice, HashTable<int> *carByAge, Globe *globe)
+{
+
+    int count = 0;
     // Open the CSV file for reading
     ifstream csvFile("../../final_data.csv");
-    if (!csvFile.is_open()) {
+    if (!csvFile.is_open())
+    {
         cout << "Error opening file" << endl;
         return;
     }
@@ -30,20 +32,23 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
 
     // Read the file line by line
     string line;
-    while (getline(csvFile, line)) {
+    while (getline(csvFile, line))
+    {
         // Split the line into fields using a string stream
         istringstream lineStream(line);
         string field;
 
         // Store the fields in a vector
         vector<string> fields;
-        while (getline(lineStream, field, ',')) {
-        fields.push_back(field);
+        while (getline(lineStream, field, ','))
+        {
+            fields.push_back(field);
         }
 
-        Car* car = new Car();
+        Car *car = new Car();
 
         // Set the car's attributes
+        car->id = fields[13];
         car->make = fields[0];
         car->model = fields[1];
         car->buyer_gender = fields[2];
@@ -57,12 +62,13 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         {
             car->new_car = true;
         }
-        else {
+        else
+        {
             car->new_car = false;
         }
         car->purchase_date = Date(fields[10]);
         car->sale_price = stof(fields[11]);
-        car->id = car->make + car->model + to_string(car->sale_price);
+        // car->id = car->make + car->model + to_string(car->sale_price);
         car->top_speed = stof(fields[12]);
 
         // Add the car to the AVL tree
@@ -70,7 +76,7 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         carByDate->insert(car->purchase_date, car);
         carByMakeAndModel->insert(*car, car);
         carsByCountry->insert(car->country, car);
-        
+
         // Add the car to the hash table
         carByAge->insert(car->buyer_age, car);
         carsByPrice->insert(car->sale_price, car);
@@ -79,32 +85,34 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
         globe->insertCar(car);
 
         // Write the car to the JSON file
-        if (!first) {
+        if (!first)
+        {
             jsonFile << ",\n";
-        } else {
+        }
+        else
+        {
             first = false;
         }
-      jsonFile << "  {\n"
-         << "    \"id\": \"" << car->id << "\",\n"
-         << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
-         << "    \"brand\": \""  << car->make << "\",\n"
-         << "    \"model\": \"" << car->model << "\",\n"
-         << "    \"price\": " << car->sale_price << ",\n"
-         << "    \"speed\": " << car->top_speed << ",\n"
-         << "    \"country\": \"" << car->country << "\",\n"
-         << "    \"gender\": \"" << car->buyer_gender << "\",\n"
-         << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
-         << "    \"age\": " << car->buyer_age << ",\n"
-         << "    \"city\": \"" << car->city << "\",\n"
-         << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
-         << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
-         << "    \"color\": \"" << car->color << "\",\n"
-         << "    \"registration_date\": \"" << car->purchase_date << "\"\n"
-         << "  }";
-  
+        jsonFile << "  {\n"
+                 << "    \"id\": \"" << car->id << "\",\n"
+                 << "    \"carName\": \"" << car->make << " " << car->model << "\",\n"
+                 << "    \"brand\": \"" << car->make << "\",\n"
+                 << "    \"model\": \"" << car->model << "\",\n"
+                 << "    \"price\": " << car->sale_price << ",\n"
+                 << "    \"speed\": " << car->top_speed << ",\n"
+                 << "    \"country\": \"" << car->country << "\",\n"
+                 << "    \"gender\": \"" << car->buyer_gender << "\",\n"
+                 << "    \"new_car\": " << (car->new_car ? "true" : "false") << ",\n"
+                 << "    \"age\": " << car->buyer_age << ",\n"
+                 << "    \"city\": \"" << car->city << "\",\n"
+                 << "    \"dealer_latitude\": " << car->dealer_latitude << ",\n"
+                 << "    \"dealer_longitude\": " << car->dealer_longitude << ",\n"
+                 << "    \"color\": \"" << car->color << "\",\n"
+                 << "    \"registration_date\": \"" << car->purchase_date << "\"\n"
+                 << "  }";
+
         // Increment the count
         count++;
-
     }
     cout << "Parsing Done\nNumber of cars: " << count << endl;
 
@@ -113,4 +121,3 @@ void parseData(CarAVL <string>* carByMake, CarAVL <Date>* carByDate, CarAVL <Car
     jsonFile << "\n]\n";
     jsonFile.close();
 }
-

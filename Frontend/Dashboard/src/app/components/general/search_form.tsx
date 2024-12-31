@@ -82,10 +82,6 @@ const SearchForm = () => {
                     [(firstPos.lat + pos.lat) / 2, (firstPos.lng + pos.lng) / 2]
                     : [pos.lat, pos.lng])
             if (searchBy === 'Map Radius') {
-                // const newRadius = (firstPos && pos) ?
-                //     (new LatLng(firstPos.lat, firstPos.lng)).distanceTo(new LatLng(pos.lat, pos.lng))
-                //     : undefined
-
                 const latDiff = firstPos ? (firstPos.lat - pos.lat) : 0
                 const lngDiff = firstPos ? (firstPos.lng - pos.lng) : 0
                 const latSq = latDiff * latDiff
@@ -103,63 +99,65 @@ const SearchForm = () => {
 
     const handleFormSubmit = (formData: FormData) => {
         const newParams = new URLSearchParams(searchParams.toString())
+        { // Checks
+            if (!searchParams.get('sb')) newParams.set('sb', searchBy)
 
-        const country = formData.get('c')?.toString().trim().capitalizeFirstLetter()
-        if (country) newParams.set('c', country)
-        else newParams.delete('c')
+            const country = formData.get('c')?.toString().trim().capitalizeFirstLetter()
+            if (country) newParams.set('c', country)
+            else newParams.delete('c')
 
-        const name = formData.get('n')?.toString().trim().capitalizeFirstLetter()
-        if (name) newParams.set('n', name)
-        else newParams.delete('n')
+            const name = formData.get('n')?.toString().trim().capitalizeFirstLetter()
+            if (name) newParams.set('n', name)
+            else newParams.delete('n')
 
-        const model = formData.get('m')?.toString().trim().capitalizeFirstLetter()
-        if (model) newParams.set('m', model)
-        else newParams.delete('m')
+            const model = formData.get('m')?.toString().trim().capitalizeFirstLetter()
+            if (model) newParams.set('m', model)
+            else newParams.delete('m')
 
-        const price = formData.get('p')?.toString().trim()
-        if (price) newParams.set('p', price)
-        else newParams.delete('p')
+            const price = formData.get('p')?.toString().trim()
+            if (price) newParams.set('p', price)
+            else newParams.delete('p')
 
-        const startPrice = formData.get('sp')?.toString().trim()
-        if (startPrice) newParams.set('sp', startPrice)
-        else newParams.delete('sp')
+            const startPrice = formData.get('sp')?.toString().trim()
+            if (startPrice) newParams.set('sp', startPrice)
+            else newParams.delete('sp')
 
-        const endPrice = formData.get('ep')?.toString().trim()
-        if (endPrice) newParams.set('ep', endPrice)
-        else newParams.delete('ep')
+            const endPrice = formData.get('ep')?.toString().trim()
+            if (endPrice) newParams.set('ep', endPrice)
+            else newParams.delete('ep')
 
-        if (firstPos) {
-            newParams.set('lat1', firstPos.lat.toString())
-            newParams.set('lng1', firstPos.lng.toString())
-        } else {
-            newParams.delete('lat1')
-            newParams.delete('lng1')
+            if (firstPos) {
+                newParams.set('lat1', firstPos.lat.toString())
+                newParams.set('lng1', firstPos.lng.toString())
+            } else {
+                newParams.delete('lat1')
+                newParams.delete('lng1')
+            }
+
+            if (secondPos) {
+                newParams.set('lat2', secondPos.lat.toString())
+                newParams.set('lng2', secondPos.lng.toString())
+            } else {
+                newParams.delete('lat2')
+                newParams.delete('lng2')
+            }
+
+            if (radius && searchBy == 'Map Radius') newParams.set('radius', radius.toString())
+            else newParams.delete('radius')
+
+            if (mapCenter) {
+                newParams.set('mclat', mapCenter[0].toString())
+                newParams.set('mclng', mapCenter[1].toString())
+            } else {
+                newParams.delete('mclat')
+                newParams.delete('mclng')
+            }
+
+            if (startPrice && endPrice && Number(startPrice) > Number(endPrice)) {
+                newParams.set('sp', endPrice)
+                newParams.set('ep', startPrice)
+            }
         }
-
-        if (secondPos) {
-            newParams.set('lat2', secondPos.lat.toString())
-            newParams.set('lng2', secondPos.lng.toString())
-        } else {
-            newParams.delete('lat2')
-            newParams.delete('lng2')
-        }
-
-        if (radius && searchBy == 'Map Radius') newParams.set('radius', radius.toString())
-        else newParams.delete('radius')
-
-        if (mapCenter) {
-            newParams.set('mclat', mapCenter[0].toString())
-            newParams.set('mclng', mapCenter[1].toString())
-        } else {
-            newParams.delete('mclat')
-            newParams.delete('mclng')
-        }
-
-        if (startPrice && endPrice && Number(startPrice) > Number(endPrice)) {
-            newParams.set('sp', endPrice)
-            newParams.set('ep', startPrice)
-        }
-
         router.push(`${pathname}?${newParams}`)
     }
 

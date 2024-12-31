@@ -14,6 +14,7 @@ using namespace std;
 bool carExists(const string &make, const string &model, const Date &date);
 void updateCarInCSV(const Car *oldCar, const Car *newCar);
 void deleteFromCSV(const string &make, const string &model, const Date &date);
+void deleteFromCSVByID(const std::string &id);
 void appendToCSV(const Car *car);
 void openCSVForAppend(ofstream &csvFile);
 void closeCSV(ofstream &csvFile);
@@ -349,7 +350,8 @@ void appendToCSV(const Car *car)
             << car->purchase_date.month << "/"
             << car->purchase_date.year << ","
             << car->sale_price << ","
-            << car->top_speed << endl;
+            << car->top_speed << ","
+            << car->id << endl;
 
     closeCSV(csvFile);
 }
@@ -464,7 +466,7 @@ bool carExists(const string &make, const string &model, const Date &date)
 void updateCarInCSV(const Car *oldCar, const Car *newCar)
 {
     // First delete the old entry
-    deleteFromCSV(oldCar->make, oldCar->model, oldCar->purchase_date);
+    deleteFromCSVByID(oldCar->id);
     appendToCSV(newCar);
 }
 
@@ -520,10 +522,9 @@ void deleteFromCSVByID(const std::string &id)
             fields.push_back(field);
         }
         // Reconstruct the ID: make + model + price
-        if (fields.size() >= 12)
+        if (fields.size() >= 13)
         {
-            string generatedID = fields[0] + fields[1] + fields[11];
-            if (generatedID == id)
+            if (fields[13] == id)
             {
                 found = true;
                 continue; // Skip this record
