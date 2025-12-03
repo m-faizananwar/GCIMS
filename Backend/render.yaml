@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: gcims-api
+    env: docker
+    plan: standard
+    repo: # Your GitHub repo URL
+    branch: main
+    
+    # Build configuration
+    dockerfilePath: ./Dockerfile
+    
+    # Environment variables
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: NODE_ENV
+        value: production
+    
+    # Health check
+    healthCheckPath: /
+    
+    # Resource limits
+    numInstances: 1
+    autoDeploy: true

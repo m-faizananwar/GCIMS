@@ -1,0 +1,10 @@
+^C:\USERS\SHAHS\ONEDRIVE\DOCUMENTS\UNIVERSITY DOCUMENTS\DATA STRUCTURES AND ALGORITHMS\PROJECT\NEW\GCIMS\BACKEND\BUILD\CMAKEFILES\71ED9217602AD6EA605CF8E976038B73\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/shahs/OneDrive/Documents/University Documents/Data Structures and Algorithms/Project/new/GCIMS/Backend" "-BC:/Users/shahs/OneDrive/Documents/University Documents/Data Structures and Algorithms/Project/new/GCIMS/Backend/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/shahs/OneDrive/Documents/University Documents/Data Structures and Algorithms/Project/new/GCIMS/Backend/build/GCIMS.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

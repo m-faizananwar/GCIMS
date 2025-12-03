@@ -1,2 +1,47 @@
 final_data.json
 final_data2.json
+
+# Build directories
+build/
+build-release/
+cmake-build-debug/
+cmake-build-release/
+
+# CMake
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CMakeFiles/
+
+# Executables and libraries
+*.o
+*.a
+*.so
+*.dll
+*.exe
+GCIMS
+parser.exe
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.production.local
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+_deps/
+
+# Temporary files
+*.tmp
+temp/
