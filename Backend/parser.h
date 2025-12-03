@@ -14,6 +14,14 @@
 
 using namespace std;
 
+// Helper function to trim whitespace (including newlines) from both ends of a string
+string trim(const string& str) {
+    size_t first = str.find_first_not_of(" \t\r\n");
+    if (first == string::npos) return "";
+    size_t last = str.find_last_not_of(" \t\r\n");
+    return str.substr(first, last - first + 1);
+}
+
 void parseData(CarAVL<string> *carByMake, CarAVL<Date> *carByDate, CarAVL<Car> *carByMakeAndModel, CarTAVL<string> *carsByCountry, HashTable<float> *carsByPrice, HashTable<int> *carByAge, Globe *globe)
 {
 
@@ -42,7 +50,7 @@ void parseData(CarAVL<string> *carByMake, CarAVL<Date> *carByDate, CarAVL<Car> *
         vector<string> fields;
         while (getline(lineStream, field, ','))
         {
-            fields.push_back(field);
+            fields.push_back(trim(field));  // Trim whitespace from each field
         }
 
         Car *car = new Car();
