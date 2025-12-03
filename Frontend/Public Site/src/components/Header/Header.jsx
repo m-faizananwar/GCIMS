@@ -32,7 +32,7 @@ const navLinks = [
     noDisplay: false
   },
   {
-    path: "http://localhost:3000/dashboard",
+    path: `${import.meta.env.VITE_DASHBOARD_URL}/dashboard`,
     display: 'Dashboard',
     noDisplay: true
   }

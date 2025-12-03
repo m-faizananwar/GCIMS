@@ -19,6 +19,8 @@ import img08 from "../assets/all-images/cars-img/mercedes-offer.png";
 // Store all images in an array for random selection
 const carImages = [img01, img02, img03, img04, img05, img06, img07, img08];
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 const CarListing = () => {
   const [fetchedCars, setFetchedCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,38 +38,38 @@ const CarListing = () => {
     const minPrice = searchParams.get("minPrice");
     const maxPrice = searchParams.get("maxPrice");
 
-    let fetchUrl = "http://localhost:8080/cars"; // Default URL
+    let fetchUrl = `${API_BASE_URL}/cars`; // Default URL
 
     if (name || model || locationFilter || minPrice || maxPrice) {
       if (minPrice || maxPrice) {
-        fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}&minprice=${minPrice || ''}&maxprice=${maxPrice || ''}`;
+        fetchUrl = `${API_BASE_URL}/cars/search?name=${name}&model=${model}&country=${locationFilter}&minprice=${minPrice || ''}&maxprice=${maxPrice || ''}`;
       } else {
-        fetchUrl = `http://localhost:8080/cars/search?name=${name}&model=${model}&country=${locationFilter}`;
+        fetchUrl = `${API_BASE_URL}/cars/search?name=${name}&model=${model}&country=${locationFilter}`;
       }
 
     }
 
     // Adjust the fetch URL based on the sort order
     if (sortOrder === "low") {
-      fetchUrl = "http://localhost:8080/cars/sorted/price/ascending"; // Low to High
+      fetchUrl = `${API_BASE_URL}/cars/sorted/price/ascending`; // Low to High
     } else if (sortOrder === "high") {
-      fetchUrl = "http://localhost:8080/cars/sorted/price/descending"; // High to Low
+      fetchUrl = `${API_BASE_URL}/cars/sorted/price/descending`; // High to Low
     } else if (sortOrder === "make-ASC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/make/ascending"; // Make ASC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/make/ascending`; // Make ASC
     } else if (sortOrder === "make-DESC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/make/descending"; // Make DESC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/make/descending`; // Make DESC
     } else if (sortOrder === "make-and-model-ASC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/make_and_model/ascending"; // Make and Model ASC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/make_and_model/ascending`; // Make and Model ASC
     } else if (sortOrder === "make-and-model-DESC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/make_and_model/descending"; // Make and Model DESC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/make_and_model/descending`; // Make and Model DESC
     } else if (sortOrder === "age-ASC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/age/ascending"; // Age ASC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/age/ascending`; // Age ASC
     } else if (sortOrder === "age-DESC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/age/descending"; // Age DESC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/age/descending`; // Age DESC
     } else if (sortOrder === "date-ASC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/date/ascending"; // Date ASC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/date/ascending`; // Date ASC
     } else if (sortOrder === "date-DESC") {
-      fetchUrl = "http://localhost:8080/cars/sorted/date/descending"; // Date DESC
+      fetchUrl = `${API_BASE_URL}/cars/sorted/date/descending`; // Date DESC
     }
 
     fetch(fetchUrl)
