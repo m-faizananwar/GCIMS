@@ -376,7 +376,7 @@ int main() {
                     newCar->top_speed = x["speed"].d();
                     newCar->id= oldCar->id;
 
-                    // Re-insert
+                    // Re-insert this
                     carsByMake->insert(newCar->make, newCar);
                     carsByDate->insert(newCar->purchase_date, newCar);
                     carsByMakeAndModel->insert(*newCar, newCar);
