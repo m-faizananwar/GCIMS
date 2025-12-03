@@ -457,7 +457,7 @@ int main() {
                 res.write("{\"error\": \"" + std::string(e.what()) + "\"}");
             }
             res.end();
-            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
+            updateJsonFromCsv("final_data.csv", "final_data.json");
         });
 
     // Custom JSON sorting endpoint
@@ -480,7 +480,7 @@ int main() {
 
             try {
                 // Read data from final_data2.json
-                ifstream ifs("../../final_data2.json");
+                ifstream ifs("final_data2.json");
                 if (!ifs.is_open()) {
                     throw runtime_error("Cannot open final_data2.json");
                 }
@@ -523,7 +523,7 @@ int main() {
                 }
 
                 // Return the sorted data
-                ifstream sorted_ifs("../../final_data2.json");
+                ifstream sorted_ifs("final_data2.json");
                 std::string json((std::istreambuf_iterator<char>(sorted_ifs)), std::istreambuf_iterator<char>());
                 res.write(json);
 
