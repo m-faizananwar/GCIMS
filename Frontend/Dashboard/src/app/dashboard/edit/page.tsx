@@ -47,7 +47,7 @@ const EditCar = () => {
                 }
             )
         }
-    }, [])
+    }, [latitude, longitude])
 
     const getLocationData = (lat: number, lng: number) => {
         fetchLocationData(lat, lng)
@@ -68,7 +68,7 @@ const EditCar = () => {
     }
 
     const onFormSubmit = () => {
-        let carData = {
+        const carData = {
             ...(car && { id: car.id }),
             brand: car ? car.brand : brand.toString().capitalizeFirstLetter(),
             model: car ? car.model : model.toString().capitalizeFirstLetter(),
