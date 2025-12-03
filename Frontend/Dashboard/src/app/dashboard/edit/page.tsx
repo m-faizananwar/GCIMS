@@ -68,7 +68,7 @@ const EditCar = () => {
     }
 
     const onFormSubmit = () => {
-        var carData = {
+        let carData = {
             ...(car && { id: car.id }),
             brand: car ? car.brand : brand.toString().capitalizeFirstLetter(),
             model: car ? car.model : model.toString().capitalizeFirstLetter(),
@@ -144,7 +144,7 @@ const EditCar = () => {
 
     const handleOnDeleteClick = () => {
         if (car) {
-            var carData = parseJson(car)
+            let carData = parseJson(car)
             setLoading(true)
             fetch(
                 "/api/cars",

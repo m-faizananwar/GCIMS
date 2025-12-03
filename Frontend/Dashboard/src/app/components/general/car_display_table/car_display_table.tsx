@@ -73,7 +73,7 @@ const CarDisplayTable: React.FC<CarDisplayTableProps> = ({ providedData }) => {
                 else return res.json()
             }).then(data => {
                 if (data) {
-                    var finalCars: Car[] = data?.map((car: unknown) => parseCar(car))
+                    let finalCars: Car[] = data?.map((car: unknown) => parseCar(car))
 
                     if (params.sortBy && params.sortOrder) {
                         const newUrl = `${SERVER_URL}/sort?sortBy=${params.sortBy}&order=${params.sortOrder}`
