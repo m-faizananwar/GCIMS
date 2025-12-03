@@ -1,5 +1,5 @@
 # Build stage
-FROM gcc:13-bullseye as builder
+FROM gcc:13 as builder
 
 WORKDIR /app
 
