@@ -41,7 +41,7 @@ int main() {
 
     CROW_ROUTE(app, "/cars")([addCORS](const crow::request& req, crow::response& res) {
         addCORS(res);
-        ifstream ifs("../../final_data.json");
+        ifstream ifs("final_data.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -51,7 +51,7 @@ int main() {
         addCORS(res);
         bool descending = (order != "descending");
         rewriteJsonSortedByKey("make", descending);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -61,7 +61,7 @@ int main() {
         addCORS(res);
         bool descending = (order != "descending");
         rewriteJsonSortedByKey("make_and_model", descending);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -71,7 +71,7 @@ int main() {
         addCORS(res);
         bool descending = (order != "descending");
         rewriteJsonSortedByKey("age", descending);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -81,7 +81,7 @@ int main() {
         addCORS(res);
         bool descending = (order != "descending");
         rewriteJsonSortedByKey("date", descending);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -91,7 +91,7 @@ int main() {
         addCORS(res);
         bool descending = (order != "descending");
         rewriteJsonSortedByKey("price", descending);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         string json((istreambuf_iterator<char>(ifs)), istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -101,7 +101,7 @@ int main() {
         addCORS(res);
         auto results = findCarsByName(name);  // Updated function name
         rewriteJsonWithSearchResults(results);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -113,7 +113,7 @@ int main() {
         Date end(endDate);
         auto results = findCarsByDateRange(start, end);  // Updated function name
         rewriteJsonWithSearchResults(results);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -123,7 +123,7 @@ int main() {
         addCORS(res);
         auto results = findCarsByPriceRange(minPrice, maxPrice);  // Updated function name
         rewriteJsonWithSearchResults(results);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -133,7 +133,7 @@ int main() {
         addCORS(res);
         auto results = findCarsByCountry(country);  // Updated function name
         rewriteJsonWithSearchResults(results);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -150,7 +150,7 @@ int main() {
 
         auto results = searchCars(name, model, country, minPrice, maxPrice);
         rewriteJsonWithSearchResults(results);
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -163,14 +163,14 @@ int main() {
         float latitude = query_params.get("lat") ? std::stof(query_params.get("lat")) : 0.0f;
         float longitude = query_params.get("lng") ? std::stof(query_params.get("lng")) : 0.0f;
         
-        ofstream jsonFile("../../final_data2.json");
+    ofstream jsonFile("final_data2.json");
         jsonFile << "[\n";
         bool firstEntry = true;
         globe->printByCoordinatesJSON(longitude, latitude, jsonFile, firstEntry);
         jsonFile << "\n]\n";
         jsonFile.close();
 
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -184,14 +184,14 @@ int main() {
         float longitude = query_params.get("lng") ? std::stof(query_params.get("lng")) : 0.0f;
         int radius = query_params.get("radius") ? std::stoi(query_params.get("radius")) : 1;
 
-        ofstream jsonFile("../../final_data2.json");
+    ofstream jsonFile("final_data2.json");
         jsonFile << "[\n";
         bool firstEntry = true;
         globe->printByRegionJSON(longitude, latitude, radius, jsonFile, firstEntry);
         jsonFile << "\n]\n";
         jsonFile.close();
 
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -206,14 +206,14 @@ int main() {
         float lat2 = query_params.get("lat2") ? std::stof(query_params.get("lat2")) : 0.0f;
         float lng2 = query_params.get("lng2") ? std::stof(query_params.get("lng2")) : 0.0f;  // Fixed syntax error here
 
-        ofstream jsonFile("../../final_data2.json");
+    ofstream jsonFile("final_data2.json");
         jsonFile << "[\n";
         bool firstEntry = true;
         globe->printRectangularRegionJSON(lng1, lat1, lng2, lat2, jsonFile, firstEntry);
         jsonFile << "\n]\n";
         jsonFile.close();
 
-        ifstream ifs("../../final_data2.json");
+        ifstream ifs("final_data2.json");
         std::string json((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
         res.write(json);
         res.end();
@@ -269,7 +269,7 @@ int main() {
             }
             res.end();
             // Remove the parsingData() call here
-            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
+                updateJsonFromCsv("final_data.csv", "final_data.json");
         });
 
     // Delete car endpoint
@@ -321,7 +321,7 @@ int main() {
             }
             res.end();
             // Remove parsingData() call from here
-            updateJsonFromCsv("../../final_data.csv", "../../final_data.json");
+            updateJsonFromCsv("final_data.csv", "final_data.json");
         });
 
     // Update car endpoint
