@@ -37,28 +37,34 @@ const EditCar = () => {
     const [currLocation, setCurrLocation] = useState<[number, number]>()
 
     useEffect(() => {
-        if (!latitude && !longitude && navigator.geolocation) {
+        if (typeof window !== 'undefined' && navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     setCurrLocation([position.coords.latitude, position.coords.longitude])
                     getLocationData(position.coords.latitude, position.coords.longitude)
                     !latitude && setLatitude(position.coords.latitude)
                     !longitude && setLongitude(position.coords.longitude)
+                },
+                (error) => {
+                    console.error('Geolocation error:', error);
                 }
-            )
+            );
         }
     }, [latitude, longitude])
 
     const getLocationData = (lat: number, lng: number) => {
         fetchLocationData(lat, lng)
             .then(data => {
-                console.log(data)
+                console.log(data);
                 if (data && data.address) {
-                    const address = data.address
-                    setCity(address.city || address.town || address.county || address.state)
-                    setCountry(address.country)
+                    const address = data.address;
+                    setCity(address.city || address.town || address.county || address.state);
+                    setCountry(address.country);
                 }
             })
+            .catch(error => {
+                console.error('Error fetching location data:', error);
+            });
     }
 
     const MapOnClick = (e: L.LeafletMouseEvent) => {
