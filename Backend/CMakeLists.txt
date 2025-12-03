@@ -43,3 +43,15 @@ add_executable(GCIMS main.cpp)
 
 # Link against Crow (the target provided by the fetched project)
 target_link_libraries(GCIMS PRIVATE Crow::Crow)
+
+# Ensure data files are available next to the built executable.
+# Some deployments (and your runtime expectation) require data files
+# to be in the same directory as the executable. Copy them from the
+# source tree into the CMake binary dir so they end up in the build/
+# directory alongside `GCIMS`.
+set(DATA_FILES final_data.csv final_data.json final_data2.json)
+foreach(df ${DATA_FILES})
+	if(EXISTS ${CMAKE_SOURCE_DIR}/${df})
+		configure_file(${CMAKE_SOURCE_DIR}/${df} ${CMAKE_BINARY_DIR}/${df} COPYONLY)
+	endif()
+endforeach()
