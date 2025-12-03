@@ -84,7 +84,7 @@ public:
 private:
   long getMaxIDFromCSV()
   {
-    ifstream inFile("../../final_data.csv");
+    ifstream inFile("final_data.csv");
     if (!inFile.is_open())
     {
       throw runtime_error("Cannot open CSV file for reading.");

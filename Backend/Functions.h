@@ -123,7 +123,7 @@ void searchByRectangle(float latitude1, float longitude1, float latitude2, float
 
 void rewriteJsonSortedByKey(const std::string &key, bool ascending)
 {
-    ofstream jsonFile("../../final_data2.json");
+    ofstream jsonFile("final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 
@@ -218,7 +218,7 @@ void rewriteJsonSortedByKey(const std::string &key, bool ascending)
 
 void rewriteJsonWithSearchResults(const std::vector<Car *> &cars)
 {
-    ofstream jsonFile("../../final_data2.json");
+    ofstream jsonFile("final_data2.json");
     jsonFile << "[\n";
     bool firstEntry = true;
 
@@ -320,7 +320,7 @@ std::vector<Car *> searchCars(const std::string &name, const std::string &model,
 // CSV file handling functions
 void openCSVForAppend(ofstream &csvFile)
 {
-    csvFile.open("../../final_data.csv", ios::app);
+    csvFile.open("final_data.csv", ios::app);
     if (!csvFile.is_open())
     {
         throw runtime_error("Cannot open CSV file for appending");
@@ -360,13 +360,13 @@ void appendToCSV(const Car *car)
 // Function to delete a line from CSV
 void deleteFromCSV(const string &make, const string &model, const Date &date)
 {
-    ifstream inFile("../../final_data.csv");
+    ifstream inFile("final_data.csv");
     if (!inFile.is_open())
     {
         throw runtime_error("Cannot open CSV file for reading");
     }
 
-    ofstream tempFile("../../temp.csv");
+    ofstream tempFile("temp.csv");
     if (!tempFile.is_open())
     {
         inFile.close();
@@ -411,17 +411,17 @@ void deleteFromCSV(const string &make, const string &model, const Date &date)
 
     if (!found)
     {
-        remove("../../temp.csv");
+        remove("temp.csv");
         throw runtime_error("Record not found");
     }
 
     // On Windows, we need to ensure the original file is closed before removing
-    if (remove("../../final_data.csv") != 0)
+    if (remove("final_data.csv") != 0)
     {
         throw runtime_error("Could not remove original file");
     }
 
-    if (rename("../../temp.csv", "../../final_data.csv") != 0)
+    if (rename("temp.csv", "final_data.csv") != 0)
     {
         throw runtime_error("Could not rename temporary file");
     }
@@ -429,7 +429,7 @@ void deleteFromCSV(const string &make, const string &model, const Date &date)
 
 bool carExists(const string &make, const string &model, const Date &date)
 {
-    ifstream inFile("../../final_data.csv");
+    ifstream inFile("final_data.csv");
     if (!inFile.is_open())
     {
         throw runtime_error("Cannot open CSV file for reading");
@@ -491,12 +491,12 @@ Car *findCarByID(const std::string &id)
 
 void deleteFromCSVByID(const std::string &id)
 {
-    ifstream inFile("../../final_data.csv");
+    ifstream inFile("final_data.csv");
     if (!inFile.is_open())
     {
         throw runtime_error("Cannot open CSV file for reading");
     }
-    ofstream tempFile("../../temp.csv");
+    ofstream tempFile("temp.csv");
     if (!tempFile.is_open())
     {
         inFile.close();
@@ -534,11 +534,11 @@ void deleteFromCSVByID(const std::string &id)
 
     if (!found)
     {
-        remove("../../temp.csv");
+        remove("temp.csv");
         throw runtime_error("Record not found");
     }
-    remove("../../final_data.csv");
-    rename("../../temp.csv", "../../final_data.csv");
+    remove("final_data.csv");
+    rename("temp.csv", "final_data.csv");
 }
 
 void sortCars(std::vector<Car *> &cars, const std::string &sortKey, bool ascending)
